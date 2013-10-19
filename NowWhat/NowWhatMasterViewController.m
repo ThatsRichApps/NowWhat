@@ -7,10 +7,15 @@
 //
 
 #import "NowWhatMasterViewController.h"
-
 #import "NowWhatDetailViewController.h"
+#import "EventCell.h"
+#import "EditEventViewController.h"
 
-@interface NowWhatMasterViewController ()
+@interface NowWhatMasterViewController () {
+    
+//    NSArray *dayEvents;
+    
+}
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
@@ -28,11 +33,54 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+
+    self.viewSchedule = @"Main Schedule";
+    
+    [self performFetch];
+    
+    // is the current viewDate and viewNSDate are nil, set them to today
+    if (self.viewNSDate == nil) {
+        
+        self.viewNSDate = [[NSDate alloc] init];
+        self.viewDate = [Event returnDate:self.viewNSDate];
+    
+        NSLog(@" date selected is %@", self.viewDate);
+        
+        
+    }
+    
+    // if baseTime is nil, set it to 8am of the viewDate
+    if (self.baseTime == nil) {
+        
+        //  build a NSDate object for baseTime using these components
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *components = [[NSDateComponents alloc] init];
+        
+        NSString *dateString = self.viewDate;
+        NSString *monthStr = [dateString substringToIndex:2];
+        NSString *dayStr   = [dateString substringWithRange:NSMakeRange(2, 2)];
+        NSString *yearStr  = [dateString substringFromIndex:4];
+        
+        [components setDay:[dayStr intValue]];
+        [components setMonth:[monthStr intValue]];
+        [components setYear:[yearStr intValue]];
+        [components setHour:8];
+        [components setMinute:0];
+        
+        self.baseTime = [gregorian dateFromComponents:components];
+        NSLog(@"base time is %@", self.baseTime);
+        
+    
+    }
+    
+    
+
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    self.navigationItem.rightBarButtonItem = addButton;
+    //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
+    //self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
 
@@ -50,7 +98,9 @@
     
     // If appropriate, configure the new managed object.
     // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
+    [newManagedObject setValue:[NSDate date] forKey:@"eventNSDate"];
+    
+    [newManagedObject setValue:@"New Event" forKey:@"eventText"];
     
     // Save the context.
     NSError *error = nil;
@@ -64,20 +114,29 @@
 
 #pragma mark - Table View
 
+/*
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.fetchedResultsController sections] count];
+    return [dayEvents count];
 }
+*/
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"EditEvent" sender:nil];
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     return [sectionInfo numberOfObjects];
+    //return [dayEvents count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EventCell"];
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -125,6 +184,35 @@
         NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         [[segue destinationViewController] setDetailItem:object];
     }
+    
+    if ([[segue identifier] isEqualToString:@"AddEvent"]) {
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
+        controller.baseTime = self.baseTime;
+        controller.eventSchedule = self.viewSchedule;
+        controller.managedObjectContext = self.managedObjectContext;
+       
+    }
+    if ([[segue identifier] isEqualToString:@"EditEvent"]) {
+
+        
+        // Send the EditEventViewController the appropriate event that needs editing
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        //NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+        UINavigationController *navigationController = segue.destinationViewController;
+        EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
+        controller.baseTime = self.baseTime;
+        controller.managedObjectContext = self.managedObjectContext;
+        controller.eventToEdit = event;
+        
+        NSLog(@"the event selected is %@", event.eventText);
+        
+        
+    }
+
 }
 
 #pragma mark - Fetched results controller
@@ -144,7 +232,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"eventNSDate" ascending:NO];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -165,6 +253,23 @@
     
     return _fetchedResultsController;
 }    
+
+- (void)performFetch
+{
+    NSError *error;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        //FATAL_CORE_DATA_ERROR(error);
+        NSLog(@"database error");
+        return;
+    }
+}
+
+
+
+
+
+
+
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
@@ -228,8 +333,19 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
+    
+    EventCell *eventCell = (EventCell *)cell;
+    Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    eventCell.eventTextLabel.text = event.eventText;
+    
+    eventCell.eventTimeLabel.text = [event formattedTime] ;
+    
+    eventCell.eventNotesLabel.text = event.eventNotes;
+    
+    eventCell.eventCheckLabel.text = @"√";
+    
+
 }
 
 @end
