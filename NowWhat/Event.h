@@ -16,11 +16,12 @@
 @property (nonatomic, retain) NSString * eventText;
 @property (nonatomic, retain) NSDate * eventNSDate;
 @property (nonatomic, retain) NSString * eventDate;
-@property (nonatomic, retain) NSString * eventChecked;
+@property (nonatomic, assign) BOOL eventChecked;
 @property (nonatomic, retain) NSString * eventSchedule;
 
 - (NSString *)formattedTime;
 + (NSString *)formatEventTime: (NSDate *)dateTime;
 + (NSString *)returnDate: (NSDate *)dateTime;
+- (void)toggleChecked;
 
 @end

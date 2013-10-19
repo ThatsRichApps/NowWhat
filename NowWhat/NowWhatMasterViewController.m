@@ -123,7 +123,7 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"EditEvent" sender:nil];
+    [self performSegueWithIdentifier:@"EditEvent" sender:[tableView cellForRowAtIndexPath: indexPath]];
 }
 
 
@@ -171,6 +171,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [event toggleChecked];
+    [self configureCheckmarkForCell:cell withEvent:event];
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         self.detailViewController.detailItem = object;
@@ -198,8 +206,8 @@
 
         
         // Send the EditEventViewController the appropriate event that needs editing
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        //NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
         UINavigationController *navigationController = segue.destinationViewController;
@@ -342,10 +350,25 @@
     eventCell.eventTimeLabel.text = [event formattedTime] ;
     
     eventCell.eventNotesLabel.text = event.eventNotes;
-    
-    eventCell.eventCheckLabel.text = @"√";
-    
 
+    [self configureCheckmarkForCell:cell withEvent:event];
+    
 }
+
+- (void)configureCheckmarkForCell:(UITableViewCell *)cell withEvent:(Event *)event
+{
+    EventCell *eventCell = (EventCell *)cell;
+    
+    if (event.eventChecked) {
+        
+        eventCell.eventCheckLabel.text = @"√";
+        
+    } else {
+        
+        eventCell.eventCheckLabel.text = @"";
+        
+    }
+}
+
 
 @end

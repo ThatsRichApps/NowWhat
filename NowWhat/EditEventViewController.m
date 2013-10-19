@@ -20,7 +20,7 @@
     NSString *eventNotes;
     NSDate *eventNSDate;
     //NSString *eventSchedule;
-    NSString *eventChecked;
+    BOOL eventChecked;
 
 }
 

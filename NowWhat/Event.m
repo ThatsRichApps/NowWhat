@@ -19,6 +19,10 @@
 @dynamic eventSchedule;
 
 
+- (void)toggleChecked    {
+    self.eventChecked = !self.eventChecked;
+}
+
 
 
 - (NSString *)formattedTime {
