@@ -19,7 +19,6 @@
     NSString *eventText;
     NSString *eventNotes;
     NSDate *eventNSDate;
-    //NSString *eventSchedule;
     BOOL eventChecked;
 
 }
@@ -40,17 +39,11 @@
     if (_eventToEdit != newEventToEdit) {
         _eventToEdit = newEventToEdit;
     
-        //NSString *eventTime = [Event formatEventTime:self.eventToEdit.eventNSDate];
-        //NSString *eventText = @"This is the Event Text";
-        //self.dateField.text = eventTime;
         eventText = self.eventToEdit.eventText;
         eventNotes = self.eventToEdit.eventNotes;
         eventNSDate = self.eventToEdit.eventNSDate;
-        //baseTime = self.eventToEdit.eventNSDate;
-        self.eventSchedule = self.eventToEdit.eventSchedule;
         eventChecked = self.eventToEdit.eventChecked;
-        
-        ///self.baseTime = self.eventToEdit.eventNSDate;
+        self.eventSchedule = self.eventToEdit.eventSchedule;
         self.isEditEvent= true;
 
     }
@@ -162,6 +155,11 @@
 }
 - (IBAction)save
 {
+    
+    // update master controller with new baseTime
+    self.baseTime = timePicker.date;
+    [self.delegate editEventView:self didChangeTime:self.baseTime];
+    
     // do error checking and save to managedObjectContext
     Event *event = nil;
     if (self.eventToEdit != nil) {

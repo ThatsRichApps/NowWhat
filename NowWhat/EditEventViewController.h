@@ -12,6 +12,14 @@
 #import "Event.h"
 
 @class Event;
+@class EditEventViewController;
+
+@protocol EditEventViewControllerDelgate <NSObject>
+
+- (void)editEventView:(EditEventViewController *)controller didChangeTime:(NSDate *)newDate;
+
+@end
+
 
 @interface EditEventViewController : UITableViewController {
     
@@ -29,6 +37,8 @@
 @property (nonatomic, strong) Event *eventToEdit;
 @property (nonatomic, retain) NSDate *baseTime;
 @property (nonatomic, retain) NSString *eventSchedule;
+
+@property (nonatomic, weak) id <EditEventViewControllerDelgate> delegate;
 
 
 - (IBAction)cancel;

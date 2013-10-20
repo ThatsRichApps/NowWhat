@@ -9,7 +9,6 @@
 #import "NowWhatMasterViewController.h"
 #import "NowWhatDetailViewController.h"
 #import "EventCell.h"
-#import "EditEventViewController.h"
 
 @interface NowWhatMasterViewController () {
     
@@ -34,26 +33,15 @@
 {
     [super viewDidLoad];
     
-
-    self.viewSchedule = @"Main Schedule";
-    
-    [self performFetch];
-    
-    // is the current viewDate and viewNSDate are nil, set them to today
+    // if the current viewDate and viewNSDate are nil, set them to today
     if (self.viewNSDate == nil) {
         
         self.viewNSDate = [[NSDate alloc] init];
         self.viewDate = [Event returnDate:self.viewNSDate];
-    
+        
         NSLog(@" date selected is %@", self.viewDate);
         
-        
-    }
-    
-    // if baseTime is nil, set it to 8am of the viewDate
-    if (self.baseTime == nil) {
-        
-        //  build a NSDate object for baseTime using these components
+        // now set the viewNSDate time to 8:00 am
         NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSDateComponents *components = [[NSDateComponents alloc] init];
         
@@ -68,13 +56,15 @@
         [components setHour:8];
         [components setMinute:0];
         
-        self.baseTime = [gregorian dateFromComponents:components];
-        NSLog(@"base time is %@", self.baseTime);
+        self.viewNSDate = [gregorian dateFromComponents:components];
+        NSLog(@"base time is %@", self.viewNSDate);
         
-    
+        
     }
+
+    self.viewSchedule = @"Main Schedule";
     
-    
+    [self performFetch];
 
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
@@ -88,28 +78,13 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    self.fetchedResultsController = nil;
+
 }
 
-- (void)insertNewObject:(id)sender
-{
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-    
-    // If appropriate, configure the new managed object.
-    // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-    [newManagedObject setValue:[NSDate date] forKey:@"eventNSDate"];
-    
-    [newManagedObject setValue:@"New Event" forKey:@"eventText"];
-    
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-         // Replace this implementation with code to handle the error appropriately.
-         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
+
+- (void)viewDidUnload {
+    self.fetchedResultsController = nil;
 }
 
 #pragma mark - Table View
@@ -197,10 +172,11 @@
         
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
-        controller.baseTime = self.baseTime;
+        controller.baseTime = self.viewNSDate;
         controller.eventSchedule = self.viewSchedule;
         controller.managedObjectContext = self.managedObjectContext;
-       
+        controller.delegate = self;
+        
     }
     if ([[segue identifier] isEqualToString:@"EditEvent"]) {
 
@@ -212,15 +188,33 @@
 
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
-        controller.baseTime = self.baseTime;
+        controller.baseTime = self.viewNSDate;
         controller.managedObjectContext = self.managedObjectContext;
         controller.eventToEdit = event;
-        
+        controller.delegate = self;
         NSLog(@"the event selected is %@", event.eventText);
         
         
     }
 
+    if ([[segue identifier] isEqualToString:@"ChangeDay"]) {
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        ChangeDateViewController *controller = (ChangeDateViewController *)navigationController.topViewController;
+        controller.selectedDate = self.viewNSDate;
+        controller.delegate = self;
+        
+        NSLog(@"the sent date is %@", self.viewNSDate);
+        
+        
+    }
+
+    
+    
+    
+    
+    
+    
 }
 
 #pragma mark - Fetched results controller
@@ -242,8 +236,15 @@
     // Edit the sort key as appropriate.
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"eventNSDate" ascending:YES];
     NSArray *sortDescriptors = @[sortDescriptor];
-    
     [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    // setup the predicate to return just the wanted date
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDate:self.viewNSDate]]];
+    [fetchRequest setPredicate:requestPredicate];
+    
+    // Clear out any previous cache
+    [NSFetchedResultsController deleteCacheWithName:@"Master"];
+
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
@@ -337,7 +338,8 @@
     // In the simplest, most efficient, case, reload the table view.
     [self.tableView reloadData];
 }
- */
+*/
+
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
@@ -369,6 +371,38 @@
         
     }
 }
+
+
+#pragma mark - CategoryPickerViewControllerDelegate
+- (void)changeDatePicker:(ChangeDateViewController *)controller didChangeDate:(NSDate *)newDate {
+    
+    self.viewNSDate = newDate;
+    
+    // here's where we would have to completely reload all the new data and update the table
+    
+    NSLog(@"the new date is %@", self.viewNSDate);
+    
+    
+    self.fetchedResultsController = nil;
+    
+    [self.tableView reloadData];
+    
+//    [self.navigationController popViewControllerAnimated:YES];
+
+}
+
+- (void)editEventView:(EditEventViewController *)controller didChangeTime:(NSDate *)newDate;
+{
+    
+    self.viewNSDate = newDate;
+    
+    NSLog(@"the new date is %@", self.viewNSDate);
+    
+    
+}
+
+
+
 
 
 @end

@@ -13,11 +13,10 @@
 
 #import <CoreData/CoreData.h>
 #import "EditEventViewController.h"
+#import "ChangeDateViewController.h"
 
-@interface NowWhatMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
 
-    
-}
+@interface NowWhatMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate>
 
 
 @property (strong, nonatomic) NowWhatDetailViewController *detailViewController;
@@ -29,7 +28,6 @@
 @property (nonatomic, retain) NSString *viewSchedule;
 @property (nonatomic, assign) BOOL isLocked;
 @property (nonatomic, assign) int correctPassword;
-@property (nonatomic, retain) NSDate *baseTime;
 
 
 @end

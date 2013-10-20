@@ -17,6 +17,7 @@
 		814005E9180E4A5B00786BC3 /* Locked.png in Resources */ = {isa = PBXBuildFile; fileRef = 814005E2180E4A5B00786BC3 /* Locked.png */; };
 		814005EC180EEF2200786BC3 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 814005EB180EEF2200786BC3 /* Event.m */; };
 		814005EF181015E000786BC3 /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 814005EE181015DF00786BC3 /* EventCell.m */; };
+		814005F2181418F000786BC3 /* ChangeDateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 814005F1181418EF00786BC3 /* ChangeDateViewController.m */; };
 		81921EA7180C865000ECCBEE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81921EA6180C865000ECCBEE /* UIKit.framework */; };
 		81921EA9180C865000ECCBEE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81921EA8180C865000ECCBEE /* Foundation.framework */; };
 		81921EAB180C865000ECCBEE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81921EAA180C865000ECCBEE /* CoreGraphics.framework */; };
@@ -46,6 +47,8 @@
 		814005EB180EEF2200786BC3 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		814005ED181015DF00786BC3 /* EventCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCell.h; sourceTree = "<group>"; };
 		814005EE181015DF00786BC3 /* EventCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCell.m; sourceTree = "<group>"; };
+		814005F0181418EF00786BC3 /* ChangeDateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeDateViewController.h; sourceTree = "<group>"; };
+		814005F1181418EF00786BC3 /* ChangeDateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeDateViewController.m; sourceTree = "<group>"; };
 		81921EA3180C865000ECCBEE /* NowWhat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowWhat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81921EA6180C865000ECCBEE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		81921EA8180C865000ECCBEE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -122,6 +125,8 @@
 				81921EB7180C865000ECCBEE /* NowWhatAppDelegate.h */,
 				81921EB8180C865000ECCBEE /* NowWhatAppDelegate.m */,
 				81921EC0180C865000ECCBEE /* MainStoryboard_iPhone.storyboard */,
+				814005F0181418EF00786BC3 /* ChangeDateViewController.h */,
+				814005F1181418EF00786BC3 /* ChangeDateViewController.m */,
 				81921ED4180CEDB800ECCBEE /* EditEventViewController.h */,
 				81921ED5180CEDB800ECCBEE /* EditEventViewController.m */,
 				81921EC3180C865000ECCBEE /* MainStoryboard_iPad.storyboard */,
@@ -237,6 +242,7 @@
 				81921ED6180CEDB800ECCBEE /* EditEventViewController.m in Sources */,
 				814005EC180EEF2200786BC3 /* Event.m in Sources */,
 				814005EF181015E000786BC3 /* EventCell.m in Sources */,
+				814005F2181418F000786BC3 /* ChangeDateViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
