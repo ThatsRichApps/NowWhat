@@ -19,7 +19,11 @@
 
 @end
 
-@implementation NowWhatMasterViewController
+@implementation NowWhatMasterViewController {
+    
+    Event *lastEditedEvent;
+    
+}
 
 - (void)awakeFromNib
 {
@@ -184,14 +188,22 @@
         // Send the EditEventViewController the appropriate event that needs editing
         //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        lastEditedEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
         controller.baseTime = self.viewNSDate;
-        controller.managedObjectContext = self.managedObjectContext;
-        controller.eventToEdit = event;
+        
+        UnmanagedEvent *unmanagedEvent = [[UnmanagedEvent alloc] init];
+        
+        unmanagedEvent.eventText = lastEditedEvent.eventText;
+        unmanagedEvent.eventNotes = lastEditedEvent.eventNotes;
+        unmanagedEvent.eventTime = lastEditedEvent.eventNSDate;
+        
+        controller.eventToEdit = unmanagedEvent;
         controller.delegate = self;
+        
+        //controller.managedObjectContext = self.managedObjectContext;
         //NSLog(@"the event selected is %@", event.eventText);
         
         
@@ -439,6 +451,42 @@
     //NSLog(@"the new date is %@", self.viewNSDate);
 }
 
+- (void)editEventView:(EditEventViewController *)controller addEvent:(UnmanagedEvent *)unmanagedEvent;
+{
+    
+    // add a new event to the managedObjectContext and save to store
+    Event *event = nil;
+    event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    
+    event.eventText = unmanagedEvent.eventText;
+    event.eventNotes = unmanagedEvent.eventNotes;
+    event.eventNSDate = unmanagedEvent.eventTime;
+    event.eventDate = [Event returnDateString:unmanagedEvent.eventTime];
+    event.eventChecked = NO;
+    event.eventSchedule = self.viewSchedule;
+
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+}
+
+- (void)editEventView:(EditEventViewController *)controller editEvent:(UnmanagedEvent *)unmanagedEvent;
+{
+
+    // edit the info for the selected event
+    //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    //Event *event = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    
+    lastEditedEvent.eventText = unmanagedEvent.eventText;
+    lastEditedEvent.eventNotes = unmanagedEvent.eventNotes;
+    lastEditedEvent.eventNSDate = unmanagedEvent.eventTime;
+    lastEditedEvent.eventDate = [Event returnDateString:unmanagedEvent.eventTime];
+    
+}
 
 
 

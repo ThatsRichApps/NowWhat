@@ -12,6 +12,7 @@
 #import "TemplateEvent.h"
 #import "Event.h"
 #import "Template.h"
+#import "EditTemplateEventViewController.h"
 
 @interface ShowTemplateViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 

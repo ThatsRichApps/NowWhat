@@ -10,13 +10,19 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreData/CoreData.h>
 #import "Event.h"
+#import "TemplateEvent.h"
+#import "UnmanagedEvent.h"
 
-@class Event;
+//@class Event;
 @class EditEventViewController;
+@class UnmanagedEvent;
 
 @protocol EditEventViewControllerDelgate <NSObject>
 
 - (void)editEventView:(EditEventViewController *)controller didChangeTime:(NSDate *)newDate;
+- (void)editEventView:(EditEventViewController *)controller addEvent:(UnmanagedEvent *)unmanagedEvent;
+- (void)editEventView:(EditEventViewController *)controller editEvent:(UnmanagedEvent *)unmanagedEvent;
+
 
 @end
 
@@ -31,10 +37,9 @@
 @property (nonatomic, strong) IBOutlet UITextField *dateField;
 @property (nonatomic, strong) IBOutlet UITextView *notesView;
 @property (nonatomic, assign) BOOL isLocked;
-@property (nonatomic, assign) BOOL isEditEvent;
     
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong) Event *eventToEdit;
+@property (nonatomic, strong) UnmanagedEvent *eventToEdit;
 @property (nonatomic, retain) NSDate *baseTime;
 @property (nonatomic, retain) NSString *eventSchedule;
 

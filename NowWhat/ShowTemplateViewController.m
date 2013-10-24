@@ -120,16 +120,24 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     
-    /*
-    if ([[segue identifier] isEqualToString:@"ShowTemplate"]) {
+    if ([[segue identifier] isEqualToString:@"EditTemplate"]) {
         
-        ShowTemplateViewController *controller = (ShowTemplateViewController *)[segue destinationViewController];
+        
+        // Send the EditTemplateEventViewController the appropriate event that needs editing
+        //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        TemplateEvent *templateEvent = [self.fetchedResultsControllerTemplateEvents objectAtIndexPath:indexPath];
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        EditTemplateEventViewController *controller = (EditTemplateEventViewController *)navigationController.topViewController;
         controller.managedObjectContext = self.managedObjectContext;
+        controller.templateEventToEdit = templateEvent;
         //controller.delegate = self;
+        //NSLog(@"the event selected is %@", event.eventText);
+        
         
     }
-    */ 
-    
+   
     
 }
 

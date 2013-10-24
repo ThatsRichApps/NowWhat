@@ -109,7 +109,7 @@
     [components setMinute:[minute intValue]];
     
     mergedDate = [gregorian dateFromComponents:components];
-    NSLog(@"merged dateTime is %@", mergedDate);
+    //NSLog(@"merged dateTime is %@", mergedDate);
     
     return (mergedDate);
     

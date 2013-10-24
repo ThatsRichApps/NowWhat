@@ -7,15 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class NowWhatDetailViewController;
-@class Event;
-
 #import <CoreData/CoreData.h>
 #import "EditEventViewController.h"
 #import "ChangeDateViewController.h"
 #import "TemplateListViewController.h"
 #import "SaveTemplateViewController.h"
+#import "UnmanagedEvent.h"
+
+@class NowWhatDetailViewController;
+@class Event;
+//@class UnmanagedEvent;
 
 @interface NowWhatMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate>
 

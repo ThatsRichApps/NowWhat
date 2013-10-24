@@ -1,28 +1,24 @@
 //
-//  EditEventViewController.m
+//  EditTemplateEventViewController.m
 //  NowWhat
 //
-//  Created by Rich Humphrey on 10/14/13.
+//  Created by Rich Humphrey on 10/24/13.
 //  Copyright (c) 2013 Rich Humphrey. All rights reserved.
 //
 
-#import "EditEventViewController.h"
+#import "EditTemplateEventViewController.h"
 
-
-@interface EditEventViewController ()
+@interface EditTemplateEventViewController ()
 
 @end
 
-
-@implementation EditEventViewController {
+@implementation EditTemplateEventViewController {
     
     NSString *eventText;
     NSString *eventNotes;
     NSDate *eventNSDate;
-    BOOL eventChecked;
-
+    
 }
-
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -34,37 +30,33 @@
 }
 
 
-- (void)setEventToEdit:(UnmanagedEvent *)newEventToEdit
+- (void)setTemplateEventToEdit:(TemplateEvent *)newEventToEdit
 {
-    if (_eventToEdit != newEventToEdit) {
-        _eventToEdit = newEventToEdit;
-    
-        eventText = self.eventToEdit.eventText;
-        eventNotes = self.eventToEdit.eventNotes;
-        eventNSDate = self.eventToEdit.eventTime;
-
+    if (_templateEventToEdit != newEventToEdit) {
+        _templateEventToEdit = newEventToEdit;
+        
+        eventText = _templateEventToEdit.eventText;
+        eventNotes = _templateEventToEdit.eventNotes;
+        eventNSDate = _templateEventToEdit.eventTime;
+        
     }
 }
-
-
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    if (self.eventToEdit != nil) {
-        self.title = @"Edit Event";
+    
+    // if we're editing, set the baseTime to the edited event time and update the titles appropriately
+    if (self.templateEventToEdit != nil) {
+        self.title = @"Edit Template Event";
         self.baseTime = eventNSDate;
         
     } else {
         
-        self.title = @"Add Event";
+        self.title = @"Add Template Event";
         
     }
-    
+
     NSString *eventTime = [Event formatEventTime:self.baseTime];
     //NSString *eventText = @"This is the Event Text";
     self.dateField.text = eventTime;
@@ -77,6 +69,7 @@
     // create a UIPicker view as a custom keyboard view
     
     UIDatePicker *timePickerView = [[UIDatePicker alloc] init];
+    
     
     [timePickerView setDatePickerMode:UIDatePickerModeTime];
     [timePickerView setDate:self.baseTime animated:YES];
@@ -98,8 +91,8 @@
     UIBarButtonItem *leftSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                    style:UIBarButtonItemStyleBordered target:self
-                                                                   action:@selector(doneClicked:)];
+                                                                   style:UIBarButtonItemStyleBordered target:self
+                                                                  action:@selector(doneClicked:)];
     
     [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:leftSpace,doneButton,leftSpace, nil]];
     
@@ -125,8 +118,8 @@
     [notesDoneButtonView sizeToFit];
     
     UIBarButtonItem* notesDoneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                         style:UIBarButtonItemStyleBordered target:self
-                                                                        action:@selector(notesDoneClicked:)];
+                                                                        style:UIBarButtonItemStyleBordered target:self
+                                                                       action:@selector(notesDoneClicked:)];
     
     [notesDoneButtonView setItems:[NSArray arrayWithObjects:leftSpace,notesDoneButton,leftSpace, nil]];
     
@@ -134,7 +127,8 @@
     
     
     [self.eventField becomeFirstResponder];
-
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -148,57 +142,51 @@
 {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (IBAction)save
 {
     
     // update master controller with new baseTime
     self.baseTime = timePicker.date;
-    [self.delegate editEventView:self didChangeTime:self.baseTime];
+//    [self.delegate editEventView:self didChangeTime:self.baseTime];
     
     
-    UnmanagedEvent *unmanagedEvent = [[UnmanagedEvent alloc] init];
-    unmanagedEvent.eventText = self.eventField.text;
-    unmanagedEvent.eventNotes = self.notesView.text;
-    unmanagedEvent.eventTime = timePicker.date;
-    
+    TemplateEvent *templateEvent = nil;
     // check if event was edited or added
-    if (self.eventToEdit != nil) {
-
-        [self.delegate editEventView:self editEvent:unmanagedEvent];
+    if (self.templateEventToEdit != nil) {
+        
+        templateEvent = self.templateEventToEdit;
         
     } else {
-
         
-        [self.delegate editEventView:self addEvent:unmanagedEvent];
+        templateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"TemplateEvent" inManagedObjectContext:self.managedObjectContext];
         
     }
-    /*
-    event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
     
-    event.eventText = self.eventField.text;
-    event.eventNotes = self.notesView.text;
-    event.eventNSDate = timePicker.date;
-    event.eventDate = [Event returnDateString:timePicker.date];
-    event.eventChecked = self.eventToEdit.eventChecked;
-    event.eventSchedule = self.eventSchedule;
+    
+    templateEvent.eventText = self.eventField.text;
+    templateEvent.eventNotes = self.notesView.text;
+    templateEvent.eventTime = timePicker.date;
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"Error: %@", error);
         abort();
     }
-    */
-     
     
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+
 }
 
 - (void)doneClicked:(id)sender {
-    
+    // Write out the date...
+
     // write out the date in whatever format is specified in the Event formattedTime method!
+    
     self.dateField.text = [Event formatEventTime:timePicker.date];
     
-    /*// get the time from the UIDate Picker
+    /*
+    // get the time from the UIDate Picker
     // Get the Day for this Schedule
     NSDateFormatter *formatter;
     NSString        *timeString;
@@ -212,7 +200,7 @@
     */
     
     [self.dateField resignFirstResponder];
-
+    
 }
 
 - (void)notesDoneClicked:(id)sender {
@@ -220,6 +208,12 @@
     [self.notesView resignFirstResponder];
     
 }
+
+
+
+
+
+
 
 
 @end

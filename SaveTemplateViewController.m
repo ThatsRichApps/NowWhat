@@ -54,10 +54,6 @@
     
 }
 
-
-
-
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -123,14 +119,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    
+    // this is usually in the prepare for segue, but since it's not a nav controller, I don't think that works
+    
+            
+    // Send the EditTemplateEventViewController the appropriate event that needs editing
+    //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    //NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    Event *event = [self.templateEvents objectAtIndex:indexPath.row];
+    //TemplateEvent *templateEvent;
+    
+//    UINavigationController *navigationController = segue.destinationViewController;
+//    EditTemplateEventViewController *controller = (EditTemplateEventViewController *)navigationController.topViewController;
+//    controller.managedObjectContext = self.managedObjectContext;
+//    controller.templateEventToEdit = templateEvent;
+    //controller.delegate = self;
+    NSLog(@"the event selected is %@", event.eventText);
+            
+            
 }
 
 
@@ -199,7 +205,6 @@
     [[self navigationController] popViewControllerAnimated:YES];
 
 }
-
 
 
 
