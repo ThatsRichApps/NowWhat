@@ -125,16 +125,13 @@
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         Template *template = [self.fetchedResultsControllerTemplates objectAtIndexPath:indexPath];
 
-        
-        
-        
-        
         ShowTemplateViewController *controller = (ShowTemplateViewController *)[segue destinationViewController];
         controller.managedObjectContext = self.managedObjectContext;
         controller.templateToShow = template;
-        
-        
-        //controller.delegate = self;
+
+        // pass in the current viewDate and schedule for when a template is loaded
+        controller.viewDate = self.viewDate;
+        controller.viewSchedule = self.viewSchedule;
         
     }
 

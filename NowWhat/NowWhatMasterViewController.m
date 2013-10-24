@@ -38,7 +38,7 @@
     if (self.viewNSDate == nil) {
         
         self.viewNSDate = [[NSDate alloc] init];
-        self.viewDate = [Event returnDate:self.viewNSDate];
+        self.viewDate = [Event returnDateString:self.viewNSDate];
         
         //NSLog(@" date selected is %@", self.viewDate);
         
@@ -199,13 +199,13 @@
 
     if ([[segue identifier] isEqualToString:@"ChangeDay"]) {
         
+        
         UINavigationController *navigationController = segue.destinationViewController;
         ChangeDateViewController *controller = (ChangeDateViewController *)navigationController.topViewController;
         controller.selectedDate = self.viewNSDate;
+        // the changedateviewcontroller delegate implements changedatepicker and updates the viewDate
         controller.delegate = self;
-        
         //NSLog(@"the sent date is %@", self.viewNSDate);
-        
         
     }
 
@@ -213,20 +213,15 @@
         
         TemplateListViewController *controller = (TemplateListViewController *)[segue destinationViewController];
         controller.managedObjectContext = self.managedObjectContext;
-        //controller.delegate = self;
+        controller.viewDate = self.viewDate;
+        controller.viewSchedule = self.viewSchedule;
         
     }
 
     if ([[segue identifier] isEqualToString:@"SaveTemplate"]) {
         
-        //UINavigationController *navigationController = segue.destinationViewController;
-        //SaveTemplateViewController *controller = (SaveTemplateViewController *)navigationController.topViewController;
-        
         SaveTemplateViewController *controller = (SaveTemplateViewController *)[segue destinationViewController];
-        
-        //controller.delegate = self;
-        
-        // I think I just need to send the data to the save template in the form of an array
+        // send the data to the save template in the form of an array
         controller.templateEvents = [self loadEvents];
         controller.managedObjectContext = self.managedObjectContext;
         
@@ -249,7 +244,7 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
 
     // setup the predicate to return just the wanted date
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDate:self.viewNSDate]]];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDateString:self.viewNSDate]]];
     [fetchRequest setPredicate:requestPredicate];
     
     NSError *error = nil;
@@ -288,7 +283,7 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     // setup the predicate to return just the wanted date
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDate:self.viewNSDate]]];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDateString:self.viewNSDate]]];
     [fetchRequest setPredicate:requestPredicate];
     
     // Clear out any previous cache
@@ -321,11 +316,6 @@
         return;
     }
 }
-
-
-
-
-
 
 
 
@@ -408,8 +398,10 @@
 
 - (void)configureCheckmarkForCell:(UITableViewCell *)cell withEvent:(Event *)event
 {
-    EventCell *eventCell = (EventCell *)cell;
     
+    // thisadds a checkmark in the label by the cell if eventChecked is true
+    
+    EventCell *eventCell = (EventCell *)cell;
     if (event.eventChecked) {
         
         eventCell.eventCheckLabel.text = @"√";
@@ -425,84 +417,27 @@
 #pragma mark - CategoryPickerViewControllerDelegate
 - (void)changeDatePicker:(ChangeDateViewController *)controller didChangeDate:(NSDate *)newDate {
     
-    self.viewNSDate = newDate;
     
-    // here's where we would have to completely reload all the new data and update the table
+    // update the viewDate variables, reload all the new data, and update the table
+    
+    self.viewNSDate = newDate;
+    self.ViewDate = [Event returnDateString:newDate];
     
     //NSLog(@"the new date is %@", self.viewNSDate);
     
-    
     self.fetchedResultsController = nil;
-    
     [self.tableView reloadData];
     
-//    [self.navigationController popViewControllerAnimated:YES];
-
 }
 
 #pragma mark - EditEventViewControllerDelegate
 
 - (void)editEventView:(EditEventViewController *)controller didChangeTime:(NSDate *)newDate;
 {
+    // this should only change the time
     self.viewNSDate = newDate;
     //NSLog(@"the new date is %@", self.viewNSDate);
 }
-
-
-
-- (void)editEventView:(EditEventViewController *)controller updatedEvent:(Event *)editedEvent;
-{
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-    event.eventText = editedEvent.eventText;
-    event.eventNotes = editedEvent.eventNotes;
-    event.eventNSDate = editedEvent.eventNSDate;
-    event.eventDate = editedEvent.eventDate;
-    event.eventChecked = editedEvent.eventChecked;
-    event.eventSchedule = editedEvent.eventSchedule;
-    
-    NSError *error;
-    if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
-        abort();
-    }
-    
-}
-
-- (void)editEventView:(EditEventViewController *)controller addedEvent:(Event *)newEvent;
-{
-
-    Event *event = nil;
-    event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
-    
-    event.eventText = newEvent.eventText;
-    event.eventNotes = newEvent.eventNotes;
-    event.eventNSDate = newEvent.eventNSDate;
-    event.eventDate = newEvent.eventDate;
-    event.eventChecked = newEvent.eventChecked;
-    event.eventSchedule = newEvent.eventSchedule;
-    
-    NSError *error;
-    if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
-        abort();
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

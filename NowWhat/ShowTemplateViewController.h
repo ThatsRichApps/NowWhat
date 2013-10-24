@@ -18,6 +18,9 @@
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerTemplateEvents;
 
+@property (nonatomic, retain) NSString *viewDate;
+@property (nonatomic, retain) NSString *viewSchedule;
+
 @property (nonatomic, retain) Template *templateToShow;
 
 

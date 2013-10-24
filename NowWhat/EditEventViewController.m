@@ -176,7 +176,7 @@
     event.eventText = self.eventField.text;
     event.eventNotes = self.notesView.text;
     event.eventNSDate = timePicker.date;
-    event.eventDate = [Event returnDate:timePicker.date];
+    event.eventDate = [Event returnDateString:timePicker.date];
     event.eventChecked = self.eventToEdit.eventChecked;
     event.eventSchedule = self.eventSchedule;
     

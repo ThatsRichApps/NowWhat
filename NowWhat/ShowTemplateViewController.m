@@ -278,12 +278,12 @@
         event.eventNotes = templateEvent.eventNotes;
         
         event.eventChecked = NO;
-        event.eventSchedule = @"Main Schedule";
+        event.eventSchedule = self.viewSchedule;
 
         
-        // This is going to be tricky, need to take the time from event.eventTime, and merge with the date that is loaded
-        event.eventNSDate = templateEvent.eventTime;
-        event.eventDate = [Event returnDate:templateEvent.eventTime];
+        // take the time from event.eventTime, and merge with the date that is loaded
+        event.eventNSDate = [Event mergeDate:self.viewDate withTime:templateEvent.eventTime];
+        event.eventDate = [Event returnDateString:event.eventNSDate];
         
     }
     
