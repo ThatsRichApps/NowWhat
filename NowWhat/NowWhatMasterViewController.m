@@ -15,7 +15,8 @@
 //    NSArray *dayEvents;
     
 }
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+//- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @implementation NowWhatMasterViewController
@@ -39,7 +40,7 @@
         self.viewNSDate = [[NSDate alloc] init];
         self.viewDate = [Event returnDate:self.viewNSDate];
         
-        NSLog(@" date selected is %@", self.viewDate);
+        //NSLog(@" date selected is %@", self.viewDate);
         
         // now set the viewNSDate time to 8:00 am
         NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -57,7 +58,7 @@
         [components setMinute:0];
         
         self.viewNSDate = [gregorian dateFromComponents:components];
-        NSLog(@"base time is %@", self.viewNSDate);
+        //NSLog(@"base time is %@", self.viewNSDate);
         
         
     }
@@ -81,7 +82,6 @@
     self.fetchedResultsController = nil;
 
 }
-
 
 - (void)viewDidUnload {
     self.fetchedResultsController = nil;
@@ -192,7 +192,7 @@
         controller.managedObjectContext = self.managedObjectContext;
         controller.eventToEdit = event;
         controller.delegate = self;
-        NSLog(@"the event selected is %@", event.eventText);
+        //NSLog(@"the event selected is %@", event.eventText);
         
         
     }
@@ -204,17 +204,66 @@
         controller.selectedDate = self.viewNSDate;
         controller.delegate = self;
         
-        NSLog(@"the sent date is %@", self.viewNSDate);
+        //NSLog(@"the sent date is %@", self.viewNSDate);
         
         
     }
 
+    if ([[segue identifier] isEqualToString:@"ListTemplates"]) {
+        
+        TemplateListViewController *controller = (TemplateListViewController *)[segue destinationViewController];
+        controller.managedObjectContext = self.managedObjectContext;
+        //controller.delegate = self;
+        
+    }
+
+    if ([[segue identifier] isEqualToString:@"SaveTemplate"]) {
+        
+        //UINavigationController *navigationController = segue.destinationViewController;
+        //SaveTemplateViewController *controller = (SaveTemplateViewController *)navigationController.topViewController;
+        
+        SaveTemplateViewController *controller = (SaveTemplateViewController *)[segue destinationViewController];
+        
+        //controller.delegate = self;
+        
+        // I think I just need to send the data to the save template in the form of an array
+        controller.templateEvents = [self loadEvents];
+        controller.managedObjectContext = self.managedObjectContext;
+        
+    }
+
+    
+}
+
+-(NSMutableArray*) loadEvents {
     
     
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"eventNSDate" ascending:YES];
+    NSArray *sortDescriptors = @[sortDescriptor];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+
+    // setup the predicate to return just the wanted date
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDate:self.viewNSDate]]];
+    [fetchRequest setPredicate:requestPredicate];
     
+    NSError *error = nil;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
-    
-    
+    if (fetchedObjects == nil) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+
+    return [NSMutableArray arrayWithArray:fetchedObjects];
+
 }
 
 #pragma mark - Fetched results controller
@@ -380,7 +429,7 @@
     
     // here's where we would have to completely reload all the new data and update the table
     
-    NSLog(@"the new date is %@", self.viewNSDate);
+    //NSLog(@"the new date is %@", self.viewNSDate);
     
     
     self.fetchedResultsController = nil;
@@ -391,15 +440,69 @@
 
 }
 
+#pragma mark - EditEventViewControllerDelegate
+
 - (void)editEventView:(EditEventViewController *)controller didChangeTime:(NSDate *)newDate;
 {
-    
     self.viewNSDate = newDate;
+    //NSLog(@"the new date is %@", self.viewNSDate);
+}
+
+
+
+- (void)editEventView:(EditEventViewController *)controller updatedEvent:(Event *)editedEvent;
+{
     
-    NSLog(@"the new date is %@", self.viewNSDate);
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
+    event.eventText = editedEvent.eventText;
+    event.eventNotes = editedEvent.eventNotes;
+    event.eventNSDate = editedEvent.eventNSDate;
+    event.eventDate = editedEvent.eventDate;
+    event.eventChecked = editedEvent.eventChecked;
+    event.eventSchedule = editedEvent.eventSchedule;
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
     
 }
+
+- (void)editEventView:(EditEventViewController *)controller addedEvent:(Event *)newEvent;
+{
+
+    Event *event = nil;
+    event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    
+    event.eventText = newEvent.eventText;
+    event.eventNotes = newEvent.eventNotes;
+    event.eventNSDate = newEvent.eventNSDate;
+    event.eventDate = newEvent.eventDate;
+    event.eventChecked = newEvent.eventChecked;
+    event.eventSchedule = newEvent.eventSchedule;
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -68,14 +68,13 @@
         
     }
     
-    
     NSString *eventTime = [Event formatEventTime:self.baseTime];
     //NSString *eventText = @"This is the Event Text";
     self.dateField.text = eventTime;
     self.eventField.text = eventText;
     self.notesView.text = eventNotes;
     
-    NSLog(@"eventTime is %@", eventTime);
+    //NSLog(@"eventTime is %@", eventTime);
     
     // Make the UIDatePicker a popup connected to the dateField
     // create a UIPicker view as a custom keyboard view
@@ -160,15 +159,19 @@
     self.baseTime = timePicker.date;
     [self.delegate editEventView:self didChangeTime:self.baseTime];
     
-    // do error checking and save to managedObjectContext
+    
     Event *event = nil;
+    // check if event was edited or added
     if (self.eventToEdit != nil) {
+    
         event = self.eventToEdit;
-    } else {
-        event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
-    }
 
-    //Event *event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    } else {
+
+        event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+        
+    }
+    
     
     event.eventText = self.eventField.text;
     event.eventNotes = self.notesView.text;
@@ -182,7 +185,6 @@
         NSLog(@"Error: %@", error);
         abort();
     }
-    
     
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }

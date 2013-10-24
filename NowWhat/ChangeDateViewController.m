@@ -99,7 +99,7 @@
     
     [self.delegate changeDatePicker:self didChangeDate:self.selectedDate];
     
-    NSLog(@"the new date is %@", self.selectedDate);
+    //NSLog(@"the new date is %@", self.selectedDate);
 
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 
