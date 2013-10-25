@@ -176,7 +176,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <segue destination="bhF-VF-gge" kind="modal" identifier="ChangeDay" id="qP8-sp-k4i"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Save As" id="1DM-zl-zUW">
+                        <barButtonItem title="Save" id="1DM-zl-zUW">
                             <connections>
                                 <segue destination="gpu-0t-xWU" kind="push" identifier="SaveTemplate" id="IJf-Ss-0Do"/>
                             </connections>
@@ -186,8 +186,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <segue destination="Vtw-Zs-VRa" kind="push" identifier="ListTemplates" id="RBc-Gh-Am9"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Print" id="T6h-0u-aTJ"/>
-                        <barButtonItem title="Item" id="ccH-38-hbc"/>
+                        <barButtonItem systemItem="action" id="T6h-0u-aTJ"/>
+                        <barButtonItem image="notLocked.png" style="plain" id="ccH-38-hbc"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Event List" id="36">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="IEV-mY-zgw">
@@ -380,7 +380,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </tableViewSection>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B4G-jW-qVU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3109" y="56"/>
+            <point key="canvasLocation" x="3189" y="448"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aOq-oD-dU3">
@@ -399,7 +399,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y0K-6M-9xb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2607" y="56"/>
+            <point key="canvasLocation" x="2687" y="448"/>
         </scene>
         <!--Template List View Controller - Title-->
         <scene sceneID="zps-79-Pnk">
@@ -442,7 +442,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NsF-7t-WQx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1095" y="476"/>
+            <point key="canvasLocation" x="1075" y="656"/>
         </scene>
         <!--Show Template View Controller-->
         <scene sceneID="uxn-iY-RPk">
@@ -517,7 +517,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aM6-5n-OEx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1597" y="476"/>
+            <point key="canvasLocation" x="1577" y="656"/>
         </scene>
         <!--Save Template View Controller-->
         <scene sceneID="FYy-p1-EtN">
@@ -567,6 +567,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <outlet property="eventNotesLabel" destination="o58-P1-aov" id="EkS-vF-ycw"/>
                                             <outlet property="eventTextLabel" destination="BmO-dj-5qG" id="2GI-fZ-Y22"/>
                                             <outlet property="eventTimeLabel" destination="b5B-r9-4h3" id="7AV-TJ-7Zn"/>
+                                            <segue destination="COL-rL-RbC" kind="modal" identifier="EditTemplate" id="fpA-wu-Xzm"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -591,6 +592,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem systemItem="add" id="Pkn-13-HtI">
+                            <connections>
+                                <segue destination="COL-rL-RbC" kind="modal" identifier="AddTemplate" id="T2W-JQ-zcQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="S7w-AX-Gvr">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="L7C-O4-eCg">
                             <connections>
@@ -603,13 +611,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="saveTableView" destination="Yz0-pl-cQe" id="f3p-Ku-8NV"/>
                         <outlet property="templateNameField" destination="P9E-C4-ro3" id="r1y-RZ-rBx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4DP-9y-Yt6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1095" y="1269"/>
+            <point key="canvasLocation" x="1075" y="1449"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ko7-5L-akI">
@@ -630,12 +640,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <point key="canvasLocation" x="1075" y="-440"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="notLocked.png" width="31" height="29"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="PSp-eR-MaU"/>
+        <segue reference="AvK-Ev-xNu"/>
     </inferredMetricsTieBreakers>
 </document>

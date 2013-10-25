@@ -11,10 +11,13 @@
 #import "Event.h"
 #import "EventCell.h"
 #import "TemplateEvent.h"
+#import "UnmanagedEvent.h"
+#import "EditEventViewController.h"
 
-@interface SaveTemplateViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface SaveTemplateViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, EditEventViewControllerDelgate> {
     
     IBOutlet UITextField *templateNameField;
+    IBOutlet UITableView *saveTableView;
 
 }
 
@@ -22,6 +25,10 @@
 @property (nonatomic, retain) NSMutableArray *templateEvents;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
+// baseTime is used to keep track of the time so that it can be reused every time you add or edit
+// it is usually preset to 8 am, but I could probably make that a setting
+@property (nonatomic, retain) NSDate *baseTime;
 
 - (IBAction)cancel;
 - (IBAction)save;

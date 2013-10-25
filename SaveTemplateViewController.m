@@ -12,7 +12,14 @@
 
 @end
 
-@implementation SaveTemplateViewController
+@implementation SaveTemplateViewController {
+    
+    UnmanagedEvent *lastEditedEvent;
+
+}
+
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,6 +34,17 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    // initiallize baseTime to viewDate at 8am, right!
+    // right now it's set to current time
+    if (self.baseTime == nil) {
+        self.baseTime = [NSDate date];
+    }
+    
+    // add the done on the keyboard here
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,16 +58,13 @@
 {
  
     EventCell *eventCell = (EventCell *)cell;
-    Event *event = [self.templateEvents objectAtIndex:indexPath.row];
-    
+    UnmanagedEvent *event = [self.templateEvents objectAtIndex:indexPath.row];
     
     eventCell.eventTextLabel.text = event.eventText;
-    
-    eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate];
-    
+    eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventTime];
     eventCell.eventNotesLabel.text = event.eventNotes;
     
-    NSLog(@"text is %@", event.eventText);
+    //NSLog(@"text is %@", event.eventText);
     
     
 }
@@ -126,7 +141,7 @@
     // Send the EditTemplateEventViewController the appropriate event that needs editing
     //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     //NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    Event *event = [self.templateEvents objectAtIndex:indexPath.row];
+    UnmanagedEvent *event = [self.templateEvents objectAtIndex:indexPath.row];
     //TemplateEvent *templateEvent;
     
 //    UINavigationController *navigationController = segue.destinationViewController;
@@ -137,6 +152,48 @@
     NSLog(@"the event selected is %@", event.eventText);
             
             
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    
+    
+    if ([[segue identifier] isEqualToString:@"AddTemplate"]) {
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
+        controller.baseTime = self.baseTime;
+        controller.delegate = self;
+        
+    }
+    
+    if ([[segue identifier] isEqualToString:@"EditTemplate"]) {
+        
+        
+        // Send the EditTemplateEventViewController the appropriate event that needs editing
+        NSIndexPath *indexPath = [saveTableView indexPathForCell:sender];
+        lastEditedEvent = [self.templateEvents objectAtIndex:indexPath.row];
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
+        
+        controller.baseTime = self.baseTime;
+        
+        UnmanagedEvent *unmanagedEvent = [[UnmanagedEvent alloc] init];
+        
+        unmanagedEvent.eventText = lastEditedEvent.eventText;
+        unmanagedEvent.eventNotes = lastEditedEvent.eventNotes;
+        unmanagedEvent.eventTime = lastEditedEvent.eventTime;
+        
+        controller.eventToEdit = unmanagedEvent;
+        controller.delegate = self;
+        
+        //NSLog(@"the event selected is %@", event.eventText);
+        
+        
+    }
+    
+    
 }
 
 
@@ -170,7 +227,6 @@
     // Add these events to the template database
     // do error checking and save to managedObjectContext
     Template *template = nil;
-    //TemplateEvent *templateEvent = nil;
         
     template = [NSEntityDescription insertNewObjectForEntityForName:@"Template" inManagedObjectContext:self.managedObjectContext];
         
@@ -178,7 +234,7 @@
         
     // Now go through all the events in the list and add them to the TemplateEvents entity
         
-    for (Event *event in self.templateEvents) {
+    for (UnmanagedEvent *event in self.templateEvents) {
         
         TemplateEvent *templateEvent;
         templateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"TemplateEvent" inManagedObjectContext:self.managedObjectContext];
@@ -188,7 +244,7 @@
         templateEvent.template = template;
         
         // strip the date off of eventNSDate and just save the time
-        templateEvent.eventTime = event.eventNSDate;
+        templateEvent.eventTime = event.eventTime;
         
         
             
@@ -200,14 +256,62 @@
         abort();
     }
         
-        
-        
-        
-        
-        
     [[self navigationController] popViewControllerAnimated:YES];
 
 }
+
+#pragma mark - EditEventViewControllerDelegate
+
+- (void)editEventView:(EditEventViewController *)controller didChangeTime:(NSDate *)newDate;
+{
+    // this should only change the time
+    self.baseTime = newDate;
+    //NSLog(@"the new date is %@", self.viewNSDate);
+}
+
+- (void)editEventView:(EditEventViewController *)controller addEvent:(UnmanagedEvent *)unmanagedEvent;
+{
+    
+    // add a new event to the managedObjectContext and save to store
+    UnmanagedEvent *newEvent = [[UnmanagedEvent alloc] init];
+    
+    newEvent.eventText = unmanagedEvent.eventText;
+    newEvent.eventNotes = unmanagedEvent.eventNotes;
+    
+    // strip the date off of unmanagedEvent.eventTime
+    newEvent.eventTime = unmanagedEvent.eventTime;
+    
+    NSLog (@"adding templateEvent at %@", newEvent.eventTime);
+    NSLog (@"Text is: %@", newEvent.eventText);
+    
+    // add a new object to the templateEvents NSMutableArray and update the table
+    // I'm also going to have to re-Sort the events based upon the time
+    
+    [self.templateEvents addObject:newEvent];
+    
+    [saveTableView reloadData];
+    
+    
+}
+
+- (void)editEventView:(EditEventViewController *)controller editEvent:(UnmanagedEvent *)unmanagedEvent;
+{
+    
+    // edit the info for the selected event
+    
+    lastEditedEvent.eventText = unmanagedEvent.eventText;
+    lastEditedEvent.eventNotes = unmanagedEvent.eventNotes;
+    
+    // strip the date off of unmanagedEvent.eventTime
+    lastEditedEvent.eventTime = unmanagedEvent.eventTime;
+    
+    [saveTableView reloadData];
+    
+}
+
+
+
+
 
 
 

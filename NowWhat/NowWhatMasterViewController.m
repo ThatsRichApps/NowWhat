@@ -268,8 +268,26 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-
-    return [NSMutableArray arrayWithArray:fetchedObjects];
+    
+    
+    // I think I should probably change these events into template events before
+    // I send then on to the saveTemplateView
+    
+    NSMutableArray *unmanagedEventsArray = [[NSMutableArray alloc] init];
+    
+    for (Event *thisEvent in fetchedObjects) {
+        
+        UnmanagedEvent *newUnmanagedEvent = [[UnmanagedEvent alloc] init];
+        
+        newUnmanagedEvent.eventText = thisEvent.eventText;
+        newUnmanagedEvent.eventTime = thisEvent.eventNSDate;
+        newUnmanagedEvent.eventNotes = thisEvent.eventNotes;
+        
+        [unmanagedEventsArray addObject:newUnmanagedEvent];
+        
+    }
+    
+    return unmanagedEventsArray;
 
 }
 
