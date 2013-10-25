@@ -24,24 +24,6 @@
 }
 
 
-
-- (NSString *)formattedTime {
-    
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    //[formatter setDateFormat:@"yyyy"];
-    [formatter setDateFormat:@"hh:mm a"];
-    
-    //Optionally for time zone converstions
-    //[formatter setTimeZone:[NSTimeZone timeZoneWithName:@"..."]];
-    
-    NSString *timeFormatted = [formatter stringFromDate:self.eventNSDate];
-
-    return (timeFormatted);
-    
-    
-}
-
 + (NSString *)formatEventTime: (NSDate *)dateTime {
     
     
@@ -114,10 +96,5 @@
     return (mergedDate);
     
 }
-
-
-
-
-
 
 @end

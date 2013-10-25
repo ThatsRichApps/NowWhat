@@ -195,7 +195,7 @@
 
 - (void)doneClicked:(id)sender {
     
-    // write out the date in whatever format is specified in the Event formattedTime method!
+    // write out the date in whatever format is specified in the Event formatEventTime method!
     self.dateField.text = [Event formatEventTime:timePicker.date];
     
     /*// get the time from the UIDate Picker

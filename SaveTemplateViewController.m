@@ -45,7 +45,7 @@
     
     eventCell.eventTextLabel.text = event.eventText;
     
-    eventCell.eventTimeLabel.text = [event formattedTime] ;
+    eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate];
     
     eventCell.eventNotesLabel.text = event.eventNotes;
     
@@ -184,9 +184,12 @@
         templateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"TemplateEvent" inManagedObjectContext:self.managedObjectContext];
         
         templateEvent.eventText = event.eventText;
-        templateEvent.eventTime = event.eventNSDate;
         templateEvent.eventNotes = event.eventNotes;
         templateEvent.template = template;
+        
+        // strip the date off of eventNSDate and just save the time
+        templateEvent.eventTime = event.eventNSDate;
+        
         
             
     }

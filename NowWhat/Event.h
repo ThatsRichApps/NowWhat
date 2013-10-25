@@ -19,7 +19,6 @@
 @property (nonatomic, assign) BOOL eventChecked;
 @property (nonatomic, retain) NSString * eventSchedule;
 
-- (NSString *)formattedTime;
 + (NSString *)formatEventTime: (NSDate *)dateTime;
 + (NSString *)returnDateString: (NSDate *)dateTime;
 + (NSDate *)mergeDate: (NSString *)dateString withTime:(NSDate *)timeOfDay;

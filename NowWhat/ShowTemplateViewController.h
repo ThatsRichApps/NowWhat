@@ -11,18 +11,23 @@
 #import "EventCell.h"
 #import "TemplateEvent.h"
 #import "Event.h"
+#import "UnmanagedEvent.h"
 #import "Template.h"
-#import "EditTemplateEventViewController.h"
+#import "EditEventViewController.h"
 
-@interface ShowTemplateViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface ShowTemplateViewController : UITableViewController <NSFetchedResultsControllerDelegate, EditEventViewControllerDelgate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerTemplateEvents;
 
-@property (nonatomic, retain) NSString *viewDate;
+@property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) NSString *viewSchedule;
 
 @property (nonatomic, retain) Template *templateToShow;
+
+// baseTime is used to keep track of the time so that it can be reused every time you add or edit
+// it is usually preset to 8 am, but I could probably make that a setting
+@property (nonatomic, retain) NSDate *baseTime;
 
 
 - (IBAction)loadTemplateEvents;

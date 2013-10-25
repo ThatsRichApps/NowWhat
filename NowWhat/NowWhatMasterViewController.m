@@ -225,7 +225,7 @@
         
         TemplateListViewController *controller = (TemplateListViewController *)[segue destinationViewController];
         controller.managedObjectContext = self.managedObjectContext;
-        controller.viewDate = self.viewDate;
+        controller.viewNSDate = self.viewNSDate;
         controller.viewSchedule = self.viewSchedule;
         
     }
@@ -400,7 +400,7 @@
     
     eventCell.eventTextLabel.text = event.eventText;
     
-    eventCell.eventTimeLabel.text = [event formattedTime] ;
+    eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate];
     
     eventCell.eventNotesLabel.text = event.eventNotes;
 

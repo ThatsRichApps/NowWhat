@@ -18,11 +18,12 @@
         <attribute name="eventNotes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="eventTimeString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="template" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Template" inverseName="events" inverseEntity="Template" syncable="YES"/>
     </entity>
     <elements>
         <element name="Event" positionX="-189" positionY="-54" width="128" height="135"/>
         <element name="Template" positionX="-189" positionY="117" width="128" height="88"/>
-        <element name="TemplateEvent" positionX="34" positionY="102" width="128" height="103"/>
+        <element name="TemplateEvent" positionX="34" positionY="102" width="128" height="120"/>
     </elements>
 </model>

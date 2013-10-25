@@ -23,7 +23,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerTemplates;
 
-@property (nonatomic, retain) NSString *viewDate;
+@property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) NSString *viewSchedule;
 
 @end

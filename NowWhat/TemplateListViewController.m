@@ -130,7 +130,7 @@
         controller.templateToShow = template;
 
         // pass in the current viewDate and schedule for when a template is loaded
-        controller.viewDate = self.viewDate;
+        controller.viewNSDate = self.viewNSDate;
         controller.viewSchedule = self.viewSchedule;
         
     }

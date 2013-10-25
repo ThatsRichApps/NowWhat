@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		813CAE321818195F00F61EE8 /* TemplateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE311818195F00F61EE8 /* TemplateCell.m */; };
 		813CAE351818211300F61EE8 /* ShowTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE341818211300F61EE8 /* ShowTemplateViewController.m */; };
-		813CAE381819695600F61EE8 /* EditTemplateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE371819695600F61EE8 /* EditTemplateEventViewController.m */; };
 		813CAE3B1819D40B00F61EE8 /* UnmanagedEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE3A1819D40A00F61EE8 /* UnmanagedEvent.m */; };
 		814005DB180DFED400786BC3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814005DA180DFED400786BC3 /* QuartzCore.framework */; };
 		814005E3180E4A5B00786BC3 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 814005DC180E4A5B00786BC3 /* Icon-72.png */; };
@@ -47,8 +46,6 @@
 		813CAE311818195F00F61EE8 /* TemplateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateCell.m; sourceTree = "<group>"; };
 		813CAE331818211200F61EE8 /* ShowTemplateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowTemplateViewController.h; sourceTree = "<group>"; };
 		813CAE341818211300F61EE8 /* ShowTemplateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowTemplateViewController.m; sourceTree = "<group>"; };
-		813CAE361819695500F61EE8 /* EditTemplateEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditTemplateEventViewController.h; sourceTree = "<group>"; };
-		813CAE371819695600F61EE8 /* EditTemplateEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditTemplateEventViewController.m; sourceTree = "<group>"; };
 		813CAE391819D40A00F61EE8 /* UnmanagedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnmanagedEvent.h; sourceTree = "<group>"; };
 		813CAE3A1819D40A00F61EE8 /* UnmanagedEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnmanagedEvent.m; sourceTree = "<group>"; };
 		814005DA180DFED400786BC3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -163,8 +160,6 @@
 				81921ECA180C865000ECCBEE /* NowWhatMasterViewController.m */,
 				81921ED4180CEDB800ECCBEE /* EditEventViewController.h */,
 				81921ED5180CEDB800ECCBEE /* EditEventViewController.m */,
-				813CAE361819695500F61EE8 /* EditTemplateEventViewController.h */,
-				813CAE371819695600F61EE8 /* EditTemplateEventViewController.m */,
 				814005F0181418EF00786BC3 /* ChangeDateViewController.h */,
 				814005F1181418EF00786BC3 /* ChangeDateViewController.m */,
 				8140063918157F7300786BC3 /* SaveTemplateViewController.h */,
@@ -289,7 +284,6 @@
 				8140063B18157F7300786BC3 /* SaveTemplateViewController.m in Sources */,
 				813CAE321818195F00F61EE8 /* TemplateCell.m in Sources */,
 				813CAE351818211300F61EE8 /* ShowTemplateViewController.m in Sources */,
-				813CAE381819695600F61EE8 /* EditTemplateEventViewController.m in Sources */,
 				813CAE3B1819D40B00F61EE8 /* UnmanagedEvent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
