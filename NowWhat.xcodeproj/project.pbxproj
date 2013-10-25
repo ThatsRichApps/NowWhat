@@ -11,6 +11,7 @@
 		813CAE351818211300F61EE8 /* ShowTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE341818211300F61EE8 /* ShowTemplateViewController.m */; };
 		813CAE3B1819D40B00F61EE8 /* UnmanagedEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE3A1819D40A00F61EE8 /* UnmanagedEvent.m */; };
 		813CAE3D181AD67400F61EE8 /* notLocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 813CAE3C181AD67400F61EE8 /* notLocked.png */; };
+		813CAE40181B1B1800F61EE8 /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE3F181B1B1700F61EE8 /* PasswordViewController.m */; };
 		814005DB180DFED400786BC3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814005DA180DFED400786BC3 /* QuartzCore.framework */; };
 		814005E3180E4A5B00786BC3 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 814005DC180E4A5B00786BC3 /* Icon-72.png */; };
 		814005E4180E4A5B00786BC3 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 814005DD180E4A5B00786BC3 /* Icon-Small-50.png */; };
@@ -50,6 +51,8 @@
 		813CAE391819D40A00F61EE8 /* UnmanagedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnmanagedEvent.h; sourceTree = "<group>"; };
 		813CAE3A1819D40A00F61EE8 /* UnmanagedEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnmanagedEvent.m; sourceTree = "<group>"; };
 		813CAE3C181AD67400F61EE8 /* notLocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notLocked.png; sourceTree = "<group>"; };
+		813CAE3E181B1B1700F61EE8 /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
+		813CAE3F181B1B1700F61EE8 /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		814005DA180DFED400786BC3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		814005DC180E4A5B00786BC3 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		814005DD180E4A5B00786BC3 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 				81921EC0180C865000ECCBEE /* MainStoryboard_iPhone.storyboard */,
 				81921EC9180C865000ECCBEE /* NowWhatMasterViewController.h */,
 				81921ECA180C865000ECCBEE /* NowWhatMasterViewController.m */,
+				813CAE3E181B1B1700F61EE8 /* PasswordViewController.h */,
+				813CAE3F181B1B1700F61EE8 /* PasswordViewController.m */,
 				81921ED4180CEDB800ECCBEE /* EditEventViewController.h */,
 				81921ED5180CEDB800ECCBEE /* EditEventViewController.m */,
 				814005F0181418EF00786BC3 /* ChangeDateViewController.h */,
@@ -289,6 +294,7 @@
 				813CAE321818195F00F61EE8 /* TemplateCell.m in Sources */,
 				813CAE351818211300F61EE8 /* ShowTemplateViewController.m in Sources */,
 				813CAE3B1819D40B00F61EE8 /* UnmanagedEvent.m in Sources */,
+				813CAE40181B1B1800F61EE8 /* PasswordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
