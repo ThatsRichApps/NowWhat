@@ -81,6 +81,8 @@
     self.detailViewController.viewNSDate = self.viewNSDate;
     self.detailViewController.viewDate = self.viewDate;
     self.detailViewController.viewSchedule = self.viewSchedule;
+    self.detailViewController.managedObjectContext = self.managedObjectContext;
+    
     
     // show the bottom toolbar
     [self.navigationController setToolbarHidden:NO];

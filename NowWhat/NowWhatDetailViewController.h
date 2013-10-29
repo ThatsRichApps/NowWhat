@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "UnmanagedEvent.h"
 #import "Event.h"
+#import "EventCell.h"
 
-@interface NowWhatDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate> {
+@interface NowWhatDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource> {
     
     NSInteger webViewOffset;
+
     
 }
 
@@ -28,6 +30,11 @@
 @property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) NSString *viewSchedule;
 @property (nonatomic, retain) NSMutableArray *dayData;
+@property (nonatomic, retain) IBOutlet UITableView *detailTableView;
+
+// core data properties:
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerDetail;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 
 @end
