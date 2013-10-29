@@ -12,13 +12,20 @@
 #import "ChangeDateViewController.h"
 #import "TemplateListViewController.h"
 #import "SaveTemplateViewController.h"
+#import "PasswordViewController.h"
 #import "UnmanagedEvent.h"
+#import "NowWhatDetailViewController.h"
+#import "EventCell.h"
 
 @class NowWhatDetailViewController;
 @class Event;
 //@class UnmanagedEvent;
 
-@interface NowWhatMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate>
+@interface NowWhatMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate, PasswordViewControllerDelegate> {
+    
+    NSMutableArray *saveButtonItems;
+    
+}
 
 
 @property (strong, nonatomic) NowWhatDetailViewController *detailViewController;
@@ -30,6 +37,9 @@
 @property (nonatomic, retain) NSString *viewSchedule;
 @property (nonatomic, assign) BOOL isLocked;
 @property (nonatomic, assign) int correctPassword;
+
+
+- (IBAction)printSchedule:(id) sender;
 
 
 @end

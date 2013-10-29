@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81001389181EE93F003AAEE5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 81001388181EE93F003AAEE5 /* Settings.bundle */; };
 		813CAE321818195F00F61EE8 /* TemplateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE311818195F00F61EE8 /* TemplateCell.m */; };
 		813CAE351818211300F61EE8 /* ShowTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE341818211300F61EE8 /* ShowTemplateViewController.m */; };
 		813CAE3B1819D40B00F61EE8 /* UnmanagedEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE3A1819D40A00F61EE8 /* UnmanagedEvent.m */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		81001388181EE93F003AAEE5 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		813CAE301818195E00F61EE8 /* TemplateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateCell.h; sourceTree = "<group>"; };
 		813CAE311818195F00F61EE8 /* TemplateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateCell.m; sourceTree = "<group>"; };
 		813CAE331818211200F61EE8 /* ShowTemplateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowTemplateViewController.h; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				81921ECD180C865000ECCBEE /* NowWhatDetailViewController.m */,
 				81921EC6180C865000ECCBEE /* NowWhat.xcdatamodeld */,
 				81921EAF180C865000ECCBEE /* Supporting Files */,
+				81001388181EE93F003AAEE5 /* Settings.bundle */,
 			);
 			path = NowWhat;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				814005E8180E4A5B00786BC3 /* Icon@2x.png in Resources */,
 				814005E9180E4A5B00786BC3 /* Locked.png in Resources */,
 				813CAE3D181AD67400F61EE8 /* notLocked.png in Resources */,
+				81001389181EE93F003AAEE5 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

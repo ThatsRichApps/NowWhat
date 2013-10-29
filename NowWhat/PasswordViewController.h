@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class PasswordViewController;
+
+@protocol PasswordViewControllerDelegate <NSObject>
+
+-(void)lockIt:(PasswordViewController *)controller withPassword:(int) newPassword;
+-(void)unlockIt:(PasswordViewController *)controller withPassword:(int) newPassword;
+
+@end
+
+
 @interface PasswordViewController : UIViewController <UITextFieldDelegate> {
     
     IBOutlet UITextField *passwordOne;
@@ -24,6 +34,8 @@
 
 @property (nonatomic, assign) BOOL isLocked;
 @property (nonatomic, assign) int correctPassword;
+
+@property (nonatomic, weak) id <PasswordViewControllerDelegate> delegate;
 
 -(IBAction) typedANumber:(id) sender;
 - (void) backClicked:(id)sender;

@@ -106,7 +106,9 @@
     
     // NSLog(@"The values of the textfields are: '%@'%@'%@'%@'",passwordOne.text,passwordTwo.text,passwordThree.text,passwordFour.text);
     
-    // NSLog(@"Correct password is: %i",correctPassword);
+    NSLog(@"This actually got called??  Correct password is: %i",_correctPassword);
+    
+    // does this subroutine actually ever get called????
     
     if ([passwordOne isFirstResponder]) {
         
@@ -341,6 +343,8 @@
                 setPasswordLabel.text = @"Enter Password to Lock";
                 feedbackLabel.text = @"Application is Unlocked";
                 
+                [self.delegate unlockIt:self withPassword:_correctPassword];
+                
                 //rootView.isLocked = NO;
                 
                 // add the buttons here
@@ -351,12 +355,16 @@
                 
             } else {
                 
-                // otherwise unlock it
+                // otherwise lock it
                 _isLocked = YES;
                 setPasswordLabel.text = @"Enter Password to Unlock";
                 feedbackLabel.text = @"Application is Locked";
                 
+                
+                [self.delegate lockIt:self withPassword:_correctPassword];
                 /* 2013 this should all be done in a delegate method
+                 
+                 
                 
                 //rootView.isLocked = YES;
                 //rootView.correctPassword = correctPassword;

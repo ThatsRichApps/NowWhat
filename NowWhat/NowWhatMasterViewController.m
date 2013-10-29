@@ -7,8 +7,7 @@
 //
 
 #import "NowWhatMasterViewController.h"
-#import "NowWhatDetailViewController.h"
-#import "EventCell.h"
+
 
 @interface NowWhatMasterViewController () {
     
@@ -62,7 +61,7 @@
         [components setMinute:0];
         
         self.viewNSDate = [gregorian dateFromComponents:components];
-        //NSLog(@"base time is %@", self.viewNSDate);
+        NSLog(@"base time is %@", self.viewNSDate);
         
         
     }
@@ -77,6 +76,17 @@
     //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     //self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    
+    self.detailViewController.dayData = [self loadEvents];
+    self.detailViewController.viewNSDate = self.viewNSDate;
+    self.detailViewController.viewDate = self.viewDate;
+    self.detailViewController.viewSchedule = self.viewSchedule;
+    
+    // show the bottom toolbar
+    [self.navigationController setToolbarHidden:NO];
+    
+    saveButtonItems = [self.toolbarItems mutableCopy];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -123,7 +133,12 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
+    
+    if (_isLocked) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -158,6 +173,8 @@
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+    
+    // this updates the detail controller when a row is selected.  Not sure we want to do that
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         self.detailViewController.detailItem = object;
@@ -167,15 +184,33 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
+        
+        //I'm not sure if this ever gets called....
+        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        [[segue destinationViewController] setDetailItem:object];
+        
+        
+        NowWhatDetailViewController *controller = (NowWhatDetailViewController *)[segue destinationViewController];
+
+        // this should do the same thing
+        //[[segue destinationViewController] setDetailItem:object];
+
+        controller.detailItem = object;
+        controller.dayData = [self loadEvents];
+        controller.viewNSDate = self.viewNSDate;
+        controller.viewDate = self.viewDate;
+        controller.viewSchedule = self.viewSchedule;
+        
     }
     
     if ([[segue identifier] isEqualToString:@"AddEvent"]) {
         
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
+        
+        //EditEventViewController *controller = (EditEventViewController *)[segue destinationViewController];
+        
         controller.baseTime = self.viewNSDate;
         controller.eventSchedule = self.viewSchedule;
         controller.managedObjectContext = self.managedObjectContext;
@@ -192,6 +227,10 @@
 
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
+        
+        //EditEventViewController *controller = (EditEventViewController *)[segue destinationViewController];
+        
+        
         controller.baseTime = self.viewNSDate;
         
         UnmanagedEvent *unmanagedEvent = [[UnmanagedEvent alloc] init];
@@ -212,8 +251,12 @@
     if ([[segue identifier] isEqualToString:@"ChangeDay"]) {
         
         
+        // use this if the view in embedded in a navigation controller
         UINavigationController *navigationController = segue.destinationViewController;
         ChangeDateViewController *controller = (ChangeDateViewController *)navigationController.topViewController;
+        
+        //ChangeDateViewController *controller = (ChangeDateViewController *)[segue destinationViewController];
+        
         controller.selectedDate = self.viewNSDate;
         // the changedateviewcontroller delegate implements changedatepicker and updates the viewDate
         controller.delegate = self;
@@ -222,6 +265,7 @@
     }
 
     if ([[segue identifier] isEqualToString:@"ListTemplates"]) {
+        
         
         TemplateListViewController *controller = (TemplateListViewController *)[segue destinationViewController];
         controller.managedObjectContext = self.managedObjectContext;
@@ -239,6 +283,18 @@
         
     }
 
+    
+    if ([[segue identifier] isEqualToString:@"PasswordLock"]) {
+        
+        PasswordViewController *controller = (PasswordViewController *)[segue destinationViewController];
+        // send the data to the save template in the form of an array
+        controller.isLocked = self.isLocked;
+        controller.correctPassword = self.correctPassword;
+        controller.delegate = self;
+        
+    }
+
+    
     
 }
 
@@ -298,6 +354,9 @@
     if (_fetchedResultsController != nil) {
         return _fetchedResultsController;
     }
+    
+    
+    NSLog(@"the fetched results controller is getting the events for %@", self.viewNSDate);
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
@@ -453,7 +512,7 @@
     self.viewNSDate = newDate;
     self.ViewDate = [Event returnDateString:newDate];
     
-    //NSLog(@"the new date is %@", self.viewNSDate);
+    NSLog(@"the new date is %@", self.viewNSDate);
     
     self.fetchedResultsController = nil;
     [self.tableView reloadData];
@@ -506,6 +565,163 @@
     
 }
 
+
+#pragma mark - PasswordViewControllerDelegate
+
+
+- (void)lockIt:(PasswordViewController *)controller withPassword:(int)newPassword {
+    
+    _isLocked = YES;
+    
+    // get all the toolbar items and navbar items and set to nil ???
+    //NSMutableArray *items = [self.toolbarItems mutableCopy];
+    
+    //[items removeAllObjects];
+    [self setToolbarItems:nil];
+    
+    // remove the NavBar items
+    
+    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationItem setRightBarButtonItem:nil];
+    
+    // just add the unlock button
+    // Configure the Bottom ToolBar
+    UIBarButtonItem *leftSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    UIBarButtonItem *lockButton = [[UIBarButtonItem alloc]
+                                   initWithImage:[UIImage imageNamed:@"Locked.png"]
+                                   style:UIBarButtonItemStylePlain
+                                   target:self
+                                   action:@selector(clickedLockButton:)];
+    
+    
+    [self setToolbarItems:[NSArray arrayWithObjects:leftSpace, lockButton,nil]];
+    
+    self.tableView.allowsSelection = NO; // Keeps cells from being selectable
+    
+    _correctPassword = newPassword;
+    
+    
+}
+
+
+- (void)unlockIt:(PasswordViewController *)controller withPassword:(int)newPassword {
+    
+    _isLocked = NO;
+    
+    // add the buttons here
+    //[rootView createAllButtons];
+    [self setToolbarItems:nil];
+    
+    [self setToolbarItems:saveButtonItems];
+    
+    self.tableView.allowsSelection = YES; // Lets cells from be selectable
+    
+    
+}
+
+-(void) clickedLockButton:(id)sender{
+    
+    // NSLog(@"clicked lock template button");
+    
+    // set lock bool to true
+    // NSLog(@"clicked lock button");
+    
+    //load password view
+    PasswordViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"PasswordView"];
+    // send the data to the save template in the form of an array
+    controller.isLocked = self.isLocked;
+    controller.correctPassword = self.correctPassword;
+    controller.delegate = self;
+    
+    [self.navigationController presentModalViewController:controller animated:YES];
+    
+}
+
+
+-(IBAction) printSchedule:(id) sender {
+    
+    NSLog(@"clicked print button");
+    
+    UIPrintInteractionController *pic = [UIPrintInteractionController sharedPrintController];
+    
+    UIPrintInfo *printInfo = [UIPrintInfo printInfo];
+    printInfo.outputType = UIPrintInfoOutputGeneral;
+    
+    printInfo.jobName = [NSString stringWithFormat:@"Schedule for %@", self.title];
+    
+    pic.printInfo = printInfo;
+    
+    // Here is all the html data for the printout page
+    
+    NSMutableString *htmlString = [[NSMutableString alloc] init];
+    
+    // Start the html code for the uiwebview
+    [htmlString appendString:@"<html><head><style>body{background-color:transparent;}</style></head><body><font size=\"5\" face=\"Chalkboard SE\">"];
+    
+    // Show the time of day as well as the date
+    NSDateFormatter *formatter =[[NSDateFormatter alloc] init];
+    
+    [formatter setDateFormat:@"EEEE, MM/dd"];
+    [htmlString appendString:[formatter stringFromDate:self.viewNSDate]];
+    [htmlString appendString:@"<br><br>"];
+    
+    // Go through event class again to print it to the display
+    
+    for (Event *eventItem in [self.fetchedResultsController fetchedObjects]) {
+        
+        [htmlString appendString:[Event formatEventTime:eventItem.eventNSDate]];
+        [htmlString appendString:@" - "];
+        [htmlString appendString:eventItem.eventText];
+        
+        if (![eventItem.eventNotes isEqualToString:@""]) {
+            
+            [htmlString appendString:@"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"];
+            
+            NSString *formattedString = eventItem.eventNotes;
+            formattedString = [formattedString stringByReplacingOccurrencesOfString:@"\n"
+                                                                         withString:@"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"];
+            [htmlString appendString:formattedString];
+            
+        }
+        
+        [htmlString appendString:@"<br>"];
+        
+        
+    }
+    
+    // Finish the html statement and print
+    
+    [htmlString appendString: @"</body></html>"];
+    
+    UIMarkupTextPrintFormatter *htmlFormatter = [[UIMarkupTextPrintFormatter alloc]
+                                                 initWithMarkupText:htmlString];
+    htmlFormatter.startPage = 0;
+    htmlFormatter.contentInsets = UIEdgeInsetsMake(72.0, 72.0, 72.0, 72.0); // 1 inch margins
+    htmlFormatter.maximumContentWidth = 6 * 72.0;
+    pic.printFormatter = htmlFormatter;
+    pic.showsPageRange = YES;
+    
+    void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+    ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
+        if (!completed && error) {
+            NSLog(@"Printing could not complete because of error: %@", error);
+        }
+    };
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [pic presentFromBarButtonItem:sender animated:YES completionHandler:completionHandler];
+    } else {
+        [pic presentAnimated:YES completionHandler:completionHandler];
+    }
+
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+	return YES;
+}
 
 
 
