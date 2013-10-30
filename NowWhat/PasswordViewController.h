@@ -37,7 +37,6 @@
 
 @property (nonatomic, weak) id <PasswordViewControllerDelegate> delegate;
 
--(IBAction) typedANumber:(id) sender;
 - (void) backClicked:(id)sender;
 
 @end

@@ -287,8 +287,16 @@
                                 <segue destination="B6A-hm-1nH" kind="push" identifier="ListTemplates" id="lfR-Zp-yNd"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem systemItem="action" id="4q1-6n-E2L"/>
-                        <barButtonItem image="notLocked.png" style="plain" id="Ilw-VX-O6z"/>
+                        <barButtonItem systemItem="action" id="4q1-6n-E2L">
+                            <connections>
+                                <action selector="printSchedule:" destination="19" id="3Mb-ka-rg2"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem image="notLocked.png" style="plain" id="Ilw-VX-O6z">
+                            <connections>
+                                <segue destination="6Id-b8-h7g" kind="modal" identifier="PasswordLock" modalPresentationStyle="formSheet" id="NFM-3w-VqD"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Master" id="40">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="WN8-yv-7IE">
@@ -455,6 +463,69 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ndF-YM-smO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1649" y="30"/>
+        </scene>
+        <!--Password View Controller - PasswordView-->
+        <scene sceneID="fRj-Q0-Wn7">
+            <objects>
+                <viewController storyboardIdentifier="PasswordView" title="PasswordView" modalPresentationStyle="formSheet" id="6Id-b8-h7g" customClass="PasswordViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="73R-aR-Jey">
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="FkA-gD-QIq">
+                                <rect key="frame" x="103" y="165" width="38" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="1ZF-Tb-6uc">
+                                <rect key="frame" x="300" y="165" width="38" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="8jf-Ew-BgL">
+                                <rect key="frame" x="201" y="165" width="38" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="2rG-GL-mVJ">
+                                <rect key="frame" x="405" y="165" width="38" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Set Password Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="j9N-9I-hhs">
+                                <rect key="frame" x="133" y="71" width="274" height="43"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Feedback Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sWx-wg-QFi">
+                                <rect key="frame" x="117" y="227" width="306" height="55"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <connections>
+                        <outlet property="feedbackLabel" destination="sWx-wg-QFi" id="YN4-Kn-ykX"/>
+                        <outlet property="passwordFour" destination="2rG-GL-mVJ" id="Ahv-IG-q5q"/>
+                        <outlet property="passwordOne" destination="FkA-gD-QIq" id="90E-5o-Z1g"/>
+                        <outlet property="passwordThree" destination="1ZF-Tb-6uc" id="xap-vH-1Jk"/>
+                        <outlet property="passwordTwo" destination="8jf-Ew-BgL" id="z7I-W8-zPE"/>
+                        <outlet property="setPasswordLabel" destination="j9N-9I-hhs" id="Ebf-No-71q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4oq-4M-u38" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1649" y="1034"/>
         </scene>
         <!--Show Template View Controller-->
         <scene sceneID="sTX-HD-TwY">
@@ -672,6 +743,94 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     <resources>
         <image name="notLocked.png" width="31" height="29"/>
     </resources>
+    <classes>
+        <class className="ChangeDateViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ChangeDateViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+                <relationship kind="action" name="changeDayOfTheWeek"/>
+                <relationship kind="action" name="resetDatePicker"/>
+                <relationship kind="action" name="save"/>
+                <relationship kind="outlet" name="backToToday" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="dayOfTheWeek" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventDatePicker" candidateClass="UIDatePicker"/>
+            </relationships>
+        </class>
+        <class className="EditEventViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditEventViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+                <relationship kind="action" name="save"/>
+                <relationship kind="outlet" name="dateField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="eventField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="notesView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="timePicker" candidateClass="UIDatePicker"/>
+            </relationships>
+        </class>
+        <class className="EventCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EventCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="eventCheckLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventNotesLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventTextLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventTimeLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="NowWhatDetailViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NowWhatDetailViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="countdownLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="detailDescriptionLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="detailTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="eventDisplayWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="NowWhatMasterViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NowWhatMasterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="printSchedule:"/>
+            </relationships>
+        </class>
+        <class className="PasswordViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PasswordViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="feedbackLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="passwordFour" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordOne" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordThree" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordTwo" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="realPasswordField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="setPasswordLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="SaveTemplateViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SaveTemplateViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+                <relationship kind="action" name="save"/>
+                <relationship kind="outlet" name="saveTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="templateNameField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="ShowTemplateViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowTemplateViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="loadTemplateEvents"/>
+            </relationships>
+        </class>
+        <class className="TemplateCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TemplateCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="templateNameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="TemplateListViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TemplateListViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="templateNameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
