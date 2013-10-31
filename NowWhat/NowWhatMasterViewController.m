@@ -649,10 +649,14 @@
     
     UIPrintInfo *printInfo = [UIPrintInfo printInfo];
     printInfo.outputType = UIPrintInfoOutputGeneral;
+    printInfo.duplex = UIPrintInfoDuplexNone;
     
     printInfo.jobName = [NSString stringWithFormat:@"Schedule for %@", self.title];
     
     pic.printInfo = printInfo;
+    
+    // adding this may help to speed it up
+    pic.showsPageRange = NO;
     
     // Here is all the html data for the printout page
     
@@ -704,12 +708,18 @@
     pic.printFormatter = htmlFormatter;
     pic.showsPageRange = YES;
     
+    
+    //[NSThread sleepForTimeInterval:0.06];
+    
     void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
     ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
         if (!completed && error) {
             NSLog(@"Printing could not complete because of error: %@", error);
         }
     };
+    
+    [NSThread sleepForTimeInterval:0.1];
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [pic presentFromBarButtonItem:sender animated:YES completionHandler:completionHandler];
     } else {
