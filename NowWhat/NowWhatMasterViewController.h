@@ -16,6 +16,7 @@
 #import "UnmanagedEvent.h"
 #import "NowWhatDetailViewController.h"
 #import "EventCell.h"
+#import "Schedule.h"
 
 @class NowWhatDetailViewController;
 @class Event;
@@ -34,7 +35,7 @@
 
 @property (nonatomic, retain) NSString *viewDate;
 @property (nonatomic, retain) NSDate *viewNSDate;
-@property (nonatomic, retain) NSString *viewSchedule;
+@property (nonatomic, retain) Schedule *viewSchedule;
 @property (nonatomic, assign) BOOL isLocked;
 @property (nonatomic, assign) int correctPassword;
 

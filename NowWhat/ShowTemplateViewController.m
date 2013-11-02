@@ -316,7 +316,7 @@
         event.eventNotes = templateEvent.eventNotes;
         
         event.eventChecked = NO;
-        event.eventSchedule = self.viewSchedule;
+        event.schedule = self.viewSchedule;
 
         
         // take the time from event.eventTime, and merge with the date that is loaded

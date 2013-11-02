@@ -10,6 +10,7 @@
 #import "UnmanagedEvent.h"
 #import "Event.h"
 #import "EventCell.h"
+#import "Schedule.h"
 
 @interface NowWhatDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource> {
     
@@ -28,7 +29,7 @@
 
 @property (nonatomic, retain) NSString *viewDate;
 @property (nonatomic, retain) NSDate *viewNSDate;
-@property (nonatomic, retain) NSString *viewSchedule;
+@property (nonatomic, retain) Schedule *viewSchedule;
 @property (nonatomic, retain) NSMutableArray *dayData;
 @property (nonatomic, retain) IBOutlet UITableView *detailTableView;
 

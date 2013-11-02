@@ -24,6 +24,6 @@
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerTemplates;
 
 @property (nonatomic, retain) NSDate *viewNSDate;
-@property (nonatomic, retain) NSString *viewSchedule;
+@property (nonatomic, retain) Schedule *viewSchedule;
 
 @end

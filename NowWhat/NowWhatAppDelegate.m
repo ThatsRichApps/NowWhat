@@ -9,6 +9,7 @@
 #import "NowWhatAppDelegate.h"
 
 #import "NowWhatMasterViewController.h"
+#import "MainScheduleViewController.h"
 
 @implementation NowWhatAppDelegate
 
@@ -28,9 +29,16 @@
         NowWhatMasterViewController *controller = (NowWhatMasterViewController *)masterNavigationController.topViewController;
         controller.managedObjectContext = self.managedObjectContext;
     } else {
+        
+        // changed this when we added schedules
+        //UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+        //NowWhatMasterViewController *controller = (NowWhatMasterViewController *)navigationController.topViewController;
+        //controller.managedObjectContext = self.managedObjectContext;
+
         UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-        NowWhatMasterViewController *controller = (NowWhatMasterViewController *)navigationController.topViewController;
+        MainScheduleViewController *controller = (MainScheduleViewController *)navigationController.topViewController;
         controller.managedObjectContext = self.managedObjectContext;
+    
     }
     return YES;
 }

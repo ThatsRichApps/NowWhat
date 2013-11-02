@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-
 @interface Event : NSManagedObject
 
 @property (nonatomic, retain) NSString * eventNotes;
@@ -17,7 +16,7 @@
 @property (nonatomic, retain) NSDate * eventNSDate;
 @property (nonatomic, retain) NSString * eventDate;
 @property (nonatomic, assign) BOOL eventChecked;
-@property (nonatomic, retain) NSString * eventSchedule;
+@property (nonatomic, retain) NSManagedObject * schedule;
 
 + (NSString *)formatEventTime: (NSDate *)dateTime;
 + (NSString *)returnDateString: (NSDate *)dateTime;

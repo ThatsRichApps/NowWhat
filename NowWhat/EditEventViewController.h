@@ -12,6 +12,7 @@
 #import "Event.h"
 #import "TemplateEvent.h"
 #import "UnmanagedEvent.h"
+#import "Schedule.h"
 
 //@class Event;
 @class EditEventViewController;
@@ -41,7 +42,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) UnmanagedEvent *eventToEdit;
 @property (nonatomic, retain) NSDate *baseTime;
-@property (nonatomic, retain) NSString *eventSchedule;
+@property (nonatomic, retain) Schedule *eventSchedule;
 
 @property (nonatomic, weak) id <EditEventViewControllerDelgate> delegate;
 

@@ -66,12 +66,18 @@
         
     }
 
-    self.viewSchedule = @"Main Schedule";
+    if (self.viewSchedule == nil) {
+        
+        // No schedule was passed in, that's a problem
+        
+    }
     
     [self performFetch];
 
 	// Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    
+    // lets not have the edit button there anymore, comment this out
+    // self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     //self.navigationItem.rightBarButtonItem = addButton;
@@ -374,7 +380,7 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     // setup the predicate to return just the wanted date
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDateString:self.viewNSDate]]];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@') AND (schedule.scheduleName like '%@')", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName]];
     [fetchRequest setPredicate:requestPredicate];
     
     // Clear out any previous cache
@@ -542,7 +548,7 @@
     event.eventNSDate = unmanagedEvent.eventTime;
     event.eventDate = [Event returnDateString:unmanagedEvent.eventTime];
     event.eventChecked = NO;
-    event.eventSchedule = self.viewSchedule;
+    event.schedule = self.viewSchedule;
 
     
     NSError *error;

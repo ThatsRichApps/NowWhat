@@ -16,7 +16,7 @@
 @dynamic eventNSDate;
 @dynamic eventDate;
 @dynamic eventChecked;
-@dynamic eventSchedule;
+@dynamic schedule;
 
 
 - (void)toggleChecked    {

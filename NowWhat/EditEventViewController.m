@@ -172,23 +172,6 @@
         [self.delegate editEventView:self addEvent:unmanagedEvent];
         
     }
-    /*
-    event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
-    
-    event.eventText = self.eventField.text;
-    event.eventNotes = self.notesView.text;
-    event.eventNSDate = timePicker.date;
-    event.eventDate = [Event returnDateString:timePicker.date];
-    event.eventChecked = self.eventToEdit.eventChecked;
-    event.eventSchedule = self.eventSchedule;
-    
-    NSError *error;
-    if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
-        abort();
-    }
-    */
-     
     
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }

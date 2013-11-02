@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		81001389181EE93F003AAEE5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 81001388181EE93F003AAEE5 /* Settings.bundle */; };
+		813A92A81824237700C265FD /* Schedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 813A92A71824237700C265FD /* Schedule.m */; };
+		813A92AB1824263200C265FD /* MainScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 813A92AA1824263200C265FD /* MainScheduleViewController.m */; };
+		813A92AE1824269A00C265FD /* ScheduleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 813A92AD1824269A00C265FD /* ScheduleCell.m */; };
 		813CAE321818195F00F61EE8 /* TemplateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE311818195F00F61EE8 /* TemplateCell.m */; };
 		813CAE351818211300F61EE8 /* ShowTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE341818211300F61EE8 /* ShowTemplateViewController.m */; };
 		813CAE3B1819D40B00F61EE8 /* UnmanagedEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 813CAE3A1819D40A00F61EE8 /* UnmanagedEvent.m */; };
@@ -42,10 +45,17 @@
 		81921ECB180C865000ECCBEE /* NowWhatMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81921ECA180C865000ECCBEE /* NowWhatMasterViewController.m */; };
 		81921ECE180C865000ECCBEE /* NowWhatDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81921ECD180C865000ECCBEE /* NowWhatDetailViewController.m */; };
 		81921ED6180CEDB800ECCBEE /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81921ED5180CEDB800ECCBEE /* EditEventViewController.m */; };
+		81F697BC182451C1006A6843 /* AddScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F697BB182451C1006A6843 /* AddScheduleViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		81001388181EE93F003AAEE5 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		813A92A61824237700C265FD /* Schedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Schedule.h; sourceTree = "<group>"; };
+		813A92A71824237700C265FD /* Schedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Schedule.m; sourceTree = "<group>"; };
+		813A92A91824263200C265FD /* MainScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScheduleViewController.h; sourceTree = "<group>"; };
+		813A92AA1824263200C265FD /* MainScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScheduleViewController.m; sourceTree = "<group>"; };
+		813A92AC1824269A00C265FD /* ScheduleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleCell.h; sourceTree = "<group>"; };
+		813A92AD1824269A00C265FD /* ScheduleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleCell.m; sourceTree = "<group>"; };
 		813CAE301818195E00F61EE8 /* TemplateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplateCell.h; sourceTree = "<group>"; };
 		813CAE311818195F00F61EE8 /* TemplateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateCell.m; sourceTree = "<group>"; };
 		813CAE331818211200F61EE8 /* ShowTemplateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowTemplateViewController.h; sourceTree = "<group>"; };
@@ -98,6 +108,8 @@
 		81921ECD180C865000ECCBEE /* NowWhatDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NowWhatDetailViewController.m; sourceTree = "<group>"; };
 		81921ED4180CEDB800ECCBEE /* EditEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditEventViewController.h; sourceTree = "<group>"; };
 		81921ED5180CEDB800ECCBEE /* EditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventViewController.m; sourceTree = "<group>"; };
+		81F697BA182451C1006A6843 /* AddScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddScheduleViewController.h; sourceTree = "<group>"; };
+		81F697BB182451C1006A6843 /* AddScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddScheduleViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +160,8 @@
 		81921EAE180C865000ECCBEE /* NowWhat */ = {
 			isa = PBXGroup;
 			children = (
+				813A92A61824237700C265FD /* Schedule.h */,
+				813A92A71824237700C265FD /* Schedule.m */,
 				814005EA180EEF2200786BC3 /* Event.h */,
 				814005EB180EEF2200786BC3 /* Event.m */,
 				813CAE391819D40A00F61EE8 /* UnmanagedEvent.h */,
@@ -156,6 +170,8 @@
 				814005EE181015DF00786BC3 /* EventCell.m */,
 				813CAE301818195E00F61EE8 /* TemplateCell.h */,
 				813CAE311818195F00F61EE8 /* TemplateCell.m */,
+				813A92AC1824269A00C265FD /* ScheduleCell.h */,
+				813A92AD1824269A00C265FD /* ScheduleCell.m */,
 				8140063318156E3600786BC3 /* Template.h */,
 				8140063418156E3600786BC3 /* Template.m */,
 				8140063018156DEE00786BC3 /* TemplateEvent.h */,
@@ -163,6 +179,10 @@
 				81921EB7180C865000ECCBEE /* NowWhatAppDelegate.h */,
 				81921EB8180C865000ECCBEE /* NowWhatAppDelegate.m */,
 				81921EC0180C865000ECCBEE /* MainStoryboard_iPhone.storyboard */,
+				813A92A91824263200C265FD /* MainScheduleViewController.h */,
+				813A92AA1824263200C265FD /* MainScheduleViewController.m */,
+				81F697BA182451C1006A6843 /* AddScheduleViewController.h */,
+				81F697BB182451C1006A6843 /* AddScheduleViewController.m */,
 				81921EC9180C865000ECCBEE /* NowWhatMasterViewController.h */,
 				81921ECA180C865000ECCBEE /* NowWhatMasterViewController.m */,
 				813CAE3E181B1B1700F61EE8 /* PasswordViewController.h */,
@@ -299,6 +319,10 @@
 				813CAE351818211300F61EE8 /* ShowTemplateViewController.m in Sources */,
 				813CAE3B1819D40B00F61EE8 /* UnmanagedEvent.m in Sources */,
 				813CAE40181B1B1800F61EE8 /* PasswordViewController.m in Sources */,
+				813A92A81824237700C265FD /* Schedule.m in Sources */,
+				813A92AB1824263200C265FD /* MainScheduleViewController.m in Sources */,
+				813A92AE1824269A00C265FD /* ScheduleCell.m in Sources */,
+				81F697BC182451C1006A6843 /* AddScheduleViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

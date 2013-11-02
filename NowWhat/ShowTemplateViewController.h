@@ -13,6 +13,7 @@
 #import "UnmanagedEvent.h"
 #import "Template.h"
 #import "EditEventViewController.h"
+#import "Schedule.h"
 
 @interface ShowTemplateViewController : UITableViewController <NSFetchedResultsControllerDelegate, EditEventViewControllerDelgate>
 
@@ -20,7 +21,7 @@
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerTemplateEvents;
 
 @property (nonatomic, retain) NSDate *viewNSDate;
-@property (nonatomic, retain) NSString *viewSchedule;
+@property (nonatomic, retain) Schedule *viewSchedule;
 
 @property (nonatomic, retain) Template *templateToShow;
 
