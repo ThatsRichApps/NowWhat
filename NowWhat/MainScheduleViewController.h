@@ -12,6 +12,8 @@
 #import "Schedule.h"
 #import "NowWhatMasterViewController.h"
 #import "AddScheduleViewController.h"
+@class NowWhatDetailViewController;
+
 
 
 @interface MainScheduleViewController : UITableViewController <NSFetchedResultsControllerDelegate, AddScheduleViewControllerDelgate> {
@@ -20,5 +22,7 @@
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NowWhatDetailViewController *detailViewController;
+
 
 @end

@@ -81,14 +81,18 @@
 
     //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     //self.navigationItem.rightBarButtonItem = addButton;
-    self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
-    self.detailViewController.dayData = [self loadEvents];
+    //self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    
     self.detailViewController.viewNSDate = self.viewNSDate;
     self.detailViewController.viewDate = self.viewDate;
     self.detailViewController.viewSchedule = self.viewSchedule;
     self.detailViewController.managedObjectContext = self.managedObjectContext;
+    self.detailViewController.fetchedResultsControllerDetail = self.fetchedResultsController;
     
+    [self.detailViewController updateDetailView];
+    
+    // maybe here we need to notify the detailViewController to update it's events
     
     // show the bottom toolbar
     [self.navigationController setToolbarHidden:NO];
@@ -205,7 +209,6 @@
         //[[segue destinationViewController] setDetailItem:object];
 
         controller.detailItem = object;
-        controller.dayData = [self loadEvents];
         controller.viewNSDate = self.viewNSDate;
         controller.viewDate = self.viewDate;
         controller.viewSchedule = self.viewSchedule;
@@ -221,7 +224,7 @@
         
         controller.baseTime = self.viewNSDate;
         controller.eventSchedule = self.viewSchedule;
-        controller.managedObjectContext = self.managedObjectContext;
+        //controller.managedObjectContext = self.managedObjectContext;
         controller.delegate = self;
         
     }

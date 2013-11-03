@@ -19,15 +19,24 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    NSLog (@"didFinishLaunchingWithOptions");
+    
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        
+        
         UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
         UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
         splitViewController.delegate = (id)navigationController.topViewController;
         
         UINavigationController *masterNavigationController = splitViewController.viewControllers[0];
-        NowWhatMasterViewController *controller = (NowWhatMasterViewController *)masterNavigationController.topViewController;
+        //NowWhatMasterViewController *controller = (NowWhatMasterViewController *)masterNavigationController.topViewController;
+ 
+        MainScheduleViewController *controller = (MainScheduleViewController *)masterNavigationController.topViewController;
+
         controller.managedObjectContext = self.managedObjectContext;
+    
     } else {
         
         // changed this when we added schedules
@@ -40,6 +49,16 @@
         controller.managedObjectContext = self.managedObjectContext;
     
     }
+    
+    // also figure out what to do with notifications here
+    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
+    localNotification.alertBody = @"Alert message goes here";
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+    
+    
+    
     return YES;
 }
 							
@@ -165,5 +184,16 @@
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
+
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    
+    NSLog (@"The didReceiveLocalNotification method in the app delegate was called, hooray.");
+    
+}
+
+
+
+
 
 @end

@@ -4,20 +4,55 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="14">
+        <!--Main Schedule View Controller-->
+        <scene sceneID="PP9-iq-JGM">
             <objects>
-                <navigationController id="3" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="6">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="19" kind="relationship" relationship="rootViewController" id="25"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="13" sceneMemberID="firstResponder"/>
+                <tableViewController id="dX1-fr-uwj" customClass="MainScheduleViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="120" sectionHeaderHeight="22" sectionFooterHeight="22" id="XeP-Eb-VbO">
+                        <rect key="frame" x="0.0" y="64" width="320" height="704"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ScheduleCell" rowHeight="120" id="zlc-AZ-GEK" customClass="ScheduleCell">
+                                <rect key="frame" x="0.0" y="22" width="320" height="120"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="119"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Schedule Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y1c-3k-P55">
+                                            <rect key="frame" x="34" y="42" width="225" height="28"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="scheduleNameLabel" destination="Y1c-3k-P55" id="y2Z-nx-anx"/>
+                                    <segue destination="19" kind="push" identifier="ViewSchedule" id="STc-wd-ce5"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="dX1-fr-uwj" id="XYd-yr-a5r"/>
+                            <outlet property="delegate" destination="dX1-fr-uwj" id="kbi-bR-VDd"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="ZVi-JR-XGf">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="sa4-Q7-bZA">
+                            <connections>
+                                <segue destination="8f7-zS-i97" kind="modal" modalPresentationStyle="formSheet" id="QT6-JP-FA2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iDX-9B-sIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="448" y="-630"/>
+            <point key="canvasLocation" x="45" y="-898"/>
         </scene>
         <!--Now What Detail View Controller - Detail-->
         <scene sceneID="16">
@@ -28,7 +63,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="119" sectionHeaderHeight="22" sectionFooterHeight="22" id="01c-Po-s1V">
-                                <rect key="frame" x="0.0" y="0.0" width="703" height="704"/>
+                                <rect key="frame" x="0.0" y="107" width="703" height="597"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -75,6 +110,20 @@
                                     <outlet property="delegate" destination="4" id="rXC-mo-kcC"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Next Event" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l8U-b6-RDR">
+                                <rect key="frame" x="20" y="11" width="663" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Time until next event" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3fv-Wr-DaO">
+                                <rect key="frame" x="20" y="57" width="663" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -82,7 +131,9 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detail" id="53"/>
                     <connections>
-                        <outlet property="detailTableView" destination="01c-Po-s1V" id="ZMq-FN-uF6"/>
+                        <outlet property="detailTableView" destination="01c-Po-s1V" id="96I-Yh-dFN"/>
+                        <outlet property="nextEventLabel" destination="l8U-b6-RDR" id="lCN-3l-JZu"/>
+                        <outlet property="timeToNextEventLabel" destination="3fv-Wr-DaO" id="eR2-SK-QTZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="15" sceneMemberID="firstResponder"/>
@@ -111,7 +162,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="120" sectionHeaderHeight="22" sectionFooterHeight="22" id="EXF-cm-I1s">
-                                <rect key="frame" x="0.0" y="110" width="320" height="550"/>
+                                <rect key="frame" x="-1" y="109" width="320" height="550"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -190,7 +241,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j6L-Vf-thA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1488" y="-1197"/>
+            <point key="canvasLocation" x="3436" y="-1197"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="18">
@@ -200,13 +251,13 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
-                        <segue destination="3" kind="relationship" relationship="masterViewController" id="9"/>
                         <segue destination="42" kind="relationship" relationship="detailViewController" id="51"/>
+                        <segue destination="UbD-Pu-nuL" kind="relationship" relationship="masterViewController" id="MZd-zU-pSY"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="17" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-799" y="-631"/>
+            <point key="canvasLocation" x="-1843" y="-647"/>
         </scene>
         <!--Now What Master View Controller - Master-->
         <scene sceneID="24">
@@ -309,7 +360,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="23" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="859" y="-631"/>
+            <point key="canvasLocation" x="1255" y="-955"/>
         </scene>
         <!--Edit Event View Controller-->
         <scene sceneID="Ac4-gv-YU2">
@@ -417,7 +468,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U9v-Hz-rsU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3483" y="-549"/>
+            <point key="canvasLocation" x="4457" y="-549"/>
         </scene>
         <!--Template List View Controller - List Templates-->
         <scene sceneID="ope-8i-15K">
@@ -462,7 +513,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ndF-YM-smO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1649" y="30"/>
+            <point key="canvasLocation" x="2623" y="30"/>
         </scene>
         <!--Password View Controller - PasswordView-->
         <scene sceneID="fRj-Q0-Wn7">
@@ -599,7 +650,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="78L-no-Ohh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2153" y="30"/>
+            <point key="canvasLocation" x="3127" y="30"/>
         </scene>
         <!--Change Date View Controller - ChangeDay-->
         <scene sceneID="vUw-QX-H2p">
@@ -686,7 +737,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sa1-jc-3s8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2153" y="-1959"/>
+            <point key="canvasLocation" x="3127" y="-1959"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="50">
@@ -702,6 +753,70 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <placeholder placeholderIdentifier="IBFirstResponder" id="49" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-338" y="444"/>
+        </scene>
+        <!--Add Schedule View Controller-->
+        <scene sceneID="n7Z-3H-Coc">
+            <objects>
+                <tableViewController id="RK5-4l-aPz" customClass="AddScheduleViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="KOP-f8-Hmd">
+                        <rect key="frame" x="0.0" y="64" width="540" height="556"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <sections>
+                            <tableViewSection id="c5L-mL-Wja">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="182" id="AKM-Os-mHl">
+                                        <rect key="frame" x="0.0" y="0.0" width="540" height="182"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="540" height="181"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Add Schedule" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="utS-Jo-BgJ">
+                                                    <rect key="frame" x="286" y="26" width="196" height="28"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Schedule Name Here" minimumFontSize="17" id="NeE-fJ-Qaq">
+                                                    <rect key="frame" x="209" y="76" width="350" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="RK5-4l-aPz" id="Kch-MB-2lv"/>
+                            <outlet property="delegate" destination="RK5-4l-aPz" id="udZ-1y-jBY"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="EDF-05-iAa">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="iem-Sj-SEk">
+                            <connections>
+                                <action selector="cancel" destination="RK5-4l-aPz" id="8lp-lC-ltK"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="9Vh-Nl-CcU">
+                            <connections>
+                                <action selector="save" destination="RK5-4l-aPz" id="WQa-Gj-O2y"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="scheduleField" destination="NeE-fJ-Qaq" id="23V-rs-tXA"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yaH-a5-k9z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1184" y="-1948"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ixi-zH-xHm">
@@ -719,7 +834,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YQn-q1-OF9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1471" y="-1959"/>
+            <point key="canvasLocation" x="2445" y="-1959"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="EgE-28-Az6">
@@ -737,106 +852,54 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ial-Ka-IsZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2737" y="-549"/>
+            <point key="canvasLocation" x="3711" y="-549"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="OiE-eJ-NiB">
+            <objects>
+                <navigationController id="UbD-Pu-nuL" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FDh-xX-NpI">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dX1-fr-uwj" kind="relationship" relationship="rootViewController" id="Na2-am-RBR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E7c-Pf-yFS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-465" y="-898"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Xel-AA-aHT">
+            <objects>
+                <navigationController id="8f7-zS-i97" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Xk8-Md-dEY">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="RK5-4l-aPz" kind="relationship" relationship="rootViewController" id="ohu-3I-QNR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ydj-fS-ZJj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="580" y="-1948"/>
         </scene>
     </scenes>
     <resources>
         <image name="notLocked.png" width="31" height="29"/>
     </resources>
-    <classes>
-        <class className="ChangeDateViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ChangeDateViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel"/>
-                <relationship kind="action" name="changeDayOfTheWeek"/>
-                <relationship kind="action" name="resetDatePicker"/>
-                <relationship kind="action" name="save"/>
-                <relationship kind="outlet" name="backToToday" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="dayOfTheWeek" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="eventDatePicker" candidateClass="UIDatePicker"/>
-            </relationships>
-        </class>
-        <class className="EditEventViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditEventViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel"/>
-                <relationship kind="action" name="save"/>
-                <relationship kind="outlet" name="dateField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="eventField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="notesView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="timePicker" candidateClass="UIDatePicker"/>
-            </relationships>
-        </class>
-        <class className="EventCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EventCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="eventCheckLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="eventNotesLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="eventTextLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="eventTimeLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="NowWhatDetailViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NowWhatDetailViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="countdownLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="detailDescriptionLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="detailTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="eventDisplayWebView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="NowWhatMasterViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NowWhatMasterViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="printSchedule:"/>
-            </relationships>
-        </class>
-        <class className="PasswordViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PasswordViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="feedbackLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="passwordFour" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordOne" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordThree" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordTwo" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="realPasswordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="setPasswordLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SaveTemplateViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SaveTemplateViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel"/>
-                <relationship kind="action" name="save"/>
-                <relationship kind="outlet" name="saveTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="templateNameField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="ShowTemplateViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowTemplateViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="loadTemplateEvents"/>
-            </relationships>
-        </class>
-        <class className="TemplateCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TemplateCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="templateNameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="TemplateListViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TemplateListViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="templateNameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="uDU-XK-TcP"/>
+        <segue reference="ZbT-Bg-xbJ"/>
     </inferredMetricsTieBreakers>
 </document>

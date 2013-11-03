@@ -27,7 +27,7 @@
 
 }
 
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+//@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, weak) id <AddScheduleViewControllerDelgate> delegate;
 
 

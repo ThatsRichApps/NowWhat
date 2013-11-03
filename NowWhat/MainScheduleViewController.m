@@ -32,6 +32,18 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    // try a uinotification here
+    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
+    localNotification.alertBody = @"Alert from viewdidload mainschedule";
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+    
+    self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    
+    self.detailViewController.managedObjectContext = self.managedObjectContext;
+        
 }
 
 - (void)didReceiveMemoryWarning
@@ -252,7 +264,7 @@
         UINavigationController *navigationController = segue.destinationViewController;
         AddScheduleViewController *controller = (AddScheduleViewController *)navigationController.topViewController;
         
-        controller.managedObjectContext = self.managedObjectContext;
+        //controller.managedObjectContext = self.managedObjectContext;
         controller.delegate = self;
         
     }
@@ -269,6 +281,7 @@
         
         controller.managedObjectContext = self.managedObjectContext;
         controller.viewSchedule = selectedSchedule;
+        controller.detailViewController = self.detailViewController;
         
         
     }

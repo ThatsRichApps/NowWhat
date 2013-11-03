@@ -39,7 +39,7 @@
 @property (nonatomic, strong) IBOutlet UITextView *notesView;
 @property (nonatomic, assign) BOOL isLocked;
     
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+//@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) UnmanagedEvent *eventToEdit;
 @property (nonatomic, retain) NSDate *baseTime;
 @property (nonatomic, retain) Schedule *eventSchedule;
