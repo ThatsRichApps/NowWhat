@@ -38,7 +38,14 @@
     // initiallize baseTime to viewDate at 8am, right!
     // right now it's set to current time
     if (self.baseTime == nil) {
+        
         self.baseTime = [NSDate date];
+    
+        self.baseTime = [Event normalizeDay:self.baseTime];
+        self.baseTime = [Event resetToBaseTime:self.baseTime];
+        
+        NSLog(@"save template base time is %@", self.baseTime);
+
     }
     
     // add the done on the keyboard here
@@ -199,6 +206,9 @@
 
 - (IBAction)cancel
 {
+    
+    // clear out template events?
+    
     [[self navigationController] popViewControllerAnimated:YES];
 
 }
@@ -288,6 +298,17 @@
     // I'm also going to have to re-Sort the events based upon the time
     
     [self.templateEvents addObject:newEvent];
+    
+    
+    // need to sort dayData and redraw table
+    NSSortDescriptor *timeDescriptor;
+    timeDescriptor = [[NSSortDescriptor alloc] initWithKey:@"eventTime" ascending:YES];
+    NSArray *sortByTimeDescriptors = [NSArray arrayWithObject:timeDescriptor];
+    NSArray *sortedArray = [self.templateEvents sortedArrayUsingDescriptors:sortByTimeDescriptors];
+    
+    [self.templateEvents removeAllObjects];
+    
+    [self.templateEvents addObjectsFromArray:sortedArray];
     
     [saveTableView reloadData];
     

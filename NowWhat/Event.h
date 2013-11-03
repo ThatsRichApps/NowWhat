@@ -21,6 +21,8 @@
 + (NSString *)formatEventTime: (NSDate *)dateTime;
 + (NSString *)returnDateString: (NSDate *)dateTime;
 + (NSDate *)mergeDate: (NSString *)dateString withTime:(NSDate *)timeOfDay;
++ (NSDate *)normalizeDay: (NSDate *)dateTime;
++ (NSDate *)resetToBaseTime: (NSDate *)dateTime;
 
 - (void)toggleChecked;
 

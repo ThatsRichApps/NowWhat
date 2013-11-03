@@ -37,6 +37,7 @@
 {
     [super viewDidLoad];
     
+    /* viewDate and viewNSDate should be passed from mainscheduleviewcontroller
     // if the current viewDate and viewNSDate are nil, set them to today
     if (self.viewNSDate == nil) {
         
@@ -46,31 +47,27 @@
         //NSLog(@" date selected is %@", self.viewDate);
         
         // now set the viewNSDate time to 8:00 am
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *components = [[NSDateComponents alloc] init];
+        self.viewNSDate = [Event resetToBaseTime:self.viewNSDate];
         
-        NSString *dateString = self.viewDate;
-        NSString *monthStr = [dateString substringToIndex:2];
-        NSString *dayStr   = [dateString substringWithRange:NSMakeRange(2, 2)];
-        NSString *yearStr  = [dateString substringFromIndex:4];
-        
-        [components setDay:[dayStr intValue]];
-        [components setMonth:[monthStr intValue]];
-        [components setYear:[yearStr intValue]];
-        [components setHour:8];
-        [components setMinute:0];
-        
-        self.viewNSDate = [gregorian dateFromComponents:components];
-        NSLog(@"base time is %@", self.viewNSDate);
-        
+        //NSLog(@"base time is %@", self.viewNSDate);
         
     }
+    */ 
+     
 
     if (self.viewSchedule == nil) {
         
         // No schedule was passed in, that's a problem
         
     }
+    
+    
+    // set the title of the nav controller to the day and date
+    // Get the Day for this Schedule
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"EEEE MM-dd"];
+    NSString *dateTitleString = [formatter stringFromDate:self.viewNSDate];
+    [self setTitle:dateTitleString];
     
     [self performFetch];
 
@@ -322,8 +319,8 @@
     NSArray *sortDescriptors = @[sortDescriptor];
     [fetchRequest setSortDescriptors:sortDescriptors];
 
-    // setup the predicate to return just the wanted date
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDateString:self.viewNSDate]]];
+    // setup the predicate to return just the wanted date and schedule
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@') AND (schedule.scheduleName like '%@')", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName]];
     [fetchRequest setPredicate:requestPredicate];
     
     NSError *error = nil;
@@ -344,12 +341,14 @@
     
     for (Event *thisEvent in fetchedObjects) {
         
+        // create an array of unmanaged events for sending to save template
         UnmanagedEvent *newUnmanagedEvent = [[UnmanagedEvent alloc] init];
-        
         newUnmanagedEvent.eventText = thisEvent.eventText;
-        newUnmanagedEvent.eventTime = thisEvent.eventNSDate;
-        newUnmanagedEvent.eventNotes = thisEvent.eventNotes;
         
+        // strip off the date from the eventNSDate
+        newUnmanagedEvent.eventTime = [Event normalizeDay:thisEvent.eventNSDate];
+        
+        newUnmanagedEvent.eventNotes = thisEvent.eventNotes;
         [unmanagedEventsArray addObject:newUnmanagedEvent];
         
     }
@@ -382,7 +381,7 @@
     NSArray *sortDescriptors = @[sortDescriptor];
     [fetchRequest setSortDescriptors:sortDescriptors];
     
-    // setup the predicate to return just the wanted date
+    // setup the predicate to return just the wanted date and schedule
     NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@') AND (schedule.scheduleName like '%@')", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName]];
     [fetchRequest setPredicate:requestPredicate];
     
@@ -517,16 +516,25 @@
 #pragma mark - CategoryPickerViewControllerDelegate
 - (void)changeDatePicker:(ChangeDateViewController *)controller didChangeDate:(NSDate *)newDate {
     
-    
     // update the viewDate variables, reload all the new data, and update the table
-    
+
     self.viewNSDate = newDate;
-    self.ViewDate = [Event returnDateString:newDate];
+    self.viewDate = [Event returnDateString:newDate];
     
-    NSLog(@"the new date is %@", self.viewNSDate);
+    //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
     
+    // reset the title of the nav controller to the new day and date
+    // Get the EEEE - day of the week for this Schedule
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"EEEE MM-dd"];
+    NSString *dateTitleString = [formatter stringFromDate:self.viewNSDate];
+    [self setTitle:dateTitleString];
+
     self.fetchedResultsController = nil;
     [self.tableView reloadData];
+    
+    // send the date change up the line
+    [self.delegate changeDatePicker:nil didChangeDate:newDate];
     
 }
 

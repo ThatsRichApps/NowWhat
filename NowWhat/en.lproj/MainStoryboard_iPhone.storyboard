@@ -68,7 +68,7 @@
             </objects>
             <point key="canvasLocation" x="-722" y="-1114"/>
         </scene>
-        <!--Main Schedule View Controller-->
+        <!--Main Schedule View Controller - Schedules-->
         <scene sceneID="Q32-jr-MeT">
             <objects>
                 <tableViewController id="d7N-6U-af7" customClass="MainScheduleViewController" sceneMemberID="viewController">
@@ -105,7 +105,27 @@
                             <outlet property="delegate" destination="d7N-6U-af7" id="45D-v7-Uio"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="kDf-Qq-Drm">
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="0pT-im-Vsu"/>
+                        <barButtonItem style="plain" id="LfD-o1-LgD">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="Uwc-oK-cTB">
+                                <rect key="frame" x="290" y="13" width="18" height="19"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="ZcW-eY-chy" kind="push" identifier="Info" id="Trj-PS-pJm"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Schedules" id="kDf-Qq-Drm">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4YH-gj-P31">
                             <connections>
                                 <segue destination="uJD-a1-ozr" kind="modal" identifier="AddSchedule" id="seW-5a-Ady"/>
@@ -192,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vrk-aV-k2c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="277" y="939"/>
+            <point key="canvasLocation" x="803" y="939"/>
         </scene>
         <!--Change Date View Controller-->
         <scene sceneID="oWj-H2-clA">
@@ -277,7 +297,53 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yGu-ha-lts" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1577" y="-440"/>
+            <point key="canvasLocation" x="733" y="-824"/>
+        </scene>
+        <!--Main Info View Controller-->
+        <scene sceneID="3fs-hG-coB">
+            <objects>
+                <viewController id="ZcW-eY-chy" customClass="MainInfoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gai-7t-LPx">
+                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" id="7Gb-qq-KBy">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <string key="text">Welcome to the newest version of the "Now What" application!  This version contains several new features.  Multiple schedules can now be viewed on the same device.  Create a new schedule by clicking the + button at the top right.  Events created in each schedule are unique to the schedule.  Templates are shared between all schedules.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Mdj-k1-wb2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LjF-wr-41L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1268" y="401"/>
+        </scene>
+        <!--Share And Print View Controller-->
+        <scene sceneID="9yf-Nk-sgj">
+            <objects>
+                <viewController id="oJO-2n-RTV" customClass="ShareAndPrintViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VwZ-gz-YOC">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="pnF-mD-hgv">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="iln-mU-tvT">
+                            <connections>
+                                <action selector="cancel" destination="oJO-2n-RTV" id="vEt-25-Djt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tpl-iE-cYH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-340" y="829"/>
         </scene>
         <!--Now What Master View Controller - Master-->
         <scene sceneID="18">
@@ -359,6 +425,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <barButtonItem systemItem="action" id="T6h-0u-aTJ">
                             <connections>
                                 <action selector="printSchedule:" destination="12" id="z2B-YN-KSo"/>
+                                <segue destination="ouK-h5-qPe" kind="modal" id="jms-xx-0KH"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem image="notLocked.png" style="plain" id="ccH-38-hbc">
@@ -558,7 +625,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </tableViewSection>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B4G-jW-qVU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3739" y="304"/>
+            <point key="canvasLocation" x="4265" y="304"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aOq-oD-dU3">
@@ -577,9 +644,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y0K-6M-9xb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3237" y="304"/>
+            <point key="canvasLocation" x="3763" y="304"/>
         </scene>
-        <!--Template List View Controller - Title-->
+        <!--Template List View Controller - Templates-->
         <scene sceneID="zps-79-Pnk">
             <objects>
                 <tableViewController id="Vtw-Zs-VRa" customClass="TemplateListViewController" sceneMemberID="viewController">
@@ -616,13 +683,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <outlet property="delegate" destination="Vtw-Zs-VRa" id="cae-ux-Tcj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="Zuj-y0-fBp" userLabel="TLVTitle"/>
+                    <navigationItem key="navigationItem" title="Templates" id="Zuj-y0-fBp" userLabel="TLVTitle"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NsF-7t-WQx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1601" y="656"/>
+            <point key="canvasLocation" x="2127" y="656"/>
         </scene>
-        <!--Show Template View Controller-->
+        <!--Show Template View Controller - Template-->
         <scene sceneID="uxn-iY-RPk">
             <objects>
                 <tableViewController id="eIN-pI-XBV" customClass="ShowTemplateViewController" sceneMemberID="viewController">
@@ -683,7 +750,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="MXu-aZ-sIg">
+                    <navigationItem key="navigationItem" title="Template" id="MXu-aZ-sIg">
                         <barButtonItem key="backBarButtonItem" title="Cancel" id="nKO-Zx-mEv"/>
                         <barButtonItem key="rightBarButtonItem" title="Load" id="1oJ-C5-QHt">
                             <connections>
@@ -695,7 +762,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aM6-5n-OEx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2103" y="656"/>
+            <point key="canvasLocation" x="2629" y="656"/>
         </scene>
         <!--Save Template View Controller-->
         <scene sceneID="FYy-p1-EtN">
@@ -754,7 +821,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <outlet property="delegate" destination="gpu-0t-xWU" id="hJ7-BV-oKI"/>
                                 </connections>
                             </tableView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="P9E-C4-ro3">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a new template name" minimumFontSize="17" id="P9E-C4-ro3">
                                 <rect key="frame" x="37" y="52" width="247" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -815,7 +882,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mf3-Ga-zUS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1075" y="-440"/>
+            <point key="canvasLocation" x="231" y="-824"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Gje-pk-rbc">
@@ -854,16 +921,139 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-1248" y="-1114"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="K2p-7R-pXG">
+            <objects>
+                <navigationController id="ouK-h5-qPe" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="88F-AU-F35">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="oJO-2n-RTV" kind="relationship" relationship="rootViewController" id="aGm-a4-9w6"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yuv-nL-lRh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-794" y="829"/>
+        </scene>
     </scenes>
     <resources>
         <image name="notLocked.png" width="31" height="29"/>
     </resources>
+    <classes>
+        <class className="AddScheduleViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/AddScheduleViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+                <relationship kind="action" name="save"/>
+                <relationship kind="outlet" name="scheduleField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="ChangeDateViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ChangeDateViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+                <relationship kind="action" name="changeDayOfTheWeek"/>
+                <relationship kind="action" name="resetDatePicker"/>
+                <relationship kind="action" name="save"/>
+                <relationship kind="outlet" name="backToToday" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="dayOfTheWeek" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventDatePicker" candidateClass="UIDatePicker"/>
+            </relationships>
+        </class>
+        <class className="EditEventViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditEventViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+                <relationship kind="action" name="save"/>
+                <relationship kind="outlet" name="dateField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="eventField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="notesView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="timePicker" candidateClass="UIDatePicker"/>
+            </relationships>
+        </class>
+        <class className="EventCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EventCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="eventCheckLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventNotesLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventTextLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventTimeLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="MainInfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainInfoViewController.h"/>
+        </class>
+        <class className="MainScheduleViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainScheduleViewController.h"/>
+        </class>
+        <class className="NowWhatMasterViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NowWhatMasterViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="printSchedule:"/>
+            </relationships>
+        </class>
+        <class className="PasswordViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PasswordViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="feedbackLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="passwordFour" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordOne" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordThree" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="passwordTwo" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="realPasswordField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="setPasswordLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="SaveTemplateViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SaveTemplateViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+                <relationship kind="action" name="save"/>
+                <relationship kind="outlet" name="saveTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="templateNameField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="ScheduleCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="scheduleNameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="ShareAndPrintViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShareAndPrintViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+            </relationships>
+        </class>
+        <class className="ShowTemplateViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowTemplateViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="loadTemplateEvents"/>
+            </relationships>
+        </class>
+        <class className="TemplateCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TemplateCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="templateNameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="TemplateListViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TemplateListViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="templateNameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="BpC-x1-Y8P"/>
+        <segue reference="fpA-wu-Xzm"/>
     </inferredMetricsTieBreakers>
 </document>

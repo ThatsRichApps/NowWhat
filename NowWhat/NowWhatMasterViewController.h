@@ -33,6 +33,9 @@
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
+@property (nonatomic, weak) id <ChangeDateViewControllerDelgate> delegate;
+
+
 @property (nonatomic, retain) NSString *viewDate;
 @property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) Schedule *viewSchedule;

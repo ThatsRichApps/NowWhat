@@ -67,7 +67,7 @@
     [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:leftSpace,backButton,leftSpace, nil]];
     
     // Plug the keyboardDoneButtonView into the text field...
-    //realPasswordField.inputAccessoryView = keyboardDoneButtonView;
+    realPasswordField.inputAccessoryView = keyboardDoneButtonView;
     
 }
 

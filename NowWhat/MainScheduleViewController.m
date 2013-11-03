@@ -40,10 +40,32 @@
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     
+    
+    // set initial viewDate and viewNSDate here if not set, need to have them passed back from master
+    // if the master changes them
+    
+    // if the current viewDate and viewNSDate are nil, set them to today
+    if (self.viewNSDate == nil) {
+        
+        self.viewNSDate = [[NSDate alloc] init];
+        self.viewDate = [Event returnDateString:self.viewNSDate];
+        
+        //NSLog(@" date selected is %@", self.viewDate);
+        
+        // now set the viewNSDate time to 8:00 am
+        self.viewNSDate = [Event resetToBaseTime:self.viewNSDate];
+        
+        //NSLog(@"base time is %@", self.viewNSDate);
+        
+    }
+    
     self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
     self.detailViewController.managedObjectContext = self.managedObjectContext;
-        
+    
+    // show the bottom toolbar
+    [self.navigationController setToolbarHidden:NO];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -280,12 +302,26 @@
         NowWhatMasterViewController *controller = (NowWhatMasterViewController *)navigationController;
         
         controller.managedObjectContext = self.managedObjectContext;
+        controller.viewDate = self.viewDate;
+        controller.viewNSDate = self.viewNSDate;
         controller.viewSchedule = selectedSchedule;
         controller.detailViewController = self.detailViewController;
-        
+        controller.delegate = self;
         
     }
 
+}
+
+#pragma mark - CategoryPickerViewControllerDelegate
+- (void)changeDatePicker:(ChangeDateViewController *)controller didChangeDate:(NSDate *)newDate {
+    
+    // update the viewDate variables, reload all the new data, and update the table
+    
+    self.viewNSDate = newDate;
+    self.viewDate = [Event returnDateString:newDate];
+    
+    //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
+    
 }
 
 

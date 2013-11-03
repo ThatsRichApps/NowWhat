@@ -46,6 +46,8 @@
 		81921ECE180C865000ECCBEE /* NowWhatDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81921ECD180C865000ECCBEE /* NowWhatDetailViewController.m */; };
 		81921ED6180CEDB800ECCBEE /* EditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81921ED5180CEDB800ECCBEE /* EditEventViewController.m */; };
 		81F697BC182451C1006A6843 /* AddScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F697BB182451C1006A6843 /* AddScheduleViewController.m */; };
+		81F697BF18269559006A6843 /* MainInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F697BE18269559006A6843 /* MainInfoViewController.m */; };
+		81F697C218269A9D006A6843 /* ShareAndPrintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F697C118269A9C006A6843 /* ShareAndPrintViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +112,10 @@
 		81921ED5180CEDB800ECCBEE /* EditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventViewController.m; sourceTree = "<group>"; };
 		81F697BA182451C1006A6843 /* AddScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddScheduleViewController.h; sourceTree = "<group>"; };
 		81F697BB182451C1006A6843 /* AddScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddScheduleViewController.m; sourceTree = "<group>"; };
+		81F697BD18269559006A6843 /* MainInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainInfoViewController.h; sourceTree = "<group>"; };
+		81F697BE18269559006A6843 /* MainInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainInfoViewController.m; sourceTree = "<group>"; };
+		81F697C018269A9C006A6843 /* ShareAndPrintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareAndPrintViewController.h; sourceTree = "<group>"; };
+		81F697C118269A9C006A6843 /* ShareAndPrintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareAndPrintViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +185,10 @@
 				81921EB7180C865000ECCBEE /* NowWhatAppDelegate.h */,
 				81921EB8180C865000ECCBEE /* NowWhatAppDelegate.m */,
 				81921EC0180C865000ECCBEE /* MainStoryboard_iPhone.storyboard */,
+				81F697C018269A9C006A6843 /* ShareAndPrintViewController.h */,
+				81F697C118269A9C006A6843 /* ShareAndPrintViewController.m */,
+				81F697BD18269559006A6843 /* MainInfoViewController.h */,
+				81F697BE18269559006A6843 /* MainInfoViewController.m */,
 				813A92A91824263200C265FD /* MainScheduleViewController.h */,
 				813A92AA1824263200C265FD /* MainScheduleViewController.m */,
 				81F697BA182451C1006A6843 /* AddScheduleViewController.h */,
@@ -323,6 +333,8 @@
 				813A92AB1824263200C265FD /* MainScheduleViewController.m in Sources */,
 				813A92AE1824269A00C265FD /* ScheduleCell.m in Sources */,
 				81F697BC182451C1006A6843 /* AddScheduleViewController.m in Sources */,
+				81F697BF18269559006A6843 /* MainInfoViewController.m in Sources */,
+				81F697C218269A9D006A6843 /* ShareAndPrintViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

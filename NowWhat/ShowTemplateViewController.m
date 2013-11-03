@@ -37,11 +37,20 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    // initiallize baseTime to viewDate at 8am, right!
+    // initiallize baseTime to viewDate at 8am at 0/0/0
     if (self.baseTime == nil) {
-        self.baseTime = self.viewNSDate;
-    }
+
+        self.baseTime = [NSDate date];
         
+        self.baseTime = [Event normalizeDay:self.baseTime];
+        self.baseTime = [Event resetToBaseTime:self.baseTime];
+        
+        NSLog(@"show template base time is %@", self.baseTime);
+    }
+
+
+    [self setTitle:self.templateToShow.templateName];
+
     
 }
 
