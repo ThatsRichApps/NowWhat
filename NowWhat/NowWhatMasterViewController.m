@@ -37,6 +37,7 @@
 {
     [super viewDidLoad];
     
+    
     /* viewDate and viewNSDate should be passed from mainscheduleviewcontroller
     // if the current viewDate and viewNSDate are nil, set them to today
     if (self.viewNSDate == nil) {
@@ -190,12 +191,16 @@
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    
+    /*
     // this updates the detail controller when a row is selected.  Not sure we want to do that
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         self.detailViewController.detailItem = object;
     }
+    */
+    
+    
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -505,7 +510,7 @@
 - (void)configureCheckmarkForCell:(UITableViewCell *)cell withEvent:(Event *)event
 {
     
-    // thisadds a checkmark in the label by the cell if eventChecked is true
+    // this adds a checkmark in the label by the cell if eventChecked is true
     
     EventCell *eventCell = (EventCell *)cell;
     if (event.eventChecked) {
@@ -576,8 +581,8 @@
     }
     
     // then update the table?
-    self.fetchedResultsController = nil;
-    [self.tableView reloadData];
+    //self.fetchedResultsController = nil;
+    //[self.tableView reloadData];
     
     
 }

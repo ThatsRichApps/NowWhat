@@ -331,6 +331,14 @@
 }
 
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    // This closes the keyboard on done
+    
+    [textField resignFirstResponder];
+    
+    return YES;
+}
 
 
 

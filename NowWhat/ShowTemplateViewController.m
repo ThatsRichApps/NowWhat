@@ -364,9 +364,6 @@
     // strip the date off of unmanagedEvent.eventTime
     templateEvent.eventTime = unmanagedEvent.eventTime;
     
-    
-    
-    
     NSLog (@"adding templateEvent at %@", templateEvent.eventTime);
     NSLog (@"Text is: %@", templateEvent.eventText);
 
@@ -394,6 +391,60 @@
     
 }
 
+- (void)changeTemplateName;
+{
+
+    self.templateToShow.templateName = templateNameField.text;
+    
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+
+    
+    if ([textField.text isEqualToString:@""]) {
+        
+        // NSLog(@"Text field is empty");
+        
+        UIAlertView *emptyTextAlert;
+        
+        emptyTextAlert = [[UIAlertView alloc]
+                          initWithTitle:@"Please enter a template name"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+        
+        [emptyTextAlert show];
+        
+        return NO;
+        
+    }
+    
+    [textField resignFirstResponder];
+
+    self.templateToShow.templateName = templateNameField.text;
+    
+    // do I need to update all the template events too?
+    
+    for (TemplateEvent *templateEvent in [self.fetchedResultsControllerTemplateEvents fetchedObjects]) {
+        
+        templateEvent.template = self.templateToShow;
+        
+    }
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+    // then update the table?
+    self.fetchedResultsControllerTemplateEvents = nil;
+    [self.tableView reloadData];
+
+
+    return YES;
+}
 
 
 

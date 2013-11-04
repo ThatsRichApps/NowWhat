@@ -132,8 +132,9 @@
     
     self.notesView.inputAccessoryView = notesDoneButtonView;
     
-    
-    [self.eventField becomeFirstResponder];
+    // commented out - make the user click it, it works better that way
+    // maybe on add??
+    //[self.eventField becomeFirstResponder];
 
 }
 

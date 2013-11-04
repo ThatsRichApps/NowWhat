@@ -14,7 +14,7 @@
 #import "UnmanagedEvent.h"
 #import "EditEventViewController.h"
 
-@interface SaveTemplateViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, EditEventViewControllerDelgate> {
+@interface SaveTemplateViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, EditEventViewControllerDelgate, UITextFieldDelegate> {
     
     IBOutlet UITextField *templateNameField;
     IBOutlet UITableView *saveTableView;

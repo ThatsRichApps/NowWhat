@@ -15,7 +15,7 @@
 #import "EditEventViewController.h"
 #import "Schedule.h"
 
-@interface ShowTemplateViewController : UITableViewController <NSFetchedResultsControllerDelegate, EditEventViewControllerDelgate, UITableViewDataSource, UITableViewDelegate> {
+@interface ShowTemplateViewController : UITableViewController <NSFetchedResultsControllerDelegate, EditEventViewControllerDelgate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate> {
     
     
     IBOutlet UITextField *templateNameField;
