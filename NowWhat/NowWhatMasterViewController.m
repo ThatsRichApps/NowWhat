@@ -27,7 +27,7 @@
 - (void)awakeFromNib
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.clearsSelectionOnViewWillAppear = NO;
+        //self.clearsSelectionOnViewWillAppear = NO;
         self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
     }
     [super awakeFromNib];
@@ -96,6 +96,11 @@
     
     saveButtonItems = [self.toolbarItems mutableCopy];
     
+    nextEventLabel.text = @"next event";
+    timeToNextEventLabel.text = @"starts in ## minutes";
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -121,7 +126,10 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"EditEvent" sender:[tableView cellForRowAtIndexPath: indexPath]];
+    
+    Event *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    [self performSegueWithIdentifier:@"EditEvent" sender:event];
 }
 
 
@@ -228,10 +236,7 @@
     if ([[segue identifier] isEqualToString:@"EditEvent"]) {
 
         
-        // Send the EditEventViewController the appropriate event that needs editing
-        //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        lastEditedEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        lastEditedEvent = sender;
 
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
@@ -403,6 +408,8 @@
 	    abort();
 	}
     
+    // manually set the delegate?
+    
     return _fetchedResultsController;
 }    
 
@@ -567,6 +574,11 @@
         NSLog(@"Error: %@", error);
         abort();
     }
+    
+    // then update the table?
+    self.fetchedResultsController = nil;
+    [self.tableView reloadData];
+    
     
 }
 

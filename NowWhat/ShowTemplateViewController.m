@@ -18,14 +18,6 @@
     
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -49,7 +41,11 @@
     }
 
 
-    [self setTitle:self.templateToShow.templateName];
+    //[self setTitle:self.templateToShow.templateName];
+    [self setTitle:@"Template"];
+
+    // set the templateNameLabel to the tempateName
+    templateNameField.text = self.templateToShow.templateName;
 
     
 }

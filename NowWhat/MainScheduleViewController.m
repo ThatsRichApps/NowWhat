@@ -85,7 +85,7 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"ShowSchedule" sender:[tableView cellForRowAtIndexPath: indexPath]];
+    [self performSegueWithIdentifier:@"ViewSchedule" sender:[tableView cellForRowAtIndexPath: indexPath]];
 }
 
 

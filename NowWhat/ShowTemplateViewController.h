@@ -15,13 +15,19 @@
 #import "EditEventViewController.h"
 #import "Schedule.h"
 
-@interface ShowTemplateViewController : UITableViewController <NSFetchedResultsControllerDelegate, EditEventViewControllerDelgate>
+@interface ShowTemplateViewController : UITableViewController <NSFetchedResultsControllerDelegate, EditEventViewControllerDelgate, UITableViewDataSource, UITableViewDelegate> {
+    
+    
+    IBOutlet UITextField *templateNameField;
+    
+}
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerTemplateEvents;
 
 @property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) Schedule *viewSchedule;
+@property (nonatomic, retain) UITableView *tableView;
 
 @property (nonatomic, retain) Template *templateToShow;
 

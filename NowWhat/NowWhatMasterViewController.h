@@ -22,9 +22,14 @@
 @class Event;
 //@class UnmanagedEvent;
 
-@interface NowWhatMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate, PasswordViewControllerDelegate> {
+@interface NowWhatMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate, PasswordViewControllerDelegate,
+    UITableViewDelegate, UITableViewDataSource> {
     
     NSMutableArray *saveButtonItems;
+        
+    IBOutlet UILabel *nextEventLabel;
+    IBOutlet UILabel *timeToNextEventLabel;
+    
     
 }
 
@@ -35,7 +40,7 @@
 
 @property (nonatomic, weak) id <ChangeDateViewControllerDelgate> delegate;
 
-
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) NSString *viewDate;
 @property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) Schedule *viewSchedule;
