@@ -135,6 +135,22 @@
         
     }
 
+    if ([[segue identifier] isEqualToString:@"InfoListTemplates"]) {
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        MainInfoViewController *controller = (MainInfoViewController *)navigationController;
+        controller.callingView = @"InfoListTemplates";
+        
+    }
+    
+    if ([[segue identifier] isEqualToString:@"AddTemplate"]) {
+        
+        SaveTemplateViewController *controller = (SaveTemplateViewController *)[segue destinationViewController];
+        // send the data to the save template in the form of an array
+        controller.templateEvents = nil;
+        controller.managedObjectContext = self.managedObjectContext;
+        
+    }
 
 }
 

@@ -13,6 +13,8 @@
 #import "TemplateEvent.h"
 #import "UnmanagedEvent.h"
 #import "EditEventViewController.h"
+#import "MainInfoViewController.h"
+
 
 @interface SaveTemplateViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, EditEventViewControllerDelgate, UITextFieldDelegate> {
     
@@ -21,8 +23,9 @@
 
 }
 
-@property (nonatomic, retain) Template *thisTemplate;
+//@property (nonatomic, retain) Template *thisTemplate;
 @property (nonatomic, retain) NSMutableArray *templateEvents;
+@property (nonatomic, retain) NSString *templateNameForField;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 

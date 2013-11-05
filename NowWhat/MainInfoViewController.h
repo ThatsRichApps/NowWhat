@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainInfoViewController : UIViewController
+@interface MainInfoViewController : UIViewController {
+
+
+    IBOutlet UITextView *infoTextView;
+
+}
+    
+    
+@property (nonatomic, retain) NSString *callingView;
 
 @end

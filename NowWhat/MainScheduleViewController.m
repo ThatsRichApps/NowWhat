@@ -281,6 +281,18 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     
+    
+    
+    if ([[segue identifier] isEqualToString:@"InfoSchedules"]) {
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        MainInfoViewController *controller = (MainInfoViewController *)navigationController;
+        controller.callingView = @"InfoSchedules";
+        
+    }
+    
+    
+    
     if ([[segue identifier] isEqualToString:@"AddSchedule"]) {
         
         UINavigationController *navigationController = segue.destinationViewController;

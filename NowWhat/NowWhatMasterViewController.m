@@ -297,6 +297,7 @@
         SaveTemplateViewController *controller = (SaveTemplateViewController *)[segue destinationViewController];
         // send the data to the save template in the form of an array
         controller.templateEvents = [self loadEvents];
+        controller.templateNameForField = self.title;
         controller.managedObjectContext = self.managedObjectContext;
         
     }

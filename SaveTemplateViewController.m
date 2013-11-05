@@ -48,6 +48,18 @@
 
     }
     
+    // if a template name is passed in to this view, populate the templateNameField
+    
+    templateNameField.text = self.templateNameForField;
+    
+    if (self.templateEvents == nil) {
+        
+        self.templateEvents = [[NSMutableArray alloc] init];
+        
+    }
+    
+    
+    
     // add the done on the keyboard here
     
     
@@ -200,7 +212,13 @@
         
     }
     
-    
+    if ([[segue identifier] isEqualToString:@"InfoSaveTemplates"]) {
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        MainInfoViewController *controller = (MainInfoViewController *)navigationController;
+        controller.callingView = @"InfoSaveTemplates";
+        
+    }
 }
 
 

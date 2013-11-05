@@ -27,6 +27,30 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    if ([self.callingView isEqualToString:@"InfoSchedules"]) {
+        
+        infoTextView.text = @"this was called from the schedule page";
+        
+    }
+    
+    if ([self.callingView isEqualToString:@"InfoSaveTemplates"]) {
+        
+        infoTextView.text = @"this was called from the save templates page";
+        
+    }
+
+    if ([self.callingView isEqualToString:@"InfoListTemplates"]) {
+        
+        infoTextView.text = @"this was called from the list templates page";
+        
+    }
+
+    
+    
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning

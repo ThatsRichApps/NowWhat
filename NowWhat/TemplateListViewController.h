@@ -11,8 +11,8 @@
 #import "Template.h"
 #import "TemplateCell.h"
 #import "ShowTemplateViewController.h"
-
-
+#import "SaveTemplateViewController.h"
+#import "MainInfoViewController.h"
 
 @interface TemplateListViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
     

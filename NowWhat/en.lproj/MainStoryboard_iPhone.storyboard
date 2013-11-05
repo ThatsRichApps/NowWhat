@@ -120,7 +120,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="ZcW-eY-chy" kind="push" identifier="Info" id="Trj-PS-pJm"/>
+                                    <segue destination="ZcW-eY-chy" kind="push" identifier="InfoSchedules" id="Trj-PS-pJm"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -319,6 +319,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="Mdj-k1-wb2"/>
+                    <connections>
+                        <outlet property="infoTextView" destination="7Gb-qq-KBy" id="55O-wv-dOp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LjF-wr-41L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -687,7 +690,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem systemItem="add" id="I8E-oY-gGv"/>
+                        <barButtonItem systemItem="add" id="I8E-oY-gGv">
+                            <connections>
+                                <segue destination="gpu-0t-xWU" kind="push" identifier="AddTemplate" id="28w-5b-w2M"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Nne-qz-Kfc"/>
                         <barButtonItem style="plain" id="V7N-YC-arr">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="Yyc-CO-CcV">
@@ -817,7 +824,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="86" sectionHeaderHeight="22" sectionFooterHeight="22" id="Yz0-pl-cQe">
-                                <rect key="frame" x="0.0" y="98" width="320" height="362"/>
+                                <rect key="frame" x="0.0" y="97" width="320" height="362"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -904,7 +911,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="ZcW-eY-chy" kind="push" identifier="InfoSaveTemplate" id="rCf-ZT-0e7"/>
+                                    <segue destination="ZcW-eY-chy" kind="push" identifier="InfoSaveTemplates" id="rCf-ZT-0e7"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -1009,122 +1016,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     <resources>
         <image name="notLocked.png" width="31" height="29"/>
     </resources>
-    <classes>
-        <class className="AddScheduleViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AddScheduleViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel"/>
-                <relationship kind="action" name="save"/>
-                <relationship kind="outlet" name="scheduleField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="ChangeDateViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ChangeDateViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel"/>
-                <relationship kind="action" name="changeDayOfTheWeek"/>
-                <relationship kind="action" name="resetDatePicker"/>
-                <relationship kind="action" name="save"/>
-                <relationship kind="outlet" name="backToToday" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="dayOfTheWeek" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="eventDatePicker" candidateClass="UIDatePicker"/>
-            </relationships>
-        </class>
-        <class className="EditEventViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditEventViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel"/>
-                <relationship kind="action" name="save"/>
-                <relationship kind="outlet" name="dateField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="eventField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="notesView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="timePicker" candidateClass="UIDatePicker"/>
-            </relationships>
-        </class>
-        <class className="EventCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EventCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="eventCheckLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="eventNotesLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="eventTextLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="eventTimeLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="MainInfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainInfoViewController.h"/>
-        </class>
-        <class className="MainScheduleViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainScheduleViewController.h"/>
-        </class>
-        <class className="NowWhatMasterViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NowWhatMasterViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="printSchedule:"/>
-                <relationship kind="outlet" name="nextEventLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="timeToNextEventLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="PasswordViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PasswordViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="feedbackLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="passwordFour" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordOne" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordThree" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="passwordTwo" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="realPasswordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="setPasswordLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SaveTemplateViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SaveTemplateViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel"/>
-                <relationship kind="action" name="save"/>
-                <relationship kind="outlet" name="saveTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="templateNameField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="ScheduleCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ScheduleCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="scheduleNameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="ShareAndPrintViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShareAndPrintViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel"/>
-            </relationships>
-        </class>
-        <class className="ShowTemplateViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowTemplateViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="loadTemplateEvents"/>
-                <relationship kind="outlet" name="templateNameField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="TemplateCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TemplateCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="templateNameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="TemplateListViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TemplateListViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="templateNameLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Trj-PS-pJm"/>
+        <segue reference="28w-5b-w2M"/>
         <segue reference="fpA-wu-Xzm"/>
-        <segue reference="rCf-ZT-0e7"/>
     </inferredMetricsTieBreakers>
 </document>
