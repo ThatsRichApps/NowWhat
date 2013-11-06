@@ -205,7 +205,9 @@
         NSLog (@"%f - %ld -%ld - %ld", timeToNextEvent, hours, secsLeftover, minutes);
         
         //countdownLabel.font = [UIFont fontWithName:@"Whiteboard Modern" size:20];
-        [text appendString:[NSString stringWithFormat:@"Countdown to next event: %ld hours and %ld minutes", hours, minutes]];
+        //[text appendString:[NSString stringWithFormat:@"Countdown to next event: %ld hours and %ld minutes", hours, minutes]];
+        [text appendString:[NSString stringWithFormat:@"Next event starts: "]];
+        
         
         NSLog(@"Countdown to next event: %ld hours and %ld minutes", hours, minutes);
         
@@ -229,7 +231,7 @@
             
         }
         
-        [text appendString:[NSString stringWithFormat:@"%ld minutes</font><br>", minutes]];
+        [text appendString:[NSString stringWithFormat:@"%ld minutes", minutes]];
         
         nextEventLabel.text = nextEvent.eventText;
         timeToNextEventLabel.text = text;
