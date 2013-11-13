@@ -26,11 +26,17 @@
 
 + (NSString *)formatEventTime: (NSDate *)dateTime {
     
+    // Check the default time display preference
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    //[formatter setDateFormat:@"yyyy"];
-    [formatter setDateFormat:@"hh:mm a"];
-    
+ 
+    if ([preferences boolForKey:@"hour24"]) {
+        [formatter setDateFormat:@"kk:mm"];
+    } else {
+        [formatter setDateFormat:@"hh:mm a"];
+    }
+
     //Optionally for time zone converstions
     //[formatter setTimeZone:[NSTimeZone timeZoneWithName:@"..."]];
     
@@ -42,6 +48,7 @@
 }
 
 + (NSString *)returnDateString: (NSDate *)dateTime {
+    
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     //[formatter setDateFormat:@"yyyy"];

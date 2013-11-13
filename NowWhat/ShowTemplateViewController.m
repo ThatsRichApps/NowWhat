@@ -297,6 +297,7 @@
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventTime] ;
     
     eventCell.eventNotesLabel.text = event.eventNotes;
+    eventCell.eventNotesView.text = event.eventNotes;
     
     
 }

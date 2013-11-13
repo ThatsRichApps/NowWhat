@@ -7,12 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
-@interface ShareAndPrintViewController : UIViewController
+@interface ShareAndPrintViewController : UIViewController <MFMailComposeViewControllerDelegate> {
+    
+    
+    
+    
+}
 
 
 
 - (IBAction)cancel;
+- (IBAction)mailData;
 
 
 

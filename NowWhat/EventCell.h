@@ -14,5 +14,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *eventNotesLabel;
 @property (nonatomic, strong) IBOutlet UILabel *eventCheckLabel;
 @property (nonatomic, strong) IBOutlet UILabel *eventTextLabel;
+@property (nonatomic, strong) IBOutlet UITextView *eventNotesView;
+
 
 @end

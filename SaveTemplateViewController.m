@@ -82,6 +82,7 @@
     eventCell.eventTextLabel.text = event.eventText;
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventTime];
     eventCell.eventNotesLabel.text = event.eventNotes;
+    eventCell.eventNotesView.text = event.eventNotes;
     
     //NSLog(@"text is %@", event.eventText);
     
@@ -252,6 +253,35 @@
         
     }
 
+    // now check to see if there is already a schedule with that name
+    // if so, should I let them overwrite it?
+        
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = [NSEntityDescription entityForName:@"Template" inManagedObjectContext:self.managedObjectContext];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"templateName like %@", templateNameField.text];
+        
+    NSError *error = nil;
+    if ([self.managedObjectContext countForFetchRequest:fetchRequest error:&error] > 0) {
+            
+        NSLog(@"this schedule exists");
+            
+            
+        UIAlertView *emptyTextAlert;
+            
+        emptyTextAlert = [[UIAlertView alloc]
+                              initWithTitle:@"A template with this name already exists"
+                              message:@""
+                              delegate:self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+            
+        [emptyTextAlert show];
+            
+        return;
+            
+            
+    }
+        
     // Add these events to the template database
     // do error checking and save to managedObjectContext
     Template *template = nil;
@@ -278,7 +308,7 @@
             
     }
         
-    NSError *error;
+    error = nil;
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"Error: %@", error);
         abort();

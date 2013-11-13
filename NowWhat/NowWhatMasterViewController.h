@@ -26,7 +26,12 @@
     UITableViewDelegate, UITableViewDataSource> {
     
     NSMutableArray *saveButtonItems;
+    UIBarButtonItem *saveAddButton;
         
+    Event *lastEvent;
+    Event *nextEvent;
+        
+    IBOutlet UILabel *scheduleLabel;
     IBOutlet UILabel *nextEventLabel;
     IBOutlet UILabel *timeToNextEventLabel;
     

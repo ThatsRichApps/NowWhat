@@ -72,7 +72,36 @@
         
     }
     
-    // update master controller with new baseTime
+    // now check to see if there is already a schedule with that name
+    // if so, should I let them overwrite it?
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = [NSEntityDescription entityForName:@"Schedule" inManagedObjectContext:self.managedObjectContext];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"scheduleName like %@", scheduleField.text];
+    
+    NSError *error = nil;
+    if ([self.managedObjectContext countForFetchRequest:fetchRequest error:&error] > 0) {
+        
+        NSLog(@"this schedule exists");
+        
+        
+        UIAlertView *emptyTextAlert;
+        
+        emptyTextAlert = [[UIAlertView alloc]
+                          initWithTitle:@"A schedule with this name already exists"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+        
+        [emptyTextAlert show];
+        
+        return;
+        
+        
+    }
+    
+    // have it's delegate (MainScheduleViewController) add a new field
     [self.delegate addScheduleView:self addSchedule:scheduleField.text];
     
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];

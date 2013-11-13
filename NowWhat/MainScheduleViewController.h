@@ -29,5 +29,6 @@
 
 @property (nonatomic, retain) NSString *viewDate;
 @property (nonatomic, retain) NSDate *viewNSDate;
+@property (nonatomic, retain) Schedule *viewSchedule;
 
 @end

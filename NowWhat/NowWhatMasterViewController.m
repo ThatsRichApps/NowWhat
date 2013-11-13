@@ -7,7 +7,9 @@
 //
 
 #import "NowWhatMasterViewController.h"
-
+#define kViewNSDate @"viewNSDate"
+#define kViewDate @"viewDate"
+#define kViewSchedule @"viewSchedule"
 
 @interface NowWhatMasterViewController () {
     
@@ -37,6 +39,15 @@
 {
     [super viewDidLoad];
     
+    
+    // When this view is loaded, persist userDefaults for the day, date, and schedule
+    
+    NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:self.viewNSDate forKey:kViewNSDate];
+    [defaults setObject:self.viewDate forKey:kViewDate];
+    [defaults setObject:self.viewSchedule.scheduleName forKey:kViewSchedule];
+    [defaults synchronize];
     
     /* viewDate and viewNSDate should be passed from mainscheduleviewcontroller
     // if the current viewDate and viewNSDate are nil, set them to today
@@ -95,11 +106,31 @@
     // show the bottom toolbar
     [self.navigationController setToolbarHidden:NO];
     
+    // save the buttons for later if you lock and unlock it
     saveButtonItems = [self.toolbarItems mutableCopy];
+    saveAddButton = self.navigationItem.rightBarButtonItem;
     
-    nextEventLabel.text = @"next event";
-    timeToNextEventLabel.text = @"starts in ## minutes";
+    scheduleLabel.text = [NSString stringWithFormat:@"Schedule: %@", self.viewSchedule.scheduleName];
+    nextEventLabel.text = @"";
+    timeToNextEventLabel.text = @"";
     
+    // run once now to initiallize it
+    [NSTimer scheduledTimerWithTimeInterval: 1.0
+                                     target: self
+                                   selector: @selector(updateTime)
+                                   userInfo: nil
+                                    repeats: NO];
+    
+    // repeat every # seconds - low for testing, up to 30 or so for release
+    [NSTimer scheduledTimerWithTimeInterval: 5.0
+                                     target: self
+                                   selector: @selector(updateTime)
+                                   userInfo: nil
+                                    repeats: YES];
+    
+    
+    nextEventLabel.text = @"";
+    timeToNextEventLabel.text = @"";
     
     
 }
@@ -115,6 +146,135 @@
 - (void)viewDidUnload {
     self.fetchedResultsController = nil;
 }
+
+
+-(void) updateTime {
+    
+    // NSLog(@"Update the time and check Now What?");
+    
+    NSDateFormatter *dayFormatter =[[NSDateFormatter alloc] init];
+    
+    NSDate *dateNow = [NSDate date];
+    
+    // get todays day with day formatter and compare to eventDate
+    [dayFormatter setDateFormat:@"MMddYYYY"];
+    
+    NSString *todaysDate = [dayFormatter stringFromDate:[NSDate date]];
+    
+    // NSLog (@"Todays date is \'%@\' - compare to %@", todaysDate, rootView.eventDate);
+    
+    BOOL isToday;
+    
+    if ([todaysDate isEqualToString:self.viewDate]) {
+        
+        NSLog(@"it is set to today");
+        
+        isToday = TRUE;
+        
+        
+    } else {
+        
+        NSLog(@"it is NOT set to today");
+        // Only show the date
+        
+        
+        nextEventLabel.text = @"Set date to today to see next event";
+        timeToNextEventLabel.text = @"";
+        
+        isToday = FALSE;
+        
+        
+    }
+    
+    lastEvent = nil;
+    nextEvent = nil;
+    
+    //float timeFromLastEvent;
+    float timeToNextEvent;
+    
+    // Go through the dayData events one at a time to see which one was last and next
+    for (Event *thisEvent in [self.fetchedResultsController fetchedObjects]) {
+        
+        // Create an NSDate variable that can be compared to dateNow
+        switch ([dateNow compare:thisEvent.eventNSDate]) {
+                
+            case NSOrderedSame:
+                
+                lastEvent = thisEvent;
+                //timeFromLastEvent = (long) [dateNow timeIntervalSinceDate:thisEventDate];
+                break;
+                
+            case NSOrderedDescending:
+                
+                lastEvent = thisEvent;
+                //timeFromLastEvent = (long) [dateNow timeIntervalSinceDate:thisEventDate];
+                break;
+                
+            case NSOrderedAscending:
+                
+                nextEvent = thisEvent;
+                timeToNextEvent = (long) [thisEvent.eventNSDate timeIntervalSinceDate:dateNow];
+                break;
+                
+        }
+        
+        if (nextEvent != nil) {
+            break;
+        }
+        
+        
+    }
+    
+    NSMutableString *text = [[NSMutableString alloc] init];
+    
+    if ((nextEvent != nil)&&(isToday)) {
+        
+        long hours = (long) timeToNextEvent / 3600;
+        long secsLeftover = (long) timeToNextEvent % 3600;
+        long minutes = (long) secsLeftover / 60;
+        
+        // round minutes up
+        minutes = minutes + 1;
+        
+        NSLog (@"%f - %ld -%ld - %ld", timeToNextEvent, hours, secsLeftover, minutes);
+        
+        //countdownLabel.font = [UIFont fontWithName:@"Whiteboard Modern" size:20];
+        //[text appendString:[NSString stringWithFormat:@"Countdown to next event: %ld hours and %ld minutes", hours, minutes]];
+        [text appendString:[NSString stringWithFormat:@"Next event starts: "]];
+        
+        
+        NSLog(@"Countdown to next event: %ld hours and %ld minutes", hours, minutes);
+        
+        if (hours != 0) {
+            
+            NSLog (@"%ld hour", hours);
+            [text appendString:[NSString stringWithFormat:@"%ld hour", hours]];
+            
+            if (hours == 1) {
+                
+                NSLog (@" and ");
+                [text appendString:[NSString stringWithFormat:@" and "]];
+                
+                
+            } else {
+                
+                NSLog (@"s and ");
+                [text appendString:[NSString stringWithFormat:@"s and "]];
+                
+            }
+            
+        }
+        
+        [text appendString:[NSString stringWithFormat:@"%ld minutes", minutes]];
+        
+        nextEventLabel.text = [NSString stringWithFormat:@"Next Event: %@",nextEvent.eventText];
+        timeToNextEventLabel.text = text;
+        
+    }
+    
+    
+}
+
 
 #pragma mark - Table View
 
@@ -152,11 +312,15 @@
 {
     // Return NO if you do not want the specified item to be editable.
     
+    /*
     if (_isLocked) {
         return NO;
     } else {
         return YES;
     }
+    */ 
+    return YES;
+    
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -503,6 +667,9 @@
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate];
     
     eventCell.eventNotesLabel.text = event.eventNotes;
+    
+    eventCell.eventNotesView.text = event.eventNotes;
+    
 
     [self configureCheckmarkForCell:cell withEvent:event];
     
@@ -530,11 +697,21 @@
 - (void)changeDatePicker:(ChangeDateViewController *)controller didChangeDate:(NSDate *)newDate {
     
     // update the viewDate variables, reload all the new data, and update the table
-
+    
+    
+    nextEventLabel.text = @"";
+    timeToNextEventLabel.text = @"";
+    
     self.viewNSDate = newDate;
     self.viewDate = [Event returnDateString:newDate];
     
     //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
+    // update the user defaults for next time the app is loaded
+    NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:self.viewNSDate forKey:kViewNSDate];
+    [defaults setObject:self.viewDate forKey:kViewDate];
+    [defaults synchronize];
     
     // reset the title of the nav controller to the new day and date
     // Get the EEEE - day of the week for this Schedule
@@ -600,6 +777,13 @@
     lastEditedEvent.eventNSDate = unmanagedEvent.eventTime;
     lastEditedEvent.eventDate = [Event returnDateString:unmanagedEvent.eventTime];
     
+    // then update the context so that it gets saved
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
 }
 
 
@@ -610,15 +794,14 @@
     
     _isLocked = YES;
     
-    // get all the toolbar items and navbar items and set to nil ???
+    // get all the toolbar items and navbar items and set to nil ??? we do this in viewDidLoad now
     //NSMutableArray *items = [self.toolbarItems mutableCopy];
     
-    //[items removeAllObjects];
-    [self setToolbarItems:nil];
+    // I don't know if we need to set it to nil before we reset it?
+    //[self setToolbarItems:nil];
     
-    // remove the NavBar items
-    
-    [self.navigationItem setLeftBarButtonItem:nil];
+    // remove the top NavBar items
+    self.navigationItem.hidesBackButton = YES;
     [self.navigationItem setRightBarButtonItem:nil];
     
     // just add the unlock button
@@ -634,7 +817,8 @@
     
     [self setToolbarItems:[NSArray arrayWithObjects:leftSpace, lockButton,nil]];
     
-    self.tableView.allowsSelection = NO; // Keeps cells from being selectable
+    // we want the cells to be selectable now for the checkmark feature
+    //self.tableView.allowsSelection = NO; // Keeps cells from being selectable
     
     _correctPassword = newPassword;
     
@@ -646,11 +830,11 @@
     
     _isLocked = NO;
     
-    // add the buttons here
-    //[rootView createAllButtons];
-    [self setToolbarItems:nil];
+    self.navigationItem.hidesBackButton = NO;
     
+    // add the buttons here
     [self setToolbarItems:saveButtonItems];
+    [self.navigationItem setRightBarButtonItem:saveAddButton];
     
     self.tableView.allowsSelection = YES; // Lets cells from be selectable
     

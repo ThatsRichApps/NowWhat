@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class Event;
+@class Schedule;
 
 @interface Schedule : NSManagedObject
 
@@ -23,5 +24,9 @@
 - (void)removeEventObject:(Event *)value;
 - (void)addEvent:(NSSet *)values;
 - (void)removeEvent:(NSSet *)values;
+
+
++ (Schedule *) returnScheduleForName:(NSString * ) scheduleName inContext:(NSManagedObjectContext *)moc;
+
 
 @end

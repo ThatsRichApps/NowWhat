@@ -7,6 +7,9 @@
 //
 
 #import "MainScheduleViewController.h"
+#define kViewNSDate @"viewNSDate"
+#define kViewDate @"viewDate"
+#define kViewSchedule @"viewSchedule"
 
 @interface MainScheduleViewController ()
 
@@ -33,16 +36,26 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    /*
     // try a uinotification here
     UILocalNotification* localNotification = [[UILocalNotification alloc] init];
     localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
     localNotification.alertBody = @"Alert from viewdidload mainschedule";
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-    
+    */
     
     // set initial viewDate and viewNSDate here if not set, need to have them passed back from master
     // if the master changes them
+    
+    
+    // check to see if there were default settings persisted in the userdefaults
+    NSUserDefaults *previousLoad = [NSUserDefaults standardUserDefaults];
+    
+    self.viewNSDate = [previousLoad objectForKey:kViewNSDate];
+    self.viewDate = [previousLoad objectForKey:kViewDate];
+    
+    self.viewSchedule = [Schedule returnScheduleForName:[previousLoad objectForKey:kViewSchedule] inContext:self.managedObjectContext];
     
     // if the current viewDate and viewNSDate are nil, set them to today
     if (self.viewNSDate == nil) {
@@ -57,6 +70,8 @@
         
         //NSLog(@"base time is %@", self.viewNSDate);
         
+        self.viewSchedule = nil;
+        
     }
     
     self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
@@ -65,6 +80,14 @@
     
     // show the bottom toolbar
     [self.navigationController setToolbarHidden:NO];
+    
+    
+    // if the view schedule is already set, go straight to the MainView
+    
+    if (self.viewSchedule != nil) {
+        [self performSegueWithIdentifier:@"ViewPreviousSchedule" sender:self];
+    }
+    
     
 }
 
@@ -289,16 +312,13 @@
         MainInfoViewController *controller = (MainInfoViewController *)navigationController;
         controller.callingView = @"InfoSchedules";
         
-    }
-    
-    
-    
+    }    
     if ([[segue identifier] isEqualToString:@"AddSchedule"]) {
         
         UINavigationController *navigationController = segue.destinationViewController;
         AddScheduleViewController *controller = (AddScheduleViewController *)navigationController.topViewController;
         
-        //controller.managedObjectContext = self.managedObjectContext;
+        controller.managedObjectContext = self.managedObjectContext;
         controller.delegate = self;
         
     }
@@ -321,6 +341,25 @@
         controller.delegate = self;
         
     }
+    
+    if ([[segue identifier] isEqualToString:@"ViewPreviousSchedule"]) {
+        
+        UINavigationController *navigationController = segue.destinationViewController;
+        NowWhatMasterViewController *controller = (NowWhatMasterViewController *)navigationController;
+        
+        controller.managedObjectContext = self.managedObjectContext;
+        controller.viewDate = self.viewDate;
+        controller.viewNSDate = self.viewNSDate;
+        controller.viewSchedule = self.viewSchedule;
+        controller.detailViewController = self.detailViewController;
+        controller.delegate = self;
+        
+    }
+
+    
+    
+    
+    
 
 }
 

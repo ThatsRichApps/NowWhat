@@ -65,7 +65,7 @@
                     <navigationItem key="navigationItem" title="Schedules" id="ZVi-JR-XGf">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="sa4-Q7-bZA">
                             <connections>
-                                <segue destination="8f7-zS-i97" kind="modal" modalPresentationStyle="formSheet" id="QT6-JP-FA2"/>
+                                <segue destination="8f7-zS-i97" kind="modal" identifier="AddSchedule" modalPresentationStyle="formSheet" id="QT6-JP-FA2"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1012,6 +1012,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <relationships>
                 <relationship kind="outlet" name="eventCheckLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="eventNotesLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventNotesView" candidateClass="UITextView"/>
                 <relationship kind="outlet" name="eventTextLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="eventTimeLabel" candidateClass="UILabel"/>
             </relationships>
