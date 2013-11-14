@@ -10,6 +10,9 @@
 #define kViewNSDate @"viewNSDate"
 #define kViewDate @"viewDate"
 #define kViewSchedule @"viewSchedule"
+#define kIsLocked @"isLocked"
+#define kPassword @"password"
+
 
 @interface NowWhatMasterViewController () {
     
@@ -43,6 +46,8 @@
     // When this view is loaded, persist userDefaults for the day, date, and schedule
     
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
+    
+    
     
     [defaults setObject:self.viewNSDate forKey:kViewNSDate];
     [defaults setObject:self.viewDate forKey:kViewDate];
@@ -131,6 +136,16 @@
     
     nextEventLabel.text = @"";
     timeToNextEventLabel.text = @"";
+    
+    self.isLocked = [defaults boolForKey:kIsLocked];
+    
+    if (self.isLocked) {
+    
+        self.correctPassword = [defaults integerForKey:kPassword];
+        [self lockIt:nil withPassword:self.correctPassword];
+        
+    }
+
     
     
 }
@@ -423,6 +438,7 @@
         
         controller.eventToEdit = unmanagedEvent;
         controller.delegate = self;
+        controller.isLocked = self.isLocked;
         
         //controller.managedObjectContext = self.managedObjectContext;
         //NSLog(@"the event selected is %@", event.eventText);
@@ -664,11 +680,16 @@
     
     eventCell.eventTextLabel.text = event.eventText;
     
-    eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate];
-    
+    eventCell.eventTimeLabel.text = [NSString stringWithFormat:@"%@ -",[Event formatEventTime:event.eventNSDate]];
+    eventCell.eventTimeLabel.numberOfLines = 2;
+    [eventCell.eventTimeLabel sizeToFit];
+
     eventCell.eventNotesLabel.text = event.eventNotes;
     
-    eventCell.eventNotesView.text = event.eventNotes;
+    eventCell.eventNotesLabel.numberOfLines = 2;
+    [eventCell.eventNotesLabel sizeToFit];
+    
+    //eventCell.eventNotesView.text = event.eventNotes;
     
 
     [self configureCheckmarkForCell:cell withEvent:event];
@@ -822,6 +843,12 @@
     
     _correctPassword = newPassword;
     
+    // now persist isLocked and the password
+    NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
+    
+    [defaults setInteger:self.correctPassword forKey:kPassword];
+    [defaults setBool:self.isLocked forKey:kIsLocked];
+    [defaults synchronize];
     
 }
 
@@ -837,8 +864,14 @@
     [self.navigationItem setRightBarButtonItem:saveAddButton];
     
     self.tableView.allowsSelection = YES; // Lets cells from be selectable
+
+    // now persist isLocked and the password
+    NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     
-    
+    [defaults setInteger:-1 forKey:kPassword];
+    [defaults setBool:self.isLocked forKey:kIsLocked];
+    [defaults synchronize];
+
 }
 
 -(void) clickedLockButton:(id)sender{

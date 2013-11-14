@@ -14,6 +14,7 @@
 @property (nonatomic, retain) NSString * eventNotes;
 @property (nonatomic, retain) NSString * eventText;
 @property (nonatomic, retain) NSDate * eventNSDate;
+@property (nonatomic, retain) NSDate * eventEndNSDate;
 @property (nonatomic, retain) NSString * eventDate;
 @property (nonatomic, assign) BOOL eventChecked;
 @property (nonatomic, retain) NSManagedObject * schedule;

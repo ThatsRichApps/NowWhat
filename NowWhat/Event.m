@@ -14,6 +14,7 @@
 @dynamic eventNotes;
 @dynamic eventText;
 @dynamic eventNSDate;
+@dynamic eventEndNSDate;
 @dynamic eventDate;
 @dynamic eventChecked;
 @dynamic schedule;

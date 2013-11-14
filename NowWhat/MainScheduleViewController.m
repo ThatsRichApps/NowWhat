@@ -10,6 +10,7 @@
 #define kViewNSDate @"viewNSDate"
 #define kViewDate @"viewDate"
 #define kViewSchedule @"viewSchedule"
+#define kIsLocked @"isLocked"
 
 @interface MainScheduleViewController ()
 

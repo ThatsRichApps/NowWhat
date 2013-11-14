@@ -12,6 +12,7 @@
 @implementation TemplateEvent
 
 @dynamic eventTime;
+@dynamic eventEndTime;
 @dynamic eventText;
 @dynamic eventNotes;
 @dynamic template;

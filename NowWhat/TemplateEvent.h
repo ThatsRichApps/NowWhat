@@ -15,6 +15,7 @@
 @property (nonatomic, retain) NSDate * eventTime;
 @property (nonatomic, retain) NSString * eventText;
 @property (nonatomic, retain) NSString * eventNotes;
+@property (nonatomic, retain) NSDate * eventEndTime;
 @property (nonatomic, retain) NSManagedObject *template;
 
 @end

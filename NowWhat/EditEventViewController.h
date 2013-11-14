@@ -30,13 +30,21 @@
 
 @interface EditEventViewController : UITableViewController {
     
-    IBOutlet UIDatePicker *timePicker;
+    UIDatePicker *timePicker;
+    IBOutlet UITextField *eventField;
+    IBOutlet UITextField *dateField;
+    IBOutlet UITextView *notesView;
+    IBOutlet UITextField *endDateField;
+    IBOutlet UILabel *endDateLabel;
     
+    NSString *eventText;
+    NSString *eventNotes;
+    NSDate *eventNSDate;
+    BOOL eventChecked;
+
+
 }
 
-@property (nonatomic, strong) IBOutlet UITextField *eventField;
-@property (nonatomic, strong) IBOutlet UITextField *dateField;
-@property (nonatomic, strong) IBOutlet UITextView *notesView;
 @property (nonatomic, assign) BOOL isLocked;
     
 //@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;

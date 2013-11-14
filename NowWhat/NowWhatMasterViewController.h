@@ -22,7 +22,7 @@
 @class Event;
 //@class UnmanagedEvent;
 
-@interface NowWhatMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate, PasswordViewControllerDelegate,
+@interface NowWhatMasterViewController : UIViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate, PasswordViewControllerDelegate,
     UITableViewDelegate, UITableViewDataSource> {
     
     NSMutableArray *saveButtonItems;

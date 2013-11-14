@@ -16,10 +16,6 @@
 
 @implementation EditEventViewController {
     
-    NSString *eventText;
-    NSString *eventNotes;
-    NSDate *eventNSDate;
-    BOOL eventChecked;
 
 }
 
@@ -67,9 +63,9 @@
     
     NSString *eventTime = [Event formatEventTime:self.baseTime];
     //NSString *eventText = @"This is the Event Text";
-    self.dateField.text = eventTime;
-    self.eventField.text = eventText;
-    self.notesView.text = eventNotes;
+    dateField.text = eventTime;
+    eventField.text = eventText;
+    notesView.text = eventNotes;
     
     //NSLog(@"eventTime is %@", eventTime);
     
@@ -83,7 +79,7 @@
     
     timePicker = timePickerView;
     
-    self.dateField.inputView = timePicker;
+    dateField.inputView = timePicker;
     
     
     // create a done view + done button, attach to it a doneClicked action, and place it in a toolbar as an accessory input view...
@@ -104,16 +100,16 @@
     [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:leftSpace,doneButton,leftSpace, nil]];
     
     // Plug the keyboardDoneButtonView into the text field...
-    _dateField.inputAccessoryView = keyboardDoneButtonView;
+    dateField.inputAccessoryView = keyboardDoneButtonView;
     
     // setup the notesView UITextiew
-    [_notesView setTextAlignment:UITextAlignmentLeft];
+    [notesView setTextAlignment:UITextAlignmentLeft];
     
     // For the border and rounded corners
     // uses quartcore framework, needs to be added to .h file and to target
-    [[_notesView layer] setBorderColor:[[UIColor blackColor] CGColor]];
-    [[_notesView layer] setBorderWidth:0.8];
-    [[_notesView layer] setCornerRadius:10];
+    [[notesView layer] setBorderColor:[[UIColor blackColor] CGColor]];
+    [[notesView layer] setBorderWidth:0.8];
+    [[notesView layer] setCornerRadius:10];
     
     //[notesView setText:thisEvent.eventNotes];
     
@@ -130,12 +126,39 @@
     
     [notesDoneButtonView setItems:[NSArray arrayWithObjects:leftSpace,notesDoneButton,leftSpace, nil]];
     
-    self.notesView.inputAccessoryView = notesDoneButtonView;
+    notesView.inputAccessoryView = notesDoneButtonView;
     
     // commented out - make the user click it, it works better that way
     // maybe on add??
     //[self.eventField becomeFirstResponder];
 
+    if (_isLocked) {
+        
+        // lock all the fields
+        [notesView setEditable:NO];
+        [eventField setEnabled:NO];
+        [dateField setEnabled:NO];
+        
+        // and hide the save button
+        [self.navigationItem setRightBarButtonItem:nil];
+        
+    }
+    
+    // check to see if we want to use end times, if not don't show those fields
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    
+    if (![preferences boolForKey:@"useEndTimes"]) {
+    
+        endDateField.hidden = YES;
+        endDateLabel.hidden = YES;
+    
+    }
+    
+    
+    
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -158,8 +181,8 @@
     
     
     UnmanagedEvent *unmanagedEvent = [[UnmanagedEvent alloc] init];
-    unmanagedEvent.eventText = self.eventField.text;
-    unmanagedEvent.eventNotes = self.notesView.text;
+    unmanagedEvent.eventText = eventField.text;
+    unmanagedEvent.eventNotes = notesView.text;
     unmanagedEvent.eventTime = timePicker.date;
     
     // check if event was edited or added
@@ -180,7 +203,7 @@
 - (void)doneClicked:(id)sender {
     
     // write out the date in whatever format is specified in the Event formatEventTime method!
-    self.dateField.text = [Event formatEventTime:timePicker.date];
+    dateField.text = [Event formatEventTime:timePicker.date];
     
     /*// get the time from the UIDate Picker
     // Get the Day for this Schedule
@@ -195,13 +218,13 @@
     self.dateField.text = timeString;
     */
     
-    [self.dateField resignFirstResponder];
+    [dateField resignFirstResponder];
 
 }
 
 - (void)notesDoneClicked:(id)sender {
     
-    [self.notesView resignFirstResponder];
+    [notesView resignFirstResponder];
     
 }
 
