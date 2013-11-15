@@ -51,12 +51,13 @@
     }
     
     // also figure out what to do with notifications here
+    /*
     UILocalNotification* localNotification = [[UILocalNotification alloc] init];
     localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
     localNotification.alertBody = @"Alert message goes here";
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-    
+    */
     
     
     return YES;
@@ -189,6 +190,20 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     
     NSLog (@"The didReceiveLocalNotification method in the app delegate was called, hooray.");
+    
+    // pop up an alert view
+    UIAlertView *emptyTextAlert;
+    
+    emptyTextAlert = [[UIAlertView alloc]
+                      initWithTitle:[NSString stringWithFormat:@"Notification:"]
+                      message:[NSString stringWithFormat:@"%@", notification.alertBody]
+                      delegate:self
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil];
+    
+    [emptyTextAlert show];
+    
+    
     
 }
 

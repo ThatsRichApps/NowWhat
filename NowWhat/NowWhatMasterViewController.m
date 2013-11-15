@@ -167,6 +167,8 @@
     
     // NSLog(@"Update the time and check Now What?");
     
+    Event *currentAlert = nextEvent;
+    
     NSDateFormatter *dayFormatter =[[NSDateFormatter alloc] init];
     
     NSDate *dateNow = [NSDate date];
@@ -285,6 +287,21 @@
         nextEventLabel.text = [NSString stringWithFormat:@"Next Event: %@",nextEvent.eventText];
         timeToNextEventLabel.text = text;
         
+        // whenever the next event changes, add a new alert (remove the last one?)
+        // at three minutes until the next event, create a notification that will go off in two minutes
+        //if ((hours == 0)&&(minutes == 3)) {
+            
+        if (currentAlert != nextEvent) {
+        
+            [[UIApplication sharedApplication] cancelAllLocalNotifications];
+            NSLog(@"cancelling previous notifications, setting notification for the next event");
+            UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+            localNotification.fireDate = [nextEvent.eventNSDate dateByAddingTimeInterval:-60];
+            localNotification.alertBody = [NSString stringWithFormat:@"One minute till event: %@", nextEvent.eventText];
+            localNotification.timeZone = [NSTimeZone defaultTimeZone];
+            [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+ 
+        }
     }
     
     

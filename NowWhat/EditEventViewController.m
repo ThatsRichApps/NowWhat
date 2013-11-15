@@ -92,8 +92,8 @@
     
     UIDatePicker *timeEndPickerView = [[UIDatePicker alloc] init];
     
-    [timePickerView setDatePickerMode:UIDatePickerModeTime];
-    [timePickerView setDate:[self.baseTime dateByAddingTimeInterval:60*60] animated:YES];
+    [timeEndPickerView setDatePickerMode:UIDatePickerModeTime];
+    [timeEndPickerView setDate:[self.baseTime dateByAddingTimeInterval:60*60] animated:YES];
     
     timeEndPicker = timeEndPickerView;
     
