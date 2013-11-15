@@ -47,6 +47,30 @@
     
 }
 
++ (BOOL) scheduleNameExists: (NSString *)scheduleNameField inMOC:(NSManagedObjectContext *)moc {
+    
+    // now check to see if there is already a schedule with that name
+    // if so, should I let them overwrite it?
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = [NSEntityDescription entityForName:@"Schedule" inManagedObjectContext:moc];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"scheduleName like %@", scheduleNameField];
+    
+    NSError *error = nil;
+    if ([moc countForFetchRequest:fetchRequest error:&error] > 0) {
+        
+        NSLog(@"this schedule exists");
+        
+        return TRUE;
+        
+        
+    } else {
+        
+        return FALSE;
+        
+    }
+    
+}
 
 
 

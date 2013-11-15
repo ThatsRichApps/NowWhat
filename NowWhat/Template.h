@@ -25,4 +25,6 @@
 - (void)addEvents:(NSSet *)values;
 - (void)removeEvents:(NSSet *)values;
 
++ (BOOL) templateNameExists: (NSString *)templateNameField inMOC:(NSManagedObjectContext *)moc;
+
 @end

@@ -53,6 +53,13 @@
     // check to see if there were default settings persisted in the userdefaults
     NSUserDefaults *previousLoad = [NSUserDefaults standardUserDefaults];
     
+    // check last the time the app was last loaded
+    // if it's been more than 12 hours, reset to today instead of the previous viewNSDate
+    
+    
+    
+    
+    
     self.viewNSDate = [previousLoad objectForKey:kViewNSDate];
     self.viewDate = [previousLoad objectForKey:kViewDate];
     

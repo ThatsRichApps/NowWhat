@@ -16,7 +16,8 @@
 #import "MainInfoViewController.h"
 
 
-@interface SaveTemplateViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, EditEventViewControllerDelgate, UITextFieldDelegate> {
+@interface SaveTemplateViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, EditEventViewControllerDelgate,
+    UITextFieldDelegate, UIAlertViewDelegate> {
     
     IBOutlet UITextField *templateNameField;
     IBOutlet UITableView *saveTableView;

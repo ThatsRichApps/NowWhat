@@ -27,6 +27,7 @@
 
 
 + (Schedule *) returnScheduleForName:(NSString * ) scheduleName inContext:(NSManagedObjectContext *)moc;
++ (BOOL) scheduleNameExists: (NSString *)scheduleNameField inMOC:(NSManagedObjectContext *)moc;
 
 
 @end

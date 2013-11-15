@@ -31,6 +31,8 @@
 @interface EditEventViewController : UITableViewController {
     
     UIDatePicker *timePicker;
+    UIDatePicker *timeEndPicker;
+
     IBOutlet UITextField *eventField;
     IBOutlet UITextField *dateField;
     IBOutlet UITextView *notesView;

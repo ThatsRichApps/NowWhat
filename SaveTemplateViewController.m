@@ -253,18 +253,12 @@
         
     }
 
-    // now check to see if there is already a schedule with that name
+    // now check to see if there is already a template with that name
     // if so, should I let them overwrite it?
         
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    fetchRequest.entity = [NSEntityDescription entityForName:@"Template" inManagedObjectContext:self.managedObjectContext];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"templateName like %@", templateNameField.text];
-        
-    NSError *error = nil;
-    if ([self.managedObjectContext countForFetchRequest:fetchRequest error:&error] > 0) {
+    if ([Template templateNameExists:templateNameField.text inMOC:self.managedObjectContext]) {
             
-        NSLog(@"this schedule exists");
-            
+        NSLog(@"this template exists");
             
         UIAlertView *emptyTextAlert;
             
@@ -272,8 +266,8 @@
                               initWithTitle:@"A template with this name already exists"
                               message:@""
                               delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Replace", @"Merge", Nil];
             
         [emptyTextAlert show];
             
@@ -308,7 +302,7 @@
             
     }
         
-    error = nil;
+    NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"Error: %@", error);
         abort();
@@ -317,6 +311,47 @@
     [[self navigationController] popViewControllerAnimated:YES];
 
 }
+
+// respond to the alert view regarding existing template name
+
+- (void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    NSLog(@"clicked button %@", buttonTitle);
+    
+    
+    if ([buttonTitle isEqualToString:@"Merge"]) {
+        
+        NSLog(@"merge the new data with the existing template");
+        
+        
+    } else if ([buttonTitle isEqualToString:@"Replace"]) {
+
+        NSLog(@"replace the existing template");
+        
+        // maybe put up another alert that you will be deleting the previous template?
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+}
+
+
+
+
+
+
+
 
 #pragma mark - EditEventViewControllerDelegate
 

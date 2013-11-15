@@ -74,12 +74,7 @@
     // now check to see if there is already a schedule with that name
     // if so, should I let them overwrite it?
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    fetchRequest.entity = [NSEntityDescription entityForName:@"Schedule" inManagedObjectContext:self.managedObjectContext];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"scheduleName like %@", scheduleField.text];
-    
-    NSError *error = nil;
-    if ([self.managedObjectContext countForFetchRequest:fetchRequest error:&error] > 0) {
+    if ([Schedule scheduleNameExists:scheduleField.text inMOC:self.managedObjectContext]) {
         
         NSLog(@"this schedule exists");
         

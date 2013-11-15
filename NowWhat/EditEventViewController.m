@@ -62,10 +62,15 @@
     }
     
     NSString *eventTime = [Event formatEventTime:self.baseTime];
+    
+    NSString *endTime = [Event formatEventTime:[self.baseTime dateByAddingTimeInterval:60*60]];
+    
+    
     //NSString *eventText = @"This is the Event Text";
     dateField.text = eventTime;
     eventField.text = eventText;
     notesView.text = eventNotes;
+    endDateField.text = endTime;
     
     //NSLog(@"eventTime is %@", eventTime);
     
@@ -80,6 +85,19 @@
     timePicker = timePickerView;
     
     dateField.inputView = timePicker;
+    
+    
+    //NSDate *newDate = [oldDate dateByAddingTimeInterval:hrs*60*60];
+    // Now setup the end time picker
+    
+    UIDatePicker *timeEndPickerView = [[UIDatePicker alloc] init];
+    
+    [timePickerView setDatePickerMode:UIDatePickerModeTime];
+    [timePickerView setDate:[self.baseTime dateByAddingTimeInterval:60*60] animated:YES];
+    
+    timeEndPicker = timeEndPickerView;
+    
+    endDateField.inputView = timeEndPicker;
     
     
     // create a done view + done button, attach to it a doneClicked action, and place it in a toolbar as an accessory input view...
@@ -101,6 +119,12 @@
     
     // Plug the keyboardDoneButtonView into the text field...
     dateField.inputAccessoryView = keyboardDoneButtonView;
+    
+    
+    
+    
+    
+    
     
     // setup the notesView UITextiew
     [notesView setTextAlignment:UITextAlignmentLeft];

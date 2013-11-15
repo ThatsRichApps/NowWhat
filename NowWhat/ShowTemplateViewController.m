@@ -392,15 +392,10 @@
     
 }
 
-- (void)changeTemplateName;
-{
-
-    self.templateToShow.templateName = templateNameField.text;
-    
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 
+    
     
     if ([textField.text isEqualToString:@""]) {
         
@@ -421,11 +416,32 @@
         
     }
     
-    [textField resignFirstResponder];
+    // now check to see if there is already a template with that name
+    // if so, should I let them overwrite it?
+    
+    if ([Template templateNameExists:templateNameField.text inMOC:self.managedObjectContext]) {
+        
+        NSLog(@"this template exists");
+        
+        UIAlertView *emptyTextAlert;
+        
+        emptyTextAlert = [[UIAlertView alloc]
+                          initWithTitle:@"A template with this name already exists"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"Replace", @"Merge", Nil];
+        
+        [emptyTextAlert show];
+        
+        return NO;
+        
+    }
 
+    
     self.templateToShow.templateName = templateNameField.text;
     
-    // do I need to update all the template events too?
+    // do I need to update all the template events too? - yup
     
     for (TemplateEvent *templateEvent in [self.fetchedResultsControllerTemplateEvents fetchedObjects]) {
         
@@ -443,7 +459,8 @@
     self.fetchedResultsControllerTemplateEvents = nil;
     [self.tableView reloadData];
 
-
+    [textField resignFirstResponder];
+    
     return YES;
 }
 
