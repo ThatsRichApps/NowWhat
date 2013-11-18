@@ -15,7 +15,7 @@
 
 @protocol AddScheduleViewControllerDelgate <NSObject>
 
-- (void)addScheduleView:(AddScheduleViewController *)controller addSchedule:(NSString *)scheduleName;
+- (void)addScheduleWithName:(NSString *)scheduleName;
 
 @end
 

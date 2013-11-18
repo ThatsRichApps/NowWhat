@@ -96,7 +96,7 @@
     }
     
     // have it's delegate (MainScheduleViewController) add a new field
-    [self.delegate addScheduleView:self addSchedule:scheduleField.text];
+    [self.delegate addScheduleWithName:scheduleField.text];
     
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }

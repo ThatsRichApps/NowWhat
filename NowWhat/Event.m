@@ -176,6 +176,22 @@
     
 }
 
++ (NSString *)JSONEventTime: (NSDate *)dateTime {
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    //[formatter setDateFormat:@"kk:mm"];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS"];
+
+    //Optionally for time zone converstions
+    //[formatter setTimeZone:[NSTimeZone timeZoneWithName:@"..."]];
+    
+    NSString *timeFormatted = [formatter stringFromDate:dateTime];
+    
+    return (timeFormatted);
+    
+    
+}
 
 
 

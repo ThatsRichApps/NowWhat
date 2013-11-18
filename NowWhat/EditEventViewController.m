@@ -199,6 +199,24 @@
 - (IBAction)save
 {
     
+    // return an error if the field is empty
+    if ([eventField.text length] == 0) {
+        
+        UIAlertView *emptyTextAlert;
+        
+        emptyTextAlert = [[UIAlertView alloc]
+                          initWithTitle:@"Please enter an event name"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+        
+        [emptyTextAlert show];
+        
+        return;
+        
+    }
+
     // update master controller with new baseTime
     self.baseTime = timePicker.date;
     [self.delegate editEventView:self didChangeTime:self.baseTime];

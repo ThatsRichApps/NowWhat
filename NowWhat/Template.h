@@ -26,5 +26,6 @@
 - (void)removeEvents:(NSSet *)values;
 
 + (BOOL) templateNameExists: (NSString *)templateNameField inMOC:(NSManagedObjectContext *)moc;
-
++ (NSNumber *) getNextTemplateOrderInMOC:(NSManagedObjectContext *)moc;
++ (Template *) returnTemplateForName:(NSString * ) templateName inContext:(NSManagedObjectContext *)moc;
 @end

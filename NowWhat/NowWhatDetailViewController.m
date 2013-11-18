@@ -343,8 +343,7 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     // setup the predicate to return just the wanted date
-    //NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@')", [Event returnDateString:self.viewNSDate]]];
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@') AND (schedule.scheduleName like '%@')", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName]];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"(eventDate like %@) AND (schedule.scheduleName like %@)", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName];
     
     [fetchRequest setPredicate:requestPredicate];
     

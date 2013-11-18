@@ -33,7 +33,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
     // initiallize baseTime to viewDate at 8am, right!
     // right now it's set to current time
@@ -134,21 +133,11 @@
     }
 }
 
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
 
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+     // Return NO if you do not want the item to be re-orderable.
+     return NO;
+}
 
 #pragma mark - Table view delegate
 
@@ -283,6 +272,8 @@
     template = [NSEntityDescription insertNewObjectForEntityForName:@"Template" inManagedObjectContext:self.managedObjectContext];
         
     template.templateName = templateNameField.text;
+    template.templateListOrder = [Template getNextTemplateOrderInMOC:self.managedObjectContext];
+    
         
     // Now go through all the events in the list and add them to the TemplateEvents entity
         
@@ -332,25 +323,9 @@
         
         // maybe put up another alert that you will be deleting the previous template?
         
-        
-        
-        
-        
     }
     
-    
-    
-    
-    
-    
-    
 }
-
-
-
-
-
-
 
 
 #pragma mark - EditEventViewControllerDelegate

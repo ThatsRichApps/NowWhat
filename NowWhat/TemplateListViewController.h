@@ -16,7 +16,10 @@
 
 @interface TemplateListViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
     
-    IBOutlet UILabel *templateNameLabel;
+//    IBOutlet UILabel *templateNameLabel;
+
+    // this name is from apple... lets the frc know that the user is changing rows, so don't update yet
+    BOOL changeIsUserDriven;
     
 }
 

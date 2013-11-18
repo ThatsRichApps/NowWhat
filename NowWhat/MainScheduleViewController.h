@@ -21,7 +21,12 @@
 
 @interface MainScheduleViewController : UITableViewController <NSFetchedResultsControllerDelegate, AddScheduleViewControllerDelgate, ChangeDateViewControllerDelgate> {
     
+    // this name is from apple... lets the frc know that the user is changing rows, so don't update yet
+    BOOL changeIsUserDriven;
+    
 }
+
+- (void)handleOpenURL:(NSURL *)url;
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
@@ -30,5 +35,7 @@
 @property (nonatomic, retain) NSString *viewDate;
 @property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) Schedule *viewSchedule;
+
+
 
 @end

@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NowWhatAppDelegate : UIResponder <UIApplicationDelegate>
+@interface NowWhatAppDelegate : UIResponder <UIApplicationDelegate> {
+    
+     
+}
 
 @property (strong, nonatomic) UIWindow *window;
 

@@ -26,12 +26,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    // add edit / done button on the right top
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -39,6 +40,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+/*
 - (void)insertNewObject:(id)sender
 {
     NSManagedObjectContext *context = [self.fetchedResultsControllerTemplates managedObjectContext];
@@ -58,6 +61,7 @@
         abort();
     }
 }
+*/
 
 #pragma mark - Table View
 
@@ -89,6 +93,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
         NSManagedObjectContext *context = [self.fetchedResultsControllerTemplates managedObjectContext];
         [context deleteObject:[self.fetchedResultsControllerTemplates objectAtIndexPath:indexPath]];
         
@@ -99,20 +104,33 @@
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
+        
+        NSMutableArray *tempList = [[self.fetchedResultsControllerTemplates fetchedObjects] mutableCopy];
+        
+        for (int i=0; i < [tempList count]; i++) {
+            [(Event *)[tempList objectAtIndex:i] setValue:[NSNumber numberWithInt:i] forKey:@"templateListOrder"];
+        }
+        
+        if (![context save:&error]) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+            
     }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // The table view should not be re-orderable.
-    return NO;
+    // this table should support reordering
+    return YES;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    
-    
+    // this is handled elsewhere through a segue
     
 }
 
@@ -153,6 +171,35 @@
     }
 
 }
+
+
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    changeIsUserDriven = YES;
+    
+    NSMutableArray *tempList = [[self.fetchedResultsControllerTemplates fetchedObjects] mutableCopy];
+    Event *objectToMove = [tempList objectAtIndex:fromIndexPath.row];
+    
+    [tempList removeObjectAtIndex:fromIndexPath.row];
+    [tempList insertObject:objectToMove atIndex:toIndexPath.row];
+    
+    for (int i=0; i < [tempList count]; i++) {
+        [(Event *)[tempList objectAtIndex:i] setValue:[NSNumber numberWithInt:i] forKey:@"templateListOrder"];
+    }
+    
+    NSError *error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+    changeIsUserDriven = NO;
+    
+}
+
+
+
 
 #pragma mark - Fetched results controller
 
@@ -195,12 +242,14 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    if (changeIsUserDriven) return;
     [self.tableView beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
+    if (changeIsUserDriven) return;
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
@@ -216,6 +265,8 @@
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
+    if (changeIsUserDriven) return;
+
     UITableView *tableView = self.tableView;
     
     switch(type) {
@@ -240,6 +291,8 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    if (changeIsUserDriven) return;
+
     [self.tableView endUpdates];
 }
 

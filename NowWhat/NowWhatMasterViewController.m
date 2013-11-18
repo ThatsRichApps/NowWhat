@@ -115,7 +115,10 @@
     saveButtonItems = [self.toolbarItems mutableCopy];
     saveAddButton = self.navigationItem.rightBarButtonItem;
     
-    scheduleLabel.text = [NSString stringWithFormat:@"Schedule: %@", self.viewSchedule.scheduleName];
+    scheduleLabel.text = [NSString stringWithFormat:@"Schedule"];
+    scheduleField.text = [NSString stringWithFormat:@"%@", self.viewSchedule.scheduleName];
+    
+    
     nextEventLabel.text = @"";
     timeToNextEventLabel.text = @"";
     
@@ -184,7 +187,7 @@
     
     if ([todaysDate isEqualToString:self.viewDate]) {
         
-        NSLog(@"it is set to today");
+        //NSLog(@"it is set to today");
         
         isToday = TRUE;
         
@@ -503,14 +506,44 @@
     if ([[segue identifier] isEqualToString:@"PasswordLock"]) {
         
         PasswordViewController *controller = (PasswordViewController *)[segue destinationViewController];
-        // send the data to the save template in the form of an array
         controller.isLocked = self.isLocked;
         controller.correctPassword = self.correctPassword;
         controller.delegate = self;
         
     }
 
-    
+    if ([[segue identifier] isEqualToString:@"ShareAndPrint"]) {
+        
+        // pop up action scheet instead
+        /*
+        UIImage *anImage = [UIImage imageNamed:@"SampleImg.png"];
+        NSArray *Items   = [NSArray arrayWithObjects:
+                            @"A text line",
+                            anImage, nil];
+        
+        UIActivityViewController *ActivityView =
+        [[UIActivityViewController alloc]
+         initWithActivityItems:Items applicationActivities:nil];
+        [self presentViewController:ActivityView animated:YES completion:nil];
+        */
+        /*
+        UINavigationController *navigationController = segue.destinationViewController;
+        ShareAndPrintViewController *controller = (ShareAndPrintViewController *)navigationController.topViewController;
+        // send the data to the save template in the form of an array
+        //controller.delegate = self;
+        controller.viewSchedule = self.viewSchedule;
+        controller.viewNSDate = self.viewNSDate;
+        controller.managedObjectContext = self.managedObjectContext;
+        
+        */
+        
+        
+
+        
+        
+        
+        
+    }
     
 }
 
@@ -528,7 +561,10 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
 
     // setup the predicate to return just the wanted date and schedule
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@') AND (schedule.scheduleName like '%@')", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName]];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"(eventDate like %@) AND (schedule.scheduleName like %@)", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName];
+    
+    //NSLog(@"predicate:%@", requestPredicate.predicateFormat);
+    
     [fetchRequest setPredicate:requestPredicate];
     
     NSError *error = nil;
@@ -590,7 +626,8 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     // setup the predicate to return just the wanted date and schedule
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(eventDate like '%@') AND (schedule.scheduleName like '%@')", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName]];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"(eventDate like %@) AND (schedule.scheduleName like %@)", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName];
+    NSLog(@"predicate:%@", requestPredicate);
     [fetchRequest setPredicate:requestPredicate];
     
     // Clear out any previous cache
@@ -910,7 +947,7 @@
 }
 
 
--(IBAction) printSchedule:(id) sender {
+-(void) printSchedule {
     
     NSLog(@"clicked print button");
     
@@ -989,11 +1026,17 @@
     
     [NSThread sleepForTimeInterval:0.1];
     
+    [pic presentAnimated:YES completionHandler:completionHandler];
+    
+    
+    /*
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [pic presentFromBarButtonItem:sender animated:YES completionHandler:completionHandler];
+        [pic presentFromBarButtonItem:self animated:YES completionHandler:completionHandler];
     } else {
         [pic presentAnimated:YES completionHandler:completionHandler];
     }
+    */
+    
 
 }
 
@@ -1005,5 +1048,259 @@
 }
 
 
+// UITextField delegate methods
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    if ([textField.text isEqualToString:@""]) {
+        
+        // NSLog(@"Text field is empty");
+        
+        UIAlertView *emptyTextAlert;
+        
+        emptyTextAlert = [[UIAlertView alloc]
+                          initWithTitle:@"Please enter a schedule name"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+        
+        [emptyTextAlert show];
+        
+        return NO;
+        
+    }
+    
+    // now check to see if there is already a template with that name
+    // if so, should I let them overwrite it?
+    
+    if ([Schedule scheduleNameExists:scheduleField.text inMOC:self.managedObjectContext]) {
+        
+        NSLog(@"this schedule exists");
+        
+        UIAlertView *emptyTextAlert;
+        
+        emptyTextAlert = [[UIAlertView alloc]
+                          initWithTitle:@"A schedule with this name already exists"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"Replace", @"Merge", Nil];
+        
+        [emptyTextAlert show];
+        
+        return NO;
+        
+    }
+    
+    
+    self.viewSchedule.scheduleName = scheduleField.text;
+    
+    // do I need to update all the template events too? - yup
+    
+    for (Event *event in [self.fetchedResultsController fetchedObjects]) {
+        
+        event.schedule = self.viewSchedule;
+        
+    }
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+    // then update the table?
+    self.fetchedResultsController = nil;
+    [self.tableView reloadData];
+    
+    [textField resignFirstResponder];
+    
+    return YES;
+}
 
+
+
+// respond to the alert view regarding existing template name
+
+- (void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    NSLog(@"clicked button %@", buttonTitle);
+    
+    
+    if ([buttonTitle isEqualToString:@"Merge"]) {
+        
+        NSLog(@"merge the new data with the existing template");
+        
+        
+    } else if ([buttonTitle isEqualToString:@"Replace"]) {
+        
+        NSLog(@"replace the existing template");
+        
+        // maybe put up another alert that you will be deleting the previous template?
+        
+    }
+    
+}
+
+
+// This method is for importing a schedule file via email
+- (void)handleOpenURL:(NSURL *)url {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+    NSLog(@"import user data here in master view controller");
+    
+}
+
+
+- (IBAction)shareButtonClicked {
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"Share Schedule"
+                                  delegate:self
+                                  cancelButtonTitle:@"Cancel"
+                                  destructiveButtonTitle:@"Mail"
+                                  otherButtonTitles:@"Print",nil];
+    [actionSheet showFromToolbar:self.navigationController.toolbar];
+    
+}
+
+
+
+
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == [actionSheet cancelButtonIndex]) return;
+    
+    if (buttonIndex == 0) {
+        
+        //NSLog(@"mail button");
+        [self mailData];
+        
+    }
+    if (buttonIndex == 1) {
+        
+        //NSLog(@"print button");
+        [self printSchedule];
+        
+    }
+}
+
+
+- (void)mailData {
+    
+    if ([MFMailComposeViewController canSendMail]) {
+        
+        // first get the data that needs to be emailed, then create a temporary file
+        
+        //NSString *textFileContentsString = @"some data, some more data, yet more data";
+        //NSData *textFileContentsData = [textFileContentsString dataUsingEncoding:NSASCIIStringEncoding];
+        
+        // create a JSON model from the day data given viewSchedule and viewNSDate
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        // Edit the entity name as appropriate.
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        // Edit the sort key as appropriate.
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"eventNSDate" ascending:YES];
+        NSArray *sortDescriptors = @[sortDescriptor];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        // setup the predicate to return just the wanted date and schedule
+        NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"(eventDate like %@) AND (schedule.scheduleName like %@)", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName];
+        
+        //NSLog(@"predicate:%@", requestPredicate.predicateFormat);
+        
+        [fetchRequest setPredicate:requestPredicate];
+        
+        NSError *error = nil;
+        NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        
+        if (fetchedObjects == nil) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+        
+        NSMutableArray * eventsArray = [[NSMutableArray alloc] init];
+        
+        for (Event *thisEvent in fetchedObjects) {
+            
+            NSMutableDictionary *fields = [NSMutableDictionary dictionary];
+            
+            [fields setObject:thisEvent.eventText forKey:@"eventText"];
+            [fields setObject:thisEvent.eventNotes forKey:@"eventNotes"];
+            [fields setObject:[Event JSONEventTime:thisEvent.eventNSDate] forKey:@"eventDate"];
+            //[fields setObject:[Event JSONEventTime:thisEvent.eventEndNSDate] forKey:@"eventEndDate"];
+            [fields setObject:self.viewSchedule.scheduleName forKey:@"scheduleName"];
+            
+            [eventsArray addObject:fields];
+            
+        }
+        
+        NSError *JSONerror;
+        NSData *JSONData = [NSJSONSerialization dataWithJSONObject:eventsArray options:kNilOptions error:&JSONerror];
+        
+        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+        [picker setSubject:@"Now What Schedule"];
+        
+        //[picker addAttachmentData:bugData mimeType:@"application/scarybugs" fileName:[_bugDoc getExportFileName]];
+        [picker addAttachmentData:JSONData mimeType:@"application/nowwhat" fileName:@"data.nwf"];
+        
+        
+        [picker setToRecipients:[NSArray array]];
+        [picker setMessageBody:@"Here is my schedule for today.  You can tap the file below to open in your copy of \"Now What\".<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What Schedule</a>" isHTML:YES];
+        
+        //[picker setMessageBody:[[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding] isHTML:NO];
+        
+        [picker setMailComposeDelegate:self];
+        
+        // the line below is added for ipad funcitonality
+        picker.modalPresentationStyle = UIModalPresentationPageSheet;
+        [self presentModalViewController:picker animated:YES];
+        
+    } else {
+        
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Your device doesn't support mail compose"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [alert show];
+        
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled: you cancelled the operation and no email message was queued.");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved: you saved the email message in the drafts folder.");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail send: the email message is queued in the outbox. It is ready to send.");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Mail failed: the email message was not saved or queued, possibly due to an error.");
+            break;
+        default:
+            NSLog(@"Mail not sent.");
+            break;
+    }
+    // Remove the mail view
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+
+
+            
 @end

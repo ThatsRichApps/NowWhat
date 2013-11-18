@@ -22,6 +22,9 @@
     
     NSLog (@"didFinishLaunchingWithOptions");
     
+    NSLog (@"application just lauched, save time here in app delegate?");
+    
+    
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         
@@ -47,7 +50,12 @@
         UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
         MainScheduleViewController *controller = (MainScheduleViewController *)navigationController.topViewController;
         controller.managedObjectContext = self.managedObjectContext;
-    
+        
+        NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+        if (url != nil && [url isFileURL]) {
+            return YES;
+        }  else return NO;
+        
     }
     
     // also figure out what to do with notifications here
@@ -58,6 +66,10 @@
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     */
+    
+    // handle passing of a new schedule file:
+    // Add at end of application:didFinishLaunchingWithOptions
+
     
     
     return YES;
@@ -207,7 +219,36 @@
     
 }
 
+// Add new method
+/* deprecated
+-(BOOL) application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    
+    NSLog(@"sending message from app delegate to open url");
+    
+    // probably need to change this for the ipad version
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    MainScheduleViewController *controller = (MainScheduleViewController *)navigationController.topViewController;
+    if (url != nil && [url isFileURL]) {
+        [controller handleOpenURL:url];
+    }
+    
+    return YES;
+    
+}
+*/
 
+-(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+
+    NSLog(@"sending message from app delegate to open url");
+    
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    MainScheduleViewController *controller = (MainScheduleViewController *)navigationController.topViewController;
+    if (url != nil && [url isFileURL]) {
+        [controller handleOpenURL:url];
+    }
+    return YES;
+}
 
 
 

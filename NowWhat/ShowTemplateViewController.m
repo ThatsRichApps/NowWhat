@@ -198,8 +198,8 @@
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
-    // setup the predicate to return just the wanted date
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(template.templateName like '%@')", self.templateToShow.templateName]];
+    // setup the predicate to return just the wanted dat
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"(template.templateName like %@)", self.templateToShow.templateName];
     [fetchRequest setPredicate:requestPredicate];
     
     // Clear out any previous cache
@@ -224,12 +224,15 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    if (changeIsUserDriven) return;
     [self.tableView beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
+    if (changeIsUserDriven) return;
+
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
@@ -245,6 +248,8 @@
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
+    if (changeIsUserDriven) return;
+
     UITableView *tableView = self.tableView;
     
     switch(type) {
@@ -269,18 +274,11 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    if (changeIsUserDriven) return;
+
     [self.tableView endUpdates];
 }
 
-/*
- // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed.
- 
- - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
- {
- // In the simplest, most efficient, case, reload the table view.
- [self.tableView reloadData];
- }
- */
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
@@ -419,6 +417,15 @@
     // now check to see if there is already a template with that name
     // if so, should I let them overwrite it?
     
+    // if it's just the same name that is was, don't do anything
+    if ([textField.text isEqualToString:self.templateToShow.templateName]) {
+ 
+        [templateNameField resignFirstResponder];
+        return NO;
+        
+    }
+    
+    
     if ([Template templateNameExists:templateNameField.text inMOC:self.managedObjectContext]) {
         
         NSLog(@"this template exists");
@@ -463,6 +470,157 @@
     
     return YES;
 }
+
+
+// respond to the alert view regarding existing template name
+
+- (void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    //NSLog(@"clicked button %@", buttonTitle);
+    
+    if ([buttonTitle isEqualToString:@"Merge"]) {
+        
+        NSLog(@"merge the new data with the existing template");
+        
+        [self mergeTemplate];
+        
+        return;
+        
+    } else if ([buttonTitle isEqualToString:@"Replace"]) {
+        
+        NSLog(@"replace the existing template");
+        
+        // maybe put up another alert that you will be deleting the previous template?
+        
+        UIAlertView *deleteAlert;
+        
+        deleteAlert = [[UIAlertView alloc]
+                          initWithTitle:@"Are you sure you want to delete the old template"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"Delete", Nil];
+        
+        [deleteAlert show];
+        
+        return;
+        
+        
+    } else if ([buttonTitle isEqualToString:@"Delete"]) {
+    
+        NSLog(@"go ahead and delete the existing template");
+        
+        [self replaceTemplate];
+    
+        return;
+    
+    }
+
+}
+
+
+-(void) replaceTemplate {
+    
+    changeIsUserDriven = YES;
+    
+    // delete the old template with name self.templateToShow.template name
+    // delete the template with name textField.text and save the template events in toShow to
+    // the old name
+    NSManagedObjectContext *context = [self.fetchedResultsControllerTemplateEvents managedObjectContext];
+    
+    // first delete previous template
+    
+    Template *templateToDelete = [Template returnTemplateForName:templateNameField.text inContext:context];
+    
+    [context deleteObject:templateToDelete];
+    // this *should* delete all it's children events too
+    
+    // now change the name of the current template to show...
+    self.templateToShow.templateName = templateNameField.text;
+    
+    // do I need to update all the template events too? - yup
+    
+    for (TemplateEvent *templateEvent in [self.fetchedResultsControllerTemplateEvents fetchedObjects]) {
+        
+        templateEvent.template = self.templateToShow;
+        
+    }
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+    // then update the table?
+    self.fetchedResultsControllerTemplateEvents = nil;
+    [self.tableView reloadData];
+    
+    [templateNameField resignFirstResponder];
+    
+    changeIsUserDriven = NO;
+
+    
+}
+
+
+
+-(void) mergeTemplate {
+
+    changeIsUserDriven = YES;
+    
+    
+    // first get the other template
+    Template *templateToMerge = [Template returnTemplateForName:templateNameField.text inContext:self.managedObjectContext];
+    
+    Template *templateToDelete = self.templateToShow;
+    
+    // update all the template events
+    
+    for (TemplateEvent *templateEvent in [self.fetchedResultsControllerTemplateEvents fetchedObjects]) {
+        
+        templateEvent.template = templateToMerge;
+        
+    }
+    
+    
+    // now delete the current template to show from the context and set the other template to be
+    // the one that was shown
+    
+    ///[self.managedObjectContext deleteObject:self.templateToShow];
+    
+    self.templateToShow = templateToMerge;
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+    
+    [self.managedObjectContext deleteObject:templateToDelete];
+    
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+    // then update the table
+    self.fetchedResultsControllerTemplateEvents = nil;
+    
+    [self.tableView reloadData];
+    
+    [templateNameField resignFirstResponder];
+    
+    changeIsUserDriven = NO;
+    
+}
+
+
+
+
 
 
 

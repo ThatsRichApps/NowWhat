@@ -13,6 +13,8 @@
 #import "TemplateListViewController.h"
 #import "SaveTemplateViewController.h"
 #import "PasswordViewController.h"
+#import "ShareAndPrintViewController.h"
+
 #import "UnmanagedEvent.h"
 #import "NowWhatDetailViewController.h"
 #import "EventCell.h"
@@ -23,7 +25,7 @@
 //@class UnmanagedEvent;
 
 @interface NowWhatMasterViewController : UIViewController <NSFetchedResultsControllerDelegate, ChangeDateViewControllerDelgate, EditEventViewControllerDelgate, PasswordViewControllerDelegate,
-    UITableViewDelegate, UITableViewDataSource> {
+    UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
     
     NSMutableArray *saveButtonItems;
     UIBarButtonItem *saveAddButton;
@@ -32,6 +34,7 @@
     Event *nextEvent;
         
     IBOutlet UILabel *scheduleLabel;
+    IBOutlet UITextField *scheduleField;
     IBOutlet UILabel *nextEventLabel;
     IBOutlet UILabel *timeToNextEventLabel;
     
@@ -53,7 +56,10 @@
 @property (nonatomic, assign) int correctPassword;
 
 
-- (IBAction)printSchedule:(id) sender;
+- (void)printSchedule;
+- (void)mailData;
+- (void)handleOpenURL:(NSURL *)url;
+- (IBAction)shareButtonClicked;
 
 
 @end

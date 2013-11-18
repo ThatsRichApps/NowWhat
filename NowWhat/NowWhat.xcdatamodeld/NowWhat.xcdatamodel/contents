@@ -11,11 +11,12 @@
         <userInfo/>
     </entity>
     <entity name="Schedule" representedClassName="Schedule" syncable="YES">
+        <attribute name="scheduleListOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="scheduleName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="event" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Event" inverseName="schedule" inverseEntity="Event" syncable="YES"/>
     </entity>
     <entity name="Template" representedClassName="Template" syncable="YES">
-        <attribute name="templateListOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="templateListOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="templateName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TemplateEvent" inverseName="template" inverseEntity="TemplateEvent" syncable="YES"/>
     </entity>
@@ -28,8 +29,8 @@
     </entity>
     <elements>
         <element name="Event" positionX="-189" positionY="-54" width="128" height="150"/>
-        <element name="Schedule" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="Template" positionX="-189" positionY="117" width="128" height="88"/>
+        <element name="Schedule" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="Template" positionX="-189" positionY="117" width="128" height="90"/>
         <element name="TemplateEvent" positionX="34" positionY="102" width="128" height="120"/>
     </elements>
 </model>

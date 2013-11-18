@@ -14,7 +14,8 @@
 
 @interface Schedule : NSManagedObject
 
-@property (nonatomic, retain) NSString * scheduleName;
+@property (nonatomic, retain) NSString *scheduleName;
+@property (nonatomic, retain) NSNumber *scheduleListOrder;
 @property (nonatomic, retain) NSSet *event;
 @end
 
@@ -28,6 +29,7 @@
 
 + (Schedule *) returnScheduleForName:(NSString * ) scheduleName inContext:(NSManagedObjectContext *)moc;
 + (BOOL) scheduleNameExists: (NSString *)scheduleNameField inMOC:(NSManagedObjectContext *)moc;
++ (NSNumber *) getNextScheduleOrderInMOC:(NSManagedObjectContext *)moc;
 
 
 @end

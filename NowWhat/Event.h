@@ -24,6 +24,8 @@
 + (NSDate *)mergeDate: (NSString *)dateString withTime:(NSDate *)timeOfDay;
 + (NSDate *)normalizeDay: (NSDate *)dateTime;
 + (NSDate *)resetToBaseTime: (NSDate *)dateTime;
++ (NSString *)JSONEventTime: (NSDate *)dateTime;
+
 
 - (void)toggleChecked;
 

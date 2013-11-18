@@ -30,6 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -56,11 +58,22 @@
     // check last the time the app was last loaded
     // if it's been more than 12 hours, reset to today instead of the previous viewNSDate
     
-        
+    
+    NSLog (@"view did load of main schedule view, getting defaults.  should I check time here?");
+
+    
+    
     self.viewNSDate = [previousLoad objectForKey:kViewNSDate];
     self.viewDate = [previousLoad objectForKey:kViewDate];
     
-    self.viewSchedule = [Schedule returnScheduleForName:[previousLoad objectForKey:kViewSchedule] inContext:self.managedObjectContext];
+    NSString *viewScheduleName = [previousLoad objectForKey:kViewSchedule];
+    
+    if (viewScheduleName !=nil) {
+        
+        self.viewSchedule = [Schedule returnScheduleForName:viewScheduleName inContext:self.managedObjectContext];
+        
+    }
+    
     
     // if the current viewDate and viewNSDate are nil, set them to today
     if (self.viewNSDate == nil) {
@@ -91,7 +104,8 @@
     
     if (self.viewSchedule != nil) {
         [self performSegueWithIdentifier:@"ViewPreviousSchedule" sender:self];
-    }
+    } 
+    
     
     
 }
@@ -140,9 +154,10 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-        
+ 
         NSError *error = nil;
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
@@ -150,13 +165,27 @@
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
+        
+        NSMutableArray *tempList = [[self.fetchedResultsController fetchedObjects] mutableCopy];
+        
+        for (int i=0; i < [tempList count]; i++) {
+            [(Event *)[tempList objectAtIndex:i] setValue:[NSNumber numberWithInt:i] forKey:@"scheduleListOrder"];
+        }
+
+        if (![context save:&error]) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    
     }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // The table view should not be re-orderable.
-    return NO;
+    return YES;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -173,6 +202,31 @@
     Schedule *schedule = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     scheduleCell.scheduleNameLabel.text = schedule.scheduleName;
+    
+}
+
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    changeIsUserDriven = YES;
+    
+    NSMutableArray *tempList = [[self.fetchedResultsController fetchedObjects] mutableCopy];
+    Event *objectToMove = [tempList objectAtIndex:fromIndexPath.row];
+
+    [tempList removeObjectAtIndex:fromIndexPath.row];
+    [tempList insertObject:objectToMove atIndex:toIndexPath.row];
+    
+    for (int i=0; i < [tempList count]; i++) {
+        [(Event *)[tempList objectAtIndex:i] setValue:[NSNumber numberWithInt:i] forKey:@"scheduleListOrder"];
+    }
+    
+    NSError *error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+ 
+    changeIsUserDriven = NO;
     
 }
 
@@ -194,7 +248,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"scheduleName" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"scheduleListOrder" ascending:YES];
     NSArray *sortDescriptors = @[sortDescriptor];
     [fetchRequest setSortDescriptors:sortDescriptors];
     
@@ -215,11 +269,6 @@
 	    abort();
 	}
     
-    
-    
-    
-    
-    
     return _fetchedResultsController;
 }
 
@@ -237,12 +286,17 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    
+    if (changeIsUserDriven) return;
     [self.tableView beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
 {
+    
+    if (changeIsUserDriven) return;
+    
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
@@ -258,6 +312,9 @@
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
+
+    if (changeIsUserDriven) return;
+
     UITableView *tableView = self.tableView;
     
     switch(type) {
@@ -282,19 +339,28 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    
+    if (changeIsUserDriven) return;
+
     [self.tableView endUpdates];
 }
 
 
 // Add Schedule View Controller Delegate Methods
-- (void)addScheduleView:(AddScheduleViewController *)controller addSchedule:(NSString *)scheduleName;
+- (void)addScheduleWithName:(NSString *)scheduleName;
 {
+    
+    NSNumber *listOrder;
+    
+    listOrder = [Schedule getNextScheduleOrderInMOC:self.managedObjectContext];
     
     // add a new event to the managedObjectContext and save to store
     Schedule *schedule = nil;
     schedule = [NSEntityDescription insertNewObjectForEntityForName:@"Schedule" inManagedObjectContext:self.managedObjectContext];
     
     schedule.scheduleName = scheduleName;
+    
+    schedule.scheduleListOrder = listOrder;
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
@@ -380,8 +446,13 @@
     
 }
 
+// This method is for importing a schedule file via email
+- (void)handleOpenURL:(NSURL *)url {
+    [self.navigationController popToRootViewControllerAnimated:YES];
 
+    NSLog(@"import user data here in schedule view controller");
 
+}
 
 
 @end

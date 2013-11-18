@@ -13,6 +13,7 @@
 @implementation Schedule
 
 @dynamic scheduleName;
+@dynamic scheduleListOrder;
 @dynamic event;
 
 
@@ -29,7 +30,7 @@
     [fetchRequest setEntity:entity];
     
     // setup the predicate to return just the wanted date and schedule
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"scheduleName like '%@'", scheduleNameToGet]];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"scheduleName like %@", scheduleNameToGet];
     [fetchRequest setPredicate:requestPredicate];
     
     NSError *error = nil;
@@ -55,6 +56,8 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     fetchRequest.entity = [NSEntityDescription entityForName:@"Schedule" inManagedObjectContext:moc];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"scheduleName like %@", scheduleNameField];
+    [fetchRequest setIncludesPropertyValues:NO];
+    [fetchRequest setIncludesSubentities:NO];
     
     NSError *error = nil;
     if ([moc countForFetchRequest:fetchRequest error:&error] > 0) {
@@ -72,6 +75,25 @@
     
 }
 
++ (NSNumber *) getNextScheduleOrderInMOC:(NSManagedObjectContext *)moc {
+    // now check to see if there is already a schedule with that name
+    // if so, should I let them overwrite it?
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = [NSEntityDescription entityForName:@"Schedule" inManagedObjectContext:moc];
+    [fetchRequest setIncludesPropertyValues:NO];
+    [fetchRequest setIncludesSubentities:NO];
+
+    
+    NSError *error = nil;
+    
+    NSNumber *count = [NSNumber numberWithInt:[moc countForFetchRequest:fetchRequest error:&error]];
+    
+    NSLog(@"next schedule order is %@", count);
+    
+    return count;
+    
+}
 
 
 
