@@ -213,18 +213,18 @@
         
         if (hours != 0) {
             
-            NSLog (@"%ld hour", hours);
+            //NSLog (@"%ld hour", hours);
             [text appendString:[NSString stringWithFormat:@"%ld hour", hours]];
             
             if (hours == 1) {
                 
-                NSLog (@" and ");
+                //NSLog (@" and ");
                 [text appendString:[NSString stringWithFormat:@" and "]];
                 
                 
             } else {
                 
-                NSLog (@"s and ");
+                //NSLog (@"s and ");
                 [text appendString:[NSString stringWithFormat:@"s and "]];
                 
             }
@@ -232,6 +232,10 @@
         }
         
         [text appendString:[NSString stringWithFormat:@"%ld minutes", minutes]];
+        
+        // if it's only one minute, remove the 's' from the the end
+        
+        
         
         nextEventLabel.text = nextEvent.eventText;
         timeToNextEventLabel.text = text;

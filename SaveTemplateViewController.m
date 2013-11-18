@@ -39,10 +39,8 @@
     if (self.baseTime == nil) {
         
         self.baseTime = [NSDate date];
-    
         self.baseTime = [Event normalizeDay:self.baseTime];
         self.baseTime = [Event resetToBaseTime:self.baseTime];
-        
         NSLog(@"save template base time is %@", self.baseTime);
 
     }
@@ -76,7 +74,7 @@
 {
  
     EventCell *eventCell = (EventCell *)cell;
-    UnmanagedEvent *event = [self.templateEvents objectAtIndex:indexPath.row];
+    UnmanagedEvent *event = (self.templateEvents)[indexPath.row];
     
     eventCell.eventTextLabel.text = event.eventText;
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventTime];
@@ -126,7 +124,7 @@
         // Delete the row from the data source
         [[self templateEvents] removeObjectAtIndex:[indexPath row]];
         
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -150,7 +148,7 @@
     // Send the EditTemplateEventViewController the appropriate event that needs editing
     //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     //NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    UnmanagedEvent *event = [self.templateEvents objectAtIndex:indexPath.row];
+    UnmanagedEvent *event = (self.templateEvents)[indexPath.row];
     //TemplateEvent *templateEvent;
     
 //    UINavigationController *navigationController = segue.destinationViewController;
@@ -181,7 +179,7 @@
         
         // Send the EditTemplateEventViewController the appropriate event that needs editing
         NSIndexPath *indexPath = [saveTableView indexPathForCell:sender];
-        lastEditedEvent = [self.templateEvents objectAtIndex:indexPath.row];
+        lastEditedEvent = (self.templateEvents)[indexPath.row];
         
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
@@ -303,27 +301,146 @@
 
 }
 
+
 // respond to the alert view regarding existing template name
 
 - (void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     
-    NSLog(@"clicked button %@", buttonTitle);
-    
+    //NSLog(@"clicked button %@", buttonTitle);
     
     if ([buttonTitle isEqualToString:@"Merge"]) {
         
         NSLog(@"merge the new data with the existing template");
         
+        [self mergeTemplate];
+        
+        return;
         
     } else if ([buttonTitle isEqualToString:@"Replace"]) {
-
+        
         NSLog(@"replace the existing template");
         
         // maybe put up another alert that you will be deleting the previous template?
         
+        UIAlertView *deleteAlert;
+        
+        deleteAlert = [[UIAlertView alloc]
+                       initWithTitle:@"Are you sure you want to delete the old template"
+                       message:@""
+                       delegate:self
+                       cancelButtonTitle:@"Cancel"
+                       otherButtonTitles:@"Delete", Nil];
+        
+        [deleteAlert show];
+        
+        return;
+        
+        
+    } else if ([buttonTitle isEqualToString:@"Delete"]) {
+        
+        NSLog(@"go ahead and delete the existing template");
+        
+        [self replaceTemplate];
+        
+        return;
+        
     }
+    
+}
+
+
+-(void) replaceTemplate {
+    
+    // delete the old template with name self.templateToShow.template name
+    // delete the template with name textField.text and save the template events in toShow to
+    // the old name
+    // first delete previous template
+    
+    Template *templateToDelete = [Template returnTemplateForName:templateNameField.text inContext:self.managedObjectContext];
+    
+    // save it's list order
+    NSNumber *listOrder = templateToDelete.templateListOrder;
+    
+    [self.managedObjectContext deleteObject:templateToDelete];
+    // this *should* delete all it's children events too
+    
+    // now create a new template
+    // Add these events to the template database
+    // do error checking and save to managedObjectContext
+    Template *template = nil;
+    
+    template = [NSEntityDescription insertNewObjectForEntityForName:@"Template" inManagedObjectContext:self.managedObjectContext];
+    
+    template.templateName = templateNameField.text;
+    template.templateListOrder = listOrder;
+    
+    // Now go through all the events in the list and add them to the TemplateEvents entity
+    
+    for (UnmanagedEvent *event in self.templateEvents) {
+        
+        TemplateEvent *templateEvent;
+        templateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"TemplateEvent" inManagedObjectContext:self.managedObjectContext];
+        
+        templateEvent.eventText = event.eventText;
+        templateEvent.eventNotes = event.eventNotes;
+        templateEvent.template = template;
+        
+        // strip the date off of eventNSDate and just save the time
+        templateEvent.eventTime = event.eventTime;
+        
+        
+        
+    }
+    
+    NSError *error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+
+    // then return to the previous view
+    [[self navigationController] popViewControllerAnimated:YES];
+    
+}
+
+
+
+-(void) mergeTemplate {
+    
+    // first get the other template
+    Template *templateToMerge = [Template returnTemplateForName:templateNameField.text inContext:self.managedObjectContext];
+    
+    
+    
+    
+    // Now go through all the events in the list and add them to the TemplateEvents entity for the merged template
+    
+    for (UnmanagedEvent *event in self.templateEvents) {
+        
+        TemplateEvent *templateEvent;
+        templateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"TemplateEvent" inManagedObjectContext:self.managedObjectContext];
+        
+        templateEvent.eventText = event.eventText;
+        templateEvent.eventNotes = event.eventNotes;
+        templateEvent.template = templateToMerge;
+        
+        // strip the date off of eventNSDate and just save the time
+        templateEvent.eventTime = event.eventTime;
+        
+        
+        
+    }
+    
+    NSError *error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+    // then return to the previous view
+    [[self navigationController] popViewControllerAnimated:YES];
     
 }
 
@@ -361,7 +478,7 @@
     // need to sort dayData and redraw table
     NSSortDescriptor *timeDescriptor;
     timeDescriptor = [[NSSortDescriptor alloc] initWithKey:@"eventTime" ascending:YES];
-    NSArray *sortByTimeDescriptors = [NSArray arrayWithObject:timeDescriptor];
+    NSArray *sortByTimeDescriptors = @[timeDescriptor];
     NSArray *sortedArray = [self.templateEvents sortedArrayUsingDescriptors:sortByTimeDescriptors];
     
     [self.templateEvents removeAllObjects];

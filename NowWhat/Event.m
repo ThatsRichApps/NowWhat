@@ -91,8 +91,8 @@
     NSString *timeFormatted = [formatter stringFromDate:timeOfDay];
 
     NSArray *stringComponents = [timeFormatted componentsSeparatedByString:@":"];
-    NSString *hour = [stringComponents objectAtIndex:0];
-    NSString *minute = [[stringComponents objectAtIndex:1] substringToIndex:2];
+    NSString *hour = stringComponents[0];
+    NSString *minute = [stringComponents[1] substringToIndex:2];
     
     [components setHour:[hour intValue]];
     [components setMinute:[minute intValue]];

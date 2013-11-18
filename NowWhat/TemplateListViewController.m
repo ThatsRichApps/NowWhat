@@ -108,7 +108,7 @@
         NSMutableArray *tempList = [[self.fetchedResultsControllerTemplates fetchedObjects] mutableCopy];
         
         for (int i=0; i < [tempList count]; i++) {
-            [(Event *)[tempList objectAtIndex:i] setValue:[NSNumber numberWithInt:i] forKey:@"templateListOrder"];
+            [(Event *)tempList[i] setValue:@(i) forKey:@"templateListOrder"];
         }
         
         if (![context save:&error]) {
@@ -179,13 +179,13 @@
     changeIsUserDriven = YES;
     
     NSMutableArray *tempList = [[self.fetchedResultsControllerTemplates fetchedObjects] mutableCopy];
-    Event *objectToMove = [tempList objectAtIndex:fromIndexPath.row];
+    Event *objectToMove = tempList[fromIndexPath.row];
     
     [tempList removeObjectAtIndex:fromIndexPath.row];
     [tempList insertObject:objectToMove atIndex:toIndexPath.row];
     
     for (int i=0; i < [tempList count]; i++) {
-        [(Event *)[tempList objectAtIndex:i] setValue:[NSNumber numberWithInt:i] forKey:@"templateListOrder"];
+        [(Event *)tempList[i] setValue:@(i) forKey:@"templateListOrder"];
     }
     
     NSError *error = nil;

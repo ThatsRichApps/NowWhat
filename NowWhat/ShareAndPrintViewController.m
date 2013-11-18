@@ -84,11 +84,11 @@
             
             NSMutableDictionary *fields = [NSMutableDictionary dictionary];
 
-            [fields setObject:thisEvent.eventText forKey:@"eventText"];
-            [fields setObject:thisEvent.eventNotes forKey:@"eventNotes"];
-            [fields setObject:[Event JSONEventTime:thisEvent.eventNSDate] forKey:@"eventDate"];
+            fields[@"eventText"] = thisEvent.eventText;
+            fields[@"eventNotes"] = thisEvent.eventNotes;
+            fields[@"eventDate"] = [Event JSONEventTime:thisEvent.eventNSDate];
             //[fields setObject:[Event JSONEventTime:thisEvent.eventEndNSDate] forKey:@"eventEndDate"];
-            [fields setObject:self.viewSchedule.scheduleName forKey:@"scheduleName"];
+            fields[@"scheduleName"] = self.viewSchedule.scheduleName;
 
             [eventsArray addObject:fields];
             
@@ -104,7 +104,7 @@
         [picker addAttachmentData:JSONData mimeType:@"application/nowwhat" fileName:@"data.nwf"];
 
         
-        [picker setToRecipients:[NSArray array]];
+        [picker setToRecipients:@[]];
         [picker setMessageBody:@"Here is my schedule for today.  You can tap the file below to open in your copy of \"Now What\".<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What Schedule</a>" isHTML:YES];
         
         //[picker setMessageBody:[[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding] isHTML:NO];

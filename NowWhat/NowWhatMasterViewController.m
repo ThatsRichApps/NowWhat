@@ -8,7 +8,6 @@
 
 #import "NowWhatMasterViewController.h"
 #define kViewNSDate @"viewNSDate"
-#define kViewDate @"viewDate"
 #define kViewSchedule @"viewSchedule"
 #define kIsLocked @"isLocked"
 #define kPassword @"password"
@@ -47,34 +46,14 @@
     
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     
-    
-    
     [defaults setObject:self.viewNSDate forKey:kViewNSDate];
-    [defaults setObject:self.viewDate forKey:kViewDate];
     [defaults setObject:self.viewSchedule.scheduleName forKey:kViewSchedule];
     [defaults synchronize];
     
-    /* viewDate and viewNSDate should be passed from mainscheduleviewcontroller
-    // if the current viewDate and viewNSDate are nil, set them to today
-    if (self.viewNSDate == nil) {
-        
-        self.viewNSDate = [[NSDate alloc] init];
-        self.viewDate = [Event returnDateString:self.viewNSDate];
-        
-        //NSLog(@" date selected is %@", self.viewDate);
-        
-        // now set the viewNSDate time to 8:00 am
-        self.viewNSDate = [Event resetToBaseTime:self.viewNSDate];
-        
-        //NSLog(@"base time is %@", self.viewNSDate);
-        
-    }
-    */ 
-     
-
     if (self.viewSchedule == nil) {
         
         // No schedule was passed in, that's a problem
+        // this shouldn't happen, handle it if it does - but how?  pop back to mainschedule viewer?
         
     }
     
@@ -153,6 +132,47 @@
     
 }
 
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"view did appear");
+    [super viewDidAppear:animated];
+
+}
+
+
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    NSLog(@"view will disappear, ta da!");
+    [super viewWillDisappear:animated];
+    
+    if ([self isMovingFromParentViewController]){
+        //specific stuff for being popped off stack
+        //NSLog(@"back pressed, clear schedule variable");
+        
+        NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
+        
+        // when you go back to schedule, set the persisted schedule to nil
+        [defaults setObject:nil forKey:kViewSchedule];
+        [defaults synchronize];
+        
+    
+    }
+    
+    
+    
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    NSLog(@"view did disappear");
+    [super viewDidDisappear:animated];
+   
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -162,6 +182,7 @@
 }
 
 - (void)viewDidUnload {
+    NSLog(@"view did unload");
     self.fetchedResultsController = nil;
 }
 
@@ -194,7 +215,7 @@
         
     } else {
         
-        NSLog(@"it is NOT set to today");
+        //NSLog(@"it is NOT set to today");
         // Only show the date
         
         
@@ -256,29 +277,29 @@
         // round minutes up
         minutes = minutes + 1;
         
-        NSLog (@"%f - %ld -%ld - %ld", timeToNextEvent, hours, secsLeftover, minutes);
+        //NSLog (@"%f - %ld -%ld - %ld", timeToNextEvent, hours, secsLeftover, minutes);
         
         //countdownLabel.font = [UIFont fontWithName:@"Whiteboard Modern" size:20];
         //[text appendString:[NSString stringWithFormat:@"Countdown to next event: %ld hours and %ld minutes", hours, minutes]];
         [text appendString:[NSString stringWithFormat:@"Next event starts: "]];
         
         
-        NSLog(@"Countdown to next event: %ld hours and %ld minutes", hours, minutes);
+        //NSLog(@"Countdown to next event: %ld hours and %ld minutes", hours, minutes);
         
         if (hours != 0) {
             
-            NSLog (@"%ld hour", hours);
+            //NSLog (@"%ld hour", hours);
             [text appendString:[NSString stringWithFormat:@"%ld hour", hours]];
             
             if (hours == 1) {
                 
-                NSLog (@" and ");
+                //NSLog (@" and ");
                 [text appendString:[NSString stringWithFormat:@" and "]];
                 
                 
             } else {
                 
-                NSLog (@"s and ");
+                //NSLog (@"s and ");
                 [text appendString:[NSString stringWithFormat:@"s and "]];
                 
             }
@@ -306,6 +327,28 @@
  
         }
     }
+
+    if (nextEvent == nil) {
+        
+        NSLog (@"nextEvent is nil, clear out the text");
+        
+        nextEventLabel.text = @"";
+        
+        if ([self.fetchedResultsController.fetchedObjects count] == 0) {
+        
+            timeToNextEventLabel.text = @"Press + to add new event";
+            
+        } else {
+            
+            timeToNextEventLabel.text = @"";
+            
+        }
+        
+        
+        
+    }
+    
+    
     
     
 }
@@ -371,6 +414,7 @@
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
+
     }   
 }
 
@@ -401,6 +445,38 @@
     
     
 }
+
+/*
+ 
+// I never could get this to work right
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if ([self.fetchedResultsController.fetchedObjects count] == 0) {
+        UILabel *label = [[UILabel alloc] init];
+        label.text = @"press + to add an event";
+        label.textAlignment = UITextAlignmentCenter;
+        label.numberOfLines = 2;
+        //label.font = [UIFont boldSystemFontOfSize:16];
+        //label.backgroundColor = [UIColor darkTextColor];
+        //label.textColor = [UIColor whiteColor];
+        return label;
+    } else {
+        return nil;
+    }
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if ([self.fetchedResultsController.fetchedObjects count] == 0) {
+        return 68;
+    } else {
+        
+        return 0;
+    }
+}
+ 
+*/ 
+ 
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -777,7 +853,7 @@
     nextEventLabel.text = @"";
     timeToNextEventLabel.text = @"";
     
-    self.viewNSDate = newDate;
+    self.viewNSDate = [Event resetToBaseTime:newDate];
     self.viewDate = [Event returnDateString:newDate];
     
     //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
@@ -785,7 +861,6 @@
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     
     [defaults setObject:self.viewNSDate forKey:kViewNSDate];
-    [defaults setObject:self.viewDate forKey:kViewDate];
     [defaults synchronize];
     
     // reset the title of the nav controller to the new day and date
@@ -890,7 +965,7 @@
                                    action:@selector(clickedLockButton:)];
     
     
-    [self setToolbarItems:[NSArray arrayWithObjects:leftSpace, lockButton,nil]];
+    [self setToolbarItems:@[leftSpace, lockButton]];
     
     // we want the cells to be selectable now for the checkmark feature
     //self.tableView.allowsSelection = NO; // Keeps cells from being selectable
@@ -928,8 +1003,9 @@
 
 }
 
+
 -(void) clickedLockButton:(id)sender{
-    
+
     // NSLog(@"clicked lock template button");
     
     // set lock bool to true
@@ -1120,7 +1196,7 @@
 
 
 
-// respond to the alert view regarding existing template name
+// respond to the alert view regarding existing schedule name
 
 - (void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
@@ -1131,12 +1207,12 @@
     
     if ([buttonTitle isEqualToString:@"Merge"]) {
         
-        NSLog(@"merge the new data with the existing template");
+        NSLog(@"merge the new data with the existing schedule");
         
         
     } else if ([buttonTitle isEqualToString:@"Replace"]) {
         
-        NSLog(@"replace the existing template");
+        NSLog(@"replace the existing schedule");
         
         // maybe put up another alert that you will be deleting the previous template?
         
@@ -1169,7 +1245,7 @@
 
 
 
-
+//this is the action sheet for the share button
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == [actionSheet cancelButtonIndex]) return;
     
@@ -1232,11 +1308,11 @@
             
             NSMutableDictionary *fields = [NSMutableDictionary dictionary];
             
-            [fields setObject:thisEvent.eventText forKey:@"eventText"];
-            [fields setObject:thisEvent.eventNotes forKey:@"eventNotes"];
-            [fields setObject:[Event JSONEventTime:thisEvent.eventNSDate] forKey:@"eventDate"];
+            fields[@"eventText"] = thisEvent.eventText;
+            fields[@"eventNotes"] = thisEvent.eventNotes;
+            fields[@"eventDate"] = [Event JSONEventTime:thisEvent.eventNSDate];
             //[fields setObject:[Event JSONEventTime:thisEvent.eventEndNSDate] forKey:@"eventEndDate"];
-            [fields setObject:self.viewSchedule.scheduleName forKey:@"scheduleName"];
+            fields[@"scheduleName"] = self.viewSchedule.scheduleName;
             
             [eventsArray addObject:fields];
             
@@ -1252,7 +1328,7 @@
         [picker addAttachmentData:JSONData mimeType:@"application/nowwhat" fileName:@"data.nwf"];
         
         
-        [picker setToRecipients:[NSArray array]];
+        [picker setToRecipients:@[]];
         [picker setMessageBody:@"Here is my schedule for today.  You can tap the file below to open in your copy of \"Now What\".<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What Schedule</a>" isHTML:YES];
         
         //[picker setMessageBody:[[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding] isHTML:NO];

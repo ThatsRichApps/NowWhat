@@ -64,7 +64,7 @@
                                                                     style:UIBarButtonItemStyleBordered target:self
                                                                    action:@selector(backClicked:)];
     
-    [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:leftSpace,backButton,leftSpace, nil]];
+    [keyboardDoneButtonView setItems:@[leftSpace,backButton,leftSpace]];
     
     // Plug the keyboardDoneButtonView into the text field...
     realPasswordField.inputAccessoryView = keyboardDoneButtonView;

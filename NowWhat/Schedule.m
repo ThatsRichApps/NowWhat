@@ -87,7 +87,12 @@
     
     NSError *error = nil;
     
-    NSNumber *count = [NSNumber numberWithInt:[moc countForFetchRequest:fetchRequest error:&error]];
+    NSNumber *count = [NSNumber numberWithInt:(int)([moc countForFetchRequest:fetchRequest error:&error])];
+    //NSUInteger *count = [moc countForFetchRequest:fetchRequest error:&error];
+    
+    
+    
+    
     
     NSLog(@"next schedule order is %@", count);
     

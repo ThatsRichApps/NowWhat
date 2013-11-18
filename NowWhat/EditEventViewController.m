@@ -115,7 +115,7 @@
                                                                     style:UIBarButtonItemStyleBordered target:self
                                                                    action:@selector(doneClicked:)];
     
-    [keyboardDoneButtonView setItems:[NSArray arrayWithObjects:leftSpace,doneButton,leftSpace, nil]];
+    [keyboardDoneButtonView setItems:@[leftSpace,doneButton,leftSpace]];
     
     // Plug the keyboardDoneButtonView into the text field...
     dateField.inputAccessoryView = keyboardDoneButtonView;
@@ -148,7 +148,7 @@
                                                                          style:UIBarButtonItemStyleBordered target:self
                                                                         action:@selector(notesDoneClicked:)];
     
-    [notesDoneButtonView setItems:[NSArray arrayWithObjects:leftSpace,notesDoneButton,leftSpace, nil]];
+    [notesDoneButtonView setItems:@[leftSpace,notesDoneButton,leftSpace]];
     
     notesView.inputAccessoryView = notesDoneButtonView;
     

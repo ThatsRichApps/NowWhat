@@ -8,7 +8,6 @@
 
 #import "MainScheduleViewController.h"
 #define kViewNSDate @"viewNSDate"
-#define kViewDate @"viewDate"
 #define kViewSchedule @"viewSchedule"
 #define kIsLocked @"isLocked"
 
@@ -64,8 +63,6 @@
     
     
     self.viewNSDate = [previousLoad objectForKey:kViewNSDate];
-    self.viewDate = [previousLoad objectForKey:kViewDate];
-    
     NSString *viewScheduleName = [previousLoad objectForKey:kViewSchedule];
     
     if (viewScheduleName !=nil) {
@@ -74,12 +71,10 @@
         
     }
     
-    
     // if the current viewDate and viewNSDate are nil, set them to today
     if (self.viewNSDate == nil) {
         
         self.viewNSDate = [[NSDate alloc] init];
-        self.viewDate = [Event returnDateString:self.viewNSDate];
         
         //NSLog(@" date selected is %@", self.viewDate);
         
@@ -91,6 +86,10 @@
         self.viewSchedule = nil;
         
     }
+    
+    // set the view date now that we have a viewNSDate
+    self.viewDate = [Event returnDateString:self.viewNSDate];
+    
     
     self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
@@ -169,7 +168,7 @@
         NSMutableArray *tempList = [[self.fetchedResultsController fetchedObjects] mutableCopy];
         
         for (int i=0; i < [tempList count]; i++) {
-            [(Event *)[tempList objectAtIndex:i] setValue:[NSNumber numberWithInt:i] forKey:@"scheduleListOrder"];
+            [(Event *)tempList[i] setValue:@(i) forKey:@"scheduleListOrder"];
         }
 
         if (![context save:&error]) {
@@ -211,13 +210,13 @@
     changeIsUserDriven = YES;
     
     NSMutableArray *tempList = [[self.fetchedResultsController fetchedObjects] mutableCopy];
-    Event *objectToMove = [tempList objectAtIndex:fromIndexPath.row];
+    Event *objectToMove = tempList[fromIndexPath.row];
 
     [tempList removeObjectAtIndex:fromIndexPath.row];
     [tempList insertObject:objectToMove atIndex:toIndexPath.row];
     
     for (int i=0; i < [tempList count]; i++) {
-        [(Event *)[tempList objectAtIndex:i] setValue:[NSNumber numberWithInt:i] forKey:@"scheduleListOrder"];
+        [(Event *)tempList[i] setValue:@(i) forKey:@"scheduleListOrder"];
     }
     
     NSError *error = nil;

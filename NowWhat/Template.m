@@ -55,7 +55,8 @@
     
     NSError *error = nil;
     
-    NSNumber *count = [NSNumber numberWithInt:[moc countForFetchRequest:fetchRequest error:&error]];
+    //NSNumber *count = [NSNumber numberWithInt:[moc countForFetchRequest:fetchRequest error:&error]];
+    NSNumber *count = [NSNumber numberWithInt:(int)([moc countForFetchRequest:fetchRequest error:&error])];
     
     NSLog(@"next template order is %@", count);
     
@@ -90,7 +91,6 @@
     return fetchedObjects[0];
     
 }
-
 
 
 @end
