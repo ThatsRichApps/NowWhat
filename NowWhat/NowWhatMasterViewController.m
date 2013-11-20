@@ -136,7 +136,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"view did appear");
+    //NSLog(@"view did appear");
     [super viewDidAppear:animated];
 
 }
@@ -146,7 +146,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSLog(@"view will disappear, ta da!");
+    //NSLog(@"view will disappear, ta da!");
     [super viewWillDisappear:animated];
     
     if ([self isMovingFromParentViewController]){
@@ -168,7 +168,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    NSLog(@"view did disappear");
+    //NSLog(@"view did disappear");
     [super viewDidDisappear:animated];
    
 }
@@ -1269,15 +1269,17 @@
     
 }
 
-
+/*
 // This method is for importing a schedule file via email
 - (void)handleOpenURL:(NSURL *)url {
+    
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
     
     NSLog(@"import user data here in master view controller");
     
 }
-
+*/
 
 - (IBAction)shareButtonClicked {
     

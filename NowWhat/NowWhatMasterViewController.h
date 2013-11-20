@@ -58,7 +58,6 @@
 
 - (void)printSchedule;
 - (void)mailData;
-- (void)handleOpenURL:(NSURL *)url;
 - (IBAction)shareButtonClicked;
 
 

@@ -39,7 +39,27 @@
     if (fetchedObjects.count == 0) {
 
         // then no schedules were found with this name
-        return (nil);
+        // so creeate a new one and return that????
+        
+        NSNumber *listOrder;
+        
+        listOrder = [Schedule getNextScheduleOrderInMOC:moc];
+        
+        // add a new event to the managedObjectContext and save to store
+        Schedule *schedule = nil;
+        schedule = [NSEntityDescription insertNewObjectForEntityForName:@"Schedule" inManagedObjectContext:moc  ];
+        
+        schedule.scheduleName = scheduleNameToGet;
+        
+        schedule.scheduleListOrder = listOrder;
+        
+        NSError *error;
+        if (![moc save:&error]) {
+            NSLog(@"Error: %@", error);
+            abort();
+        }
+
+        return (schedule);
     
     }
     

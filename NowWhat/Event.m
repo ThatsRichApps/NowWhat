@@ -195,6 +195,22 @@
     
 }
 
++ (NSDate *)dateFromJSONString: (NSString *)dateString {
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    //[formatter setDateFormat:@"kk:mm"];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS"];
+    
+    //Optionally for time zone converstions
+    //[formatter setTimeZone:[NSTimeZone timeZoneWithName:@"..."]];
+    
+    NSDate *returnDate = [formatter dateFromString:dateString];
+    
+    return (returnDate);
+    
+    
+}
 
 
 

@@ -10,6 +10,7 @@
 #define kViewNSDate @"viewNSDate"
 #define kViewSchedule @"viewSchedule"
 #define kIsLocked @"isLocked"
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
 
 @interface MainScheduleViewController ()
 
@@ -447,11 +448,69 @@
 
 // This method is for importing a schedule file via email
 - (void)handleOpenURL:(NSURL *)url {
-    [self.navigationController popToRootViewControllerAnimated:YES];
 
-    NSLog(@"import user data here in schedule view controller");
+    // this should get me to the mainScheduleViewController if I'm not there
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+    NSLog(@"importing user data");
+    NSData* data = [NSData dataWithContentsOfURL:url];
+    [self fetchedData:data];
+    NSLog(@"done importing user data");
 
 }
 
+- (void)fetchedData:(NSData *)responseData {
+    
+    
+    // probably check here that returnedData isn't nil; attempting
+    // NSJSONSerialization with nil data raises an exception, and who
 
+    
+    
+    //parse out the json data
+    NSError* error;
+    NSArray *eventsArray = [NSJSONSerialization
+                          JSONObjectWithData:responseData
+                          options:kNilOptions
+                          error:&error];
+    
+    //NSArray *events = [json objectForKey:@"eventText"];
+    NSLog(@"events: %@", eventsArray);
+    
+    // I need to do error checking every step of the way!
+    
+    // we are assuming they are all from the same schedule, so get the schedule here
+    NSString *scheduleName = [eventsArray[0] objectForKey:@"scheduleName"];
+    
+    Schedule *thisSchedule = [Schedule returnScheduleForName:scheduleName inContext:self.managedObjectContext];
+    
+    // now go the events and add them to core data
+    for (id importedEvent in eventsArray) {
+        
+        // create new managed event
+        Event *event = nil;
+        event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+        
+        event.eventText = [importedEvent objectForKey:@"eventText"];
+        event.eventNotes = [importedEvent objectForKey:@"eventNotes"];
+        event.eventChecked = NO;
+        
+        // take the time from event.eventTime, and merge with the date that is loaded
+        // the event time should in the form of a string 
+        event.eventNSDate = [Event dateFromJSONString:[importedEvent objectForKey:@"eventNSDate"]];
+        event.eventDate = [Event returnDateString:event.eventNSDate];
+        event.eventEndNSDate = [Event dateFromJSONString:[importedEvent objectForKey:@"eventEndNSDate"]];
+        event.schedule = thisSchedule;
+        
+        NSLog(@"adding event %@", event);
+        
+        
+    }
+    
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+}
 @end
