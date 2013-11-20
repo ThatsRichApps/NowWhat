@@ -30,7 +30,7 @@
     NSError *error = nil;
     if ([moc countForFetchRequest:fetchRequest error:&error] > 0) {
         
-        NSLog(@"this template exists");
+        //NSLog(@"this template exists");
         
         return TRUE;
         

@@ -164,6 +164,7 @@
         unmanagedEvent.eventText = lastEditedEvent.eventText;
         unmanagedEvent.eventNotes = lastEditedEvent.eventNotes;
         unmanagedEvent.eventTime = lastEditedEvent.eventTime;
+        unmanagedEvent.eventEndTime = lastEditedEvent.eventEndTime;
         
         controller.eventToEdit = unmanagedEvent;
         controller.delegate = self;
@@ -293,6 +294,7 @@
     eventCell.eventTextLabel.text = event.eventText;
     
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventTime] ;
+    eventCell.eventEndTimeLabel.text = [Event formatEventTime:event.eventEndTime] ;
     
     eventCell.eventNotesLabel.text = event.eventNotes;
     eventCell.eventNotesView.text = event.eventNotes;
@@ -326,6 +328,7 @@
         // take the time from event.eventTime, and merge with the date that is loaded
         event.eventNSDate = [Event mergeDate:[Event returnDateString:self.viewNSDate] withTime:templateEvent.eventTime];
         event.eventDate = [Event returnDateString:event.eventNSDate];
+        event.eventEndNSDate = [Event mergeDate:[Event returnDateString:self.viewNSDate] withTime:templateEvent.eventEndTime];
         
     }
     
@@ -362,6 +365,7 @@
     
     // strip the date off of unmanagedEvent.eventTime
     templateEvent.eventTime = unmanagedEvent.eventTime;
+    templateEvent.eventEndTime = unmanagedEvent.eventEndTime;
     
     NSLog (@"adding templateEvent at %@", templateEvent.eventTime);
     NSLog (@"Text is: %@", templateEvent.eventText);
@@ -387,6 +391,7 @@
     
     // strip the date off of unmanagedEvent.eventTime
     lastEditedEvent.eventTime = unmanagedEvent.eventTime;
+    lastEditedEvent.eventEndTime = unmanagedEvent.eventEndTime;
     
 }
 
@@ -428,7 +433,7 @@
     
     if ([Template templateNameExists:templateNameField.text inMOC:self.managedObjectContext]) {
         
-        NSLog(@"this template exists");
+        //NSLog(@"this template exists");
         
         UIAlertView *emptyTextAlert;
         

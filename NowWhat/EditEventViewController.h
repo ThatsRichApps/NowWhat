@@ -28,7 +28,7 @@
 @end
 
 
-@interface EditEventViewController : UITableViewController {
+@interface EditEventViewController : UITableViewController <UITextFieldDelegate> {
     
     UIDatePicker *timePicker;
     UIDatePicker *timeEndPicker;
@@ -42,8 +42,12 @@
     NSString *eventText;
     NSString *eventNotes;
     NSDate *eventNSDate;
+    NSDate *eventEndDate;
     BOOL eventChecked;
-
+    
+    NSDate *baseEndTime;
+    
+    NSTimeInterval eventDuration;
 
 }
 
@@ -56,6 +60,7 @@
 
 @property (nonatomic, weak) id <EditEventViewControllerDelgate> delegate;
 
+- (IBAction)dismissKeyboard;
 
 - (IBAction)cancel;
 - (IBAction)save;

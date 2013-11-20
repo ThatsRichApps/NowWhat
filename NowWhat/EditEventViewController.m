@@ -38,6 +38,7 @@
         eventText = self.eventToEdit.eventText;
         eventNotes = self.eventToEdit.eventNotes;
         eventNSDate = self.eventToEdit.eventTime;
+        eventEndDate = self.eventToEdit.eventEndTime;
 
     }
 }
@@ -51,20 +52,27 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
+    NSString *eventTime;
+    NSString *endTime;
+
     if (self.eventToEdit != nil) {
         self.title = @"Edit Event";
         self.baseTime = eventNSDate;
+    
+        eventTime = [Event formatEventTime:self.baseTime];
+        endTime = [Event formatEventTime:eventEndDate];
+        baseEndTime = eventEndDate;
+        eventDuration = [eventEndDate timeIntervalSinceDate:eventNSDate];
         
     } else {
         
         self.title = @"Add Event";
-        
+        eventTime = [Event formatEventTime:self.baseTime];
+        eventDuration = 3600;
+        endTime = [Event formatEventTime:[self.baseTime dateByAddingTimeInterval:eventDuration]];
+        baseEndTime = [self.baseTime dateByAddingTimeInterval:eventDuration];
+
     }
-    
-    NSString *eventTime = [Event formatEventTime:self.baseTime];
-    
-    NSString *endTime = [Event formatEventTime:[self.baseTime dateByAddingTimeInterval:60*60]];
-    
     
     //NSString *eventText = @"This is the Event Text";
     dateField.text = eventTime;
@@ -84,8 +92,10 @@
     
     timePicker = timePickerView;
     
-    dateField.inputView = timePicker;
+    // set it to update the time field every time it's changed
+    [timePicker addTarget:self action:@selector(doneStartClicked:) forControlEvents:UIControlEventValueChanged];
     
+    dateField.inputView = timePicker;
     
     //NSDate *newDate = [oldDate dateByAddingTimeInterval:hrs*60*60];
     // Now setup the end time picker
@@ -93,14 +103,17 @@
     UIDatePicker *timeEndPickerView = [[UIDatePicker alloc] init];
     
     [timeEndPickerView setDatePickerMode:UIDatePickerModeTime];
-    [timeEndPickerView setDate:[self.baseTime dateByAddingTimeInterval:60*60] animated:YES];
+    [timeEndPickerView setDate:baseEndTime animated:YES];
     
     timeEndPicker = timeEndPickerView;
     
+    // set it to update the time field every time it's changed
+    [timeEndPicker addTarget:self action:@selector(doneEndClicked:) forControlEvents:UIControlEventValueChanged];
+    
     endDateField.inputView = timeEndPicker;
     
-    
-    // create a done view + done button, attach to it a doneClicked action, and place it in a toolbar as an accessory input view...
+    /*
+    // create a done view + done button, attach to it a doneStartClicked action, and place it in a toolbar as an accessory input view...
     // Prepare done button
     UIToolbar* keyboardDoneButtonView = [[UIToolbar alloc] init];
     keyboardDoneButtonView.barStyle = UIBarStyleBlack;
@@ -113,21 +126,37 @@
     
     UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                     style:UIBarButtonItemStyleBordered target:self
-                                                                   action:@selector(doneClicked:)];
+                                                                   action:@selector(doneStartClicked:)];
     
     [keyboardDoneButtonView setItems:@[leftSpace,doneButton,leftSpace]];
     
     // Plug the keyboardDoneButtonView into the text field...
     dateField.inputAccessoryView = keyboardDoneButtonView;
     
+    // now setup the done button for the end time
+    // create a done view + done button, attach to it a doneStartClicked action, and place it in a toolbar as an accessory input view...
+    // Prepare done button
+    UIToolbar* keyboardDoneEndButtonView = [[UIToolbar alloc] init];
+    keyboardDoneEndButtonView.barStyle = UIBarStyleBlack;
+    keyboardDoneEndButtonView.translucent = YES;
+    keyboardDoneEndButtonView.tintColor = nil;
+    [keyboardDoneEndButtonView sizeToFit];
     
+     UIBarButtonItem* doneEndButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                   style:UIBarButtonItemStyleBordered target:self
+                                                                  action:@selector(doneEndClicked:)];
     
+    [keyboardDoneEndButtonView setItems:@[leftSpace,doneEndButton,leftSpace]];
     
-    
+    // Plug the keyboardDoneButtonView into the text field...
+    endDateField.inputAccessoryView = keyboardDoneEndButtonView;
+    */
     
     
     // setup the notesView UITextiew
     [notesView setTextAlignment:UITextAlignmentLeft];
+    
+    /* people don't need the box anymore!
     
     // For the border and rounded corners
     // uses quartcore framework, needs to be added to .h file and to target
@@ -135,8 +164,10 @@
     [[notesView layer] setBorderWidth:0.8];
     [[notesView layer] setCornerRadius:10];
     
-    //[notesView setText:thisEvent.eventNotes];
+    */
+     
     
+    /*
     // Add the same type of done button to the UITextView's keyboard
     UIToolbar* notesDoneButtonView = [[UIToolbar alloc] init];
     notesDoneButtonView.barStyle = UIBarStyleBlack;
@@ -151,7 +182,8 @@
     [notesDoneButtonView setItems:@[leftSpace,notesDoneButton,leftSpace]];
     
     notesView.inputAccessoryView = notesDoneButtonView;
-    
+    */
+     
     // commented out - make the user click it, it works better that way
     // maybe on add??
     //[self.eventField becomeFirstResponder];
@@ -179,10 +211,13 @@
     }
     
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
     
+    [self.view addGestureRecognizer:tap];
     
-    
-    
+        
 }
 
 - (void)didReceiveMemoryWarning
@@ -226,6 +261,7 @@
     unmanagedEvent.eventText = eventField.text;
     unmanagedEvent.eventNotes = notesView.text;
     unmanagedEvent.eventTime = timePicker.date;
+    unmanagedEvent.eventEndTime = timeEndPicker.date;
     
     // check if event was edited or added
     if (self.eventToEdit != nil) {
@@ -242,32 +278,106 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)doneClicked:(id)sender {
+- (void)doneStartClicked:(id)sender {
+    
+    NSLog(@"done start clicked");
+
     
     // write out the date in whatever format is specified in the Event formatEventTime method!
     dateField.text = [Event formatEventTime:timePicker.date];
     
-    /*// get the time from the UIDate Picker
-    // Get the Day for this Schedule
-    NSDateFormatter *formatter;
-    NSString        *timeString;
+    // get the current interval between start and end and preserve, it starts one hour off
+    [timeEndPicker setDate:[timePicker.date dateByAddingTimeInterval:eventDuration] animated:NO];
     
-    formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"hh:mm a"];
+    // set the end date automatically to 1 hour later
+    endDateField.text = [Event formatEventTime:timeEndPicker.date];
     
-    timeString = [formatter stringFromDate:timePicker.date];
-    
-    self.dateField.text = timeString;
-    */
-    
-    [dateField resignFirstResponder];
+    //[dateField resignFirstResponder];
 
+}
+
+
+- (void)doneEndClicked:(id)sender {
+    
+    NSLog(@"done end clicked");
+
+    // write out the date in whatever format is specified in the Event formatEventTime method!
+    endDateField.text = [Event formatEventTime:timeEndPicker.date];
+    
+    // update the event duration based upon the end time
+    eventDuration = [timeEndPicker.date timeIntervalSinceDate:timePicker.date];
+
+    
+    
+    //[endDateField resignFirstResponder];
+    
 }
 
 - (void)notesDoneClicked:(id)sender {
     
     [notesView resignFirstResponder];
     
+}
+
+
+
+-(IBAction)dismissKeyboard {
+    
+    NSLog(@"dismiss keyboard");
+
+    // if this is called from the datepickers, I need to update their text fields
+    // or just do it
+    //[self doneStartClicked:self];
+    //[self doneEndClicked:self];
+    
+    [self.view endEditing:YES];
+    //[eventField resignFirstResponder];
+    //[notesView resignFirstResponder];
+
+}
+
+
+#pragma mark -
+#pragma mark - TextField Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    //[textField resignFirstResponder];
+
+//    NSLog(@"Should return");
+
+    return TRUE;
+}
+
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField {
+
+//    NSLog(@"did begin editing");
+
+
+}
+
+- (void) textFieldDidEndEditing:(UITextField *)textField {
+    
+    NSLog(@"did end editing");
+
+    if ([textField isEqual:dateField]) {
+    
+        [self doneStartClicked:self];
+    
+    } else if ([textField isEqual:endDateField]) {
+       
+        [self doneEndClicked:self];
+    
+    }
+    
+    
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+
+    return false;
+
 }
 
 

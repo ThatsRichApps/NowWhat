@@ -78,6 +78,7 @@
     
     eventCell.eventTextLabel.text = event.eventText;
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventTime];
+    eventCell.eventEndTimeLabel.text = [Event formatEventTime:event.eventEndTime];
     eventCell.eventNotesLabel.text = event.eventNotes;
     eventCell.eventNotesView.text = event.eventNotes;
     
@@ -191,6 +192,7 @@
         unmanagedEvent.eventText = lastEditedEvent.eventText;
         unmanagedEvent.eventNotes = lastEditedEvent.eventNotes;
         unmanagedEvent.eventTime = lastEditedEvent.eventTime;
+        unmanagedEvent.eventEndTime = lastEditedEvent.eventEndTime;
         
         controller.eventToEdit = unmanagedEvent;
         controller.delegate = self;
@@ -286,7 +288,7 @@
         
         // strip the date off of eventNSDate and just save the time
         templateEvent.eventTime = event.eventTime;
-        
+        templateEvent.eventEndTime = event.eventEndTime;
         
             
     }
@@ -389,8 +391,7 @@
         
         // strip the date off of eventNSDate and just save the time
         templateEvent.eventTime = event.eventTime;
-        
-        
+        templateEvent.eventEndTime = event.eventEndTime;
         
     }
     
@@ -428,6 +429,7 @@
         
         // strip the date off of eventNSDate and just save the time
         templateEvent.eventTime = event.eventTime;
+        templateEvent.eventEndTime = event.eventEndTime;
         
         
         
@@ -465,6 +467,7 @@
     
     // strip the date off of unmanagedEvent.eventTime
     newEvent.eventTime = unmanagedEvent.eventTime;
+    newEvent.eventEndTime = unmanagedEvent.eventEndTime;
     
     NSLog (@"adding templateEvent at %@", newEvent.eventTime);
     NSLog (@"Text is: %@", newEvent.eventText);
@@ -500,6 +503,7 @@
     
     // strip the date off of unmanagedEvent.eventTime
     lastEditedEvent.eventTime = unmanagedEvent.eventTime;
+    lastEditedEvent.eventEndTime = unmanagedEvent.eventEndTime;
     
     [saveTableView reloadData];
     

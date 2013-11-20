@@ -330,10 +330,17 @@
 
     if (nextEvent == nil) {
         
-        NSLog (@"nextEvent is nil, clear out the text");
+        //NSLog (@"nextEvent is nil, clear out the text");
         
-        nextEventLabel.text = @"";
         
+        // if it's today, clear out the label, otherwise it will say "switch to today"
+        if (isToday) {
+        
+            nextEventLabel.text = @"";
+            
+        }
+        
+        // if the frc is empty, add placeholder text
         if ([self.fetchedResultsController.fetchedObjects count] == 0) {
         
             timeToNextEventLabel.text = @"Press + to add new event";
@@ -531,6 +538,7 @@
         unmanagedEvent.eventText = lastEditedEvent.eventText;
         unmanagedEvent.eventNotes = lastEditedEvent.eventNotes;
         unmanagedEvent.eventTime = lastEditedEvent.eventNSDate;
+        unmanagedEvent.eventEndTime = lastEditedEvent.eventEndNSDate;
         
         controller.eventToEdit = unmanagedEvent;
         controller.delegate = self;
@@ -613,12 +621,6 @@
         
         */
         
-        
-
-        
-        
-        
-        
     }
     
 }
@@ -667,6 +669,7 @@
         
         // strip off the date from the eventNSDate
         newUnmanagedEvent.eventTime = [Event normalizeDay:thisEvent.eventNSDate];
+        newUnmanagedEvent.eventEndTime = [Event normalizeDay:thisEvent.eventEndNSDate];
         
         newUnmanagedEvent.eventNotes = thisEvent.eventNotes;
         [unmanagedEventsArray addObject:newUnmanagedEvent];
@@ -810,18 +813,43 @@
     
     eventCell.eventTextLabel.text = event.eventText;
     
-    eventCell.eventTimeLabel.text = [NSString stringWithFormat:@"%@ -",[Event formatEventTime:event.eventNSDate]];
+    eventCell.eventTimeLabel.text = [NSString stringWithFormat:@"%@",[Event formatEventTime:event.eventNSDate]];
+    
+    // these lines make it top left justified
     eventCell.eventTimeLabel.numberOfLines = 2;
     [eventCell.eventTimeLabel sizeToFit];
 
     eventCell.eventNotesLabel.text = event.eventNotes;
     
-    eventCell.eventNotesLabel.numberOfLines = 2;
-    [eventCell.eventNotesLabel sizeToFit];
+    //eventCell.eventNotesLabel.numberOfLines = 2;
+    //[eventCell.eventNotesLabel sizeToFit];
+    
+    eventCell.eventNotesLabel.numberOfLines = 0;
+    eventCell.eventNotesLabel.lineBreakMode = UILineBreakModeWordWrap;
     
     //eventCell.eventNotesView.text = event.eventNotes;
-    
 
+    
+    // show the end time if default setting useEndTimes is true
+    // check to see if we want to use end times, if not don't show those fields
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    
+    if ([preferences boolForKey:@"useEndTimes"]) {
+        
+        eventCell.eventEndTimeLabel.text = [NSString stringWithFormat:@"\n %@",[Event formatEventTime:event.eventEndNSDate]];
+        // these lines make it top left justified
+        eventCell.eventEndTimeLabel.numberOfLines = 2;
+        [eventCell.eventEndTimeLabel sizeToFit];
+
+    } else {
+        
+        eventCell.eventEndTimeLabel.text = @"";
+        
+    }
+        
+        
+        
+        
     [self configureCheckmarkForCell:cell withEvent:event];
     
 }
@@ -897,6 +925,7 @@
     event.eventText = unmanagedEvent.eventText;
     event.eventNotes = unmanagedEvent.eventNotes;
     event.eventNSDate = unmanagedEvent.eventTime;
+    event.eventEndNSDate = unmanagedEvent.eventEndTime;
     event.eventDate = [Event returnDateString:unmanagedEvent.eventTime];
     event.eventChecked = NO;
     event.schedule = self.viewSchedule;
@@ -925,6 +954,7 @@
     lastEditedEvent.eventText = unmanagedEvent.eventText;
     lastEditedEvent.eventNotes = unmanagedEvent.eventNotes;
     lastEditedEvent.eventNSDate = unmanagedEvent.eventTime;
+    lastEditedEvent.eventEndNSDate = unmanagedEvent.eventEndTime;
     lastEditedEvent.eventDate = [Event returnDateString:unmanagedEvent.eventTime];
     
     // then update the context so that it gets saved
@@ -1056,6 +1086,8 @@
     
     // Go through event class again to print it to the display
     
+    // ** need to work eventEndNSDate into here somehow!! **
+    
     for (Event *eventItem in [self.fetchedResultsController fetchedObjects]) {
         
         [htmlString appendString:[Event formatEventTime:eventItem.eventNSDate]];
@@ -1159,8 +1191,11 @@
                           initWithTitle:@"A schedule with this name already exists"
                           message:@""
                           delegate:self
-                          cancelButtonTitle:@"Cancel"
-                          otherButtonTitles:@"Replace", @"Merge", Nil];
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+
+                          //cancelButtonTitle:@"Cancel"
+                          //otherButtonTitles:@"Replace", @"Merge", Nil];
         
         [emptyTextAlert show];
         
@@ -1310,7 +1345,8 @@
             
             fields[@"eventText"] = thisEvent.eventText;
             fields[@"eventNotes"] = thisEvent.eventNotes;
-            fields[@"eventDate"] = [Event JSONEventTime:thisEvent.eventNSDate];
+            fields[@"eventNSDate"] = [Event JSONEventTime:thisEvent.eventNSDate];
+            fields[@"eventEndNSDate"] = [Event JSONEventTime:thisEvent.eventEndNSDate];
             //[fields setObject:[Event JSONEventTime:thisEvent.eventEndNSDate] forKey:@"eventEndDate"];
             fields[@"scheduleName"] = self.viewSchedule.scheduleName;
             

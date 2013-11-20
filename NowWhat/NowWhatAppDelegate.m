@@ -25,8 +25,6 @@
     
     NSLog (@"didFinishLaunchingWithOptions");
     
-    NSLog (@"application just lauched, save time here in app delegate?");
-    
     
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -123,8 +121,11 @@
             
             NSLog(@"reset the viewNSDate");
             // if it's been a while, reset viewNSDate to now
-            NSDate *baseTime = [Event resetToBaseTime:timeNow];            
-            [defaults setObject:baseTime forKey:kViewNSDate];
+            
+            // this doesn't work because the view is still loaded, changing the basetime won't reload it
+            
+            //NSDate *baseTime = [Event resetToBaseTime:timeNow];
+            //[defaults setObject:baseTime forKey:kViewNSDate];
             
         }
     }

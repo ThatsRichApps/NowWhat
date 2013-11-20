@@ -33,6 +33,14 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     [scheduleField becomeFirstResponder];
+    
+
+    // dismiss keyboard on tap outside of field
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(save)];
+    
+    [self.view addGestureRecognizer:tap];
 
 }
 
@@ -101,7 +109,12 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-
+-(IBAction)dismissKeyboard {
+    
+    // this finds the current responder and resigns it
+    [self.view endEditing:YES];
+ 
+}
 
 
 

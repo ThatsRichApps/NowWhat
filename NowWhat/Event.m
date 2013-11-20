@@ -31,11 +31,13 @@
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setAMSymbol:@"am"];
+    [formatter setPMSymbol:@"pm"];
  
     if ([preferences boolForKey:@"hour24"]) {
         [formatter setDateFormat:@"kk:mm"];
     } else {
-        [formatter setDateFormat:@"hh:mm a"];
+        [formatter setDateFormat:@"hh:mma"];
     }
 
     //Optionally for time zone converstions

@@ -62,7 +62,7 @@
     NSError *error = nil;
     if ([moc countForFetchRequest:fetchRequest error:&error] > 0) {
         
-        NSLog(@"this schedule exists");
+        //NSLog(@"this schedule exists");
         
         return TRUE;
         

@@ -30,6 +30,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, weak) id <AddScheduleViewControllerDelgate> delegate;
 
+- (IBAction)dismissKeyboard;
 
 - (IBAction)cancel;
 - (IBAction)save;
