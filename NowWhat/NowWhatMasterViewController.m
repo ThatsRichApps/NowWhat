@@ -825,7 +825,7 @@
     //[eventCell.eventNotesLabel sizeToFit];
     
     eventCell.eventNotesLabel.numberOfLines = 0;
-    eventCell.eventNotesLabel.lineBreakMode = UILineBreakModeWordWrap;
+    eventCell.eventNotesLabel.lineBreakMode = NSLineBreakByWordWrapping;
     
     //eventCell.eventNotesView.text = event.eventNotes;
 
@@ -1159,6 +1159,17 @@
 // UITextField delegate methods
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
+    
+    // first check to see if they even changed the name
+    if ([scheduleField.text isEqualToString:self.viewSchedule.scheduleName]) {
+        
+        // then they never actually changed the name, return
+        
+        [scheduleField resignFirstResponder];
+        return YES;
+        
+    }
+    
     if ([textField.text isEqualToString:@""]) {
         
         // NSLog(@"Text field is empty");
@@ -1180,7 +1191,6 @@
     
     // now check to see if there is already a template with that name
     // if so, should I let them overwrite it?
-    
     if ([Schedule scheduleNameExists:scheduleField.text inMOC:self.managedObjectContext]) {
         
         NSLog(@"this schedule exists");
@@ -1198,6 +1208,10 @@
                           //otherButtonTitles:@"Replace", @"Merge", Nil];
         
         [emptyTextAlert show];
+        
+        // put the old name back and resign responder?
+        scheduleField.text = self.viewSchedule.scheduleName;
+        [scheduleField resignFirstResponder];
         
         return NO;
         
