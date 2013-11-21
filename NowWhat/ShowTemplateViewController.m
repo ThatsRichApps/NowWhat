@@ -396,6 +396,37 @@
 }
 
 
+-(IBAction)dismissKeyboard {
+    
+    NSLog(@"dismiss keyboard");
+    [self.view endEditing:YES];
+    
+}
+
+
+// textfield delegate methods
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField {
+    
+    //    NSLog(@"did begin editing");
+    
+    if (!tap) {
+        tap = [[UITapGestureRecognizer alloc]
+               initWithTarget:self
+               action:@selector(dismissKeyboard)];
+    }
+    [self.view addGestureRecognizer:tap];
+    
+}
+
+- (void) textFieldDidEndEditing:(UITextField *)textField {
+    
+    [self.view removeGestureRecognizer:tap];
+    
+}
+
+
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 
     
@@ -475,6 +506,15 @@
     
     return YES;
 }
+
+
+
+
+
+
+
+
+
 
 
 // respond to the alert view regarding existing template name

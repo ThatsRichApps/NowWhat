@@ -23,6 +23,7 @@
     // this name is from apple... lets the frc know that the user is changing rows, so don't update yet
     BOOL changeIsUserDriven;
 
+    UITapGestureRecognizer *tap;
     
 }
 

@@ -21,6 +21,7 @@
     IBOutlet UITextField *templateNameField;
     IBOutlet UITableView *saveTableView;
     
+    UITapGestureRecognizer *tap;
     
 }
 

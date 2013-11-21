@@ -1094,9 +1094,20 @@
         [htmlString appendString:@" - "];
         [htmlString appendString:eventItem.eventText];
         
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"useEndTimes"]) {
+            
+            [htmlString appendString:@"<br>- "];
+            [htmlString appendString:[Event formatEventTime:eventItem.eventEndNSDate]];
+            
+            
+        }
+        
+        
         if (![eventItem.eventNotes isEqualToString:@""]) {
             
-            [htmlString appendString:@"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"];
+            //[htmlString appendString:@"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"];
+            [htmlString appendString:@"&nbsp;"];
+            
             
             NSString *formattedString = eventItem.eventNotes;
             formattedString = [formattedString stringByReplacingOccurrencesOfString:@"\n"
@@ -1122,9 +1133,6 @@
     pic.printFormatter = htmlFormatter;
     pic.showsPageRange = YES;
     
-    
-    //[NSThread sleepForTimeInterval:0.06];
-    
     void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
     ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
         if (!completed && error) {
@@ -1132,7 +1140,7 @@
         }
     };
     
-    [NSThread sleepForTimeInterval:0.1];
+    //[NSThread sleepForTimeInterval:2.0];
     
     [pic presentAnimated:YES completionHandler:completionHandler];
     
@@ -1156,9 +1164,36 @@
 }
 
 
-// UITextField delegate methods
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+-(IBAction)dismissKeyboard {
     
+    NSLog(@"dismiss keyboard");
+    [self.view endEditing:YES];
+    
+}
+
+// UITextField delegate methods
+// textfield delegate methods
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField {
+    
+    NSLog(@"did begin editing");
+    
+    if (!tap) {
+        tap = [[UITapGestureRecognizer alloc]
+               initWithTarget:self
+               action:@selector(dismissKeyboard)];
+    }
+    [self.view addGestureRecognizer:tap];
+    
+}
+
+- (void) textFieldDidEndEditing:(UITextField *)textField {
+    
+    NSLog(@"did end editing");
+    
+    [self.view removeGestureRecognizer:tap];
+    
+    NSLog(@"textfield should return");
     
     // first check to see if they even changed the name
     if ([scheduleField.text isEqualToString:self.viewSchedule.scheduleName]) {
@@ -1166,7 +1201,7 @@
         // then they never actually changed the name, return
         
         [scheduleField resignFirstResponder];
-        return YES;
+        return;
         
     }
     
@@ -1185,7 +1220,7 @@
         
         [emptyTextAlert show];
         
-        return NO;
+        return;
         
     }
     
@@ -1203,9 +1238,9 @@
                           delegate:self
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
-
-                          //cancelButtonTitle:@"Cancel"
-                          //otherButtonTitles:@"Replace", @"Merge", Nil];
+        
+        //cancelButtonTitle:@"Cancel"
+        //otherButtonTitles:@"Replace", @"Merge", Nil];
         
         [emptyTextAlert show];
         
@@ -1213,7 +1248,7 @@
         scheduleField.text = self.viewSchedule.scheduleName;
         [scheduleField resignFirstResponder];
         
-        return NO;
+        return;
         
     }
     
@@ -1238,9 +1273,15 @@
     self.fetchedResultsController = nil;
     [self.tableView reloadData];
     
-    [textField resignFirstResponder];
+}
+
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
+    [textField resignFirstResponder];
     return YES;
+
 }
 
 
@@ -1363,7 +1404,6 @@
             fields[@"eventNotes"] = thisEvent.eventNotes;
             fields[@"eventNSDate"] = [Event JSONEventTime:thisEvent.eventNSDate];
             fields[@"eventEndNSDate"] = [Event JSONEventTime:thisEvent.eventEndNSDate];
-            //[fields setObject:[Event JSONEventTime:thisEvent.eventEndNSDate] forKey:@"eventEndDate"];
             fields[@"scheduleName"] = self.viewSchedule.scheduleName;
             
             [eventsArray addObject:fields];
@@ -1376,7 +1416,6 @@
         MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
         [picker setSubject:@"Now What Schedule"];
         
-        //[picker addAttachmentData:bugData mimeType:@"application/scarybugs" fileName:[_bugDoc getExportFileName]];
         [picker addAttachmentData:JSONData mimeType:@"application/nowwhat" fileName:@"data.nwf"];
         
         

@@ -31,6 +31,7 @@
 {
     [super viewDidLoad];
     
+    
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     // Uncomment the following line to preserve selection between presentations.
@@ -106,9 +107,29 @@
         [self performSegueWithIdentifier:@"ViewPreviousSchedule" sender:self];
     } 
     
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasLaunchedOnce"];
+    
+    
+    // if this is the first time it's been loaded, pop up a window asking if you want to load the existing database
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]) {
+        
+        // app already launched
+        
+    } else {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        // This is the first launch ever
+        
+        [self performSegueWithIdentifier:@"FirstLoad" sender:self];
+        
+        
+    }
+    
+    
     
     
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -513,4 +534,10 @@
     }
     
 }
+
+
+
+
+
+
 @end

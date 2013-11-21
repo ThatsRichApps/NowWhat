@@ -353,7 +353,11 @@
 - (void) textFieldDidBeginEditing:(UITextField *)textField {
 
 //    NSLog(@"did begin editing");
-
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
 
 }
 

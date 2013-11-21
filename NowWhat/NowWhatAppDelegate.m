@@ -25,7 +25,6 @@
     
     NSLog (@"didFinishLaunchingWithOptions");
     
-    
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         
