@@ -95,6 +95,10 @@
     
     self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
+    self.detailViewController.viewNSDate = [NSDate date];
+    self.detailViewController.viewDate = @"00000000";
+
+    
     self.detailViewController.managedObjectContext = self.managedObjectContext;
     
     // show the bottom toolbar
@@ -107,7 +111,7 @@
         [self performSegueWithIdentifier:@"ViewPreviousSchedule" sender:self];
     } 
     
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasLaunchedOnce"];
+    //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasLaunchedOnce"];
     
     
     // if this is the first time it's been loaded, pop up a window asking if you want to load the existing database

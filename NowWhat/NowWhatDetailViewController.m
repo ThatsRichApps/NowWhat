@@ -82,7 +82,15 @@
     
     // this should probably be a table tied to a fetched results controller instead of a webview tied to a timer
     // should I send it the managed object context or just the frc?
-     
+    
+    // if it's the first load, there will be no viewSchedule, what should we show?
+    
+    if (self.viewSchedule == nil) {
+        
+        self.viewSchedule.scheduleName = @"whatever";
+        
+    }
+    
         
     // configure view is from the basic template
     //[self configureView];
@@ -98,9 +106,12 @@
 
 - (void)splitViewController:(UISplitViewController *)splitController willHideViewController:(UIViewController *)viewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)popoverController
 {
+    
+    
     barButtonItem.title = NSLocalizedString(@"Events", @"Events");
     [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
     self.masterPopoverController = popoverController;
+    
 }
 
 - (void)splitViewController:(UISplitViewController *)splitController willShowViewController:(UIViewController *)viewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
@@ -331,6 +342,20 @@
     }
     
     
+    NSString *scheduleNameToLoad;
+    
+    if (self.viewSchedule.scheduleName) {
+    
+        scheduleNameToLoad = self.viewSchedule.scheduleName;
+    
+    } else {
+        
+        scheduleNameToLoad = @"dummy";
+        
+        
+    }
+        
+    
     NSLog(@"the detail fetched results controller is getting the events for %@", self.viewNSDate);
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -347,7 +372,7 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     // setup the predicate to return just the wanted date
-    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"(eventDate like %@) AND (schedule.scheduleName like %@)", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName];
+    NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"(eventDate like %@) AND (schedule.scheduleName like %@)", [Event returnDateString:self.viewNSDate], scheduleNameToLoad];
     
     [fetchRequest setPredicate:requestPredicate];
     

@@ -74,7 +74,9 @@
                           otherButtonTitles:nil];
         
         [emptyTextAlert show];
-        
+
+        [scheduleField becomeFirstResponder];
+
         return;
         
     }
@@ -98,6 +100,8 @@
         
         [emptyTextAlert show];
         
+        [scheduleField becomeFirstResponder];
+        
         return;
         
         
@@ -107,13 +111,6 @@
     [self.delegate addScheduleWithName:scheduleField.text];
     
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
--(IBAction)dismissKeyboard {
-    
-    // this finds the current responder and resigns it
-    [self.view endEditing:YES];
- 
 }
 
 

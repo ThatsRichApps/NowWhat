@@ -35,7 +35,6 @@
         
         UINavigationController *masterNavigationController = splitViewController.viewControllers[0];
         //NowWhatMasterViewController *controller = (NowWhatMasterViewController *)masterNavigationController.topViewController;
- 
         MainScheduleViewController *controller = (MainScheduleViewController *)masterNavigationController.topViewController;
 
         controller.managedObjectContext = self.managedObjectContext;

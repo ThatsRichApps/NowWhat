@@ -816,8 +816,8 @@
     eventCell.eventTimeLabel.text = [NSString stringWithFormat:@"%@",[Event formatEventTime:event.eventNSDate]];
     
     // these lines make it top left justified
-    eventCell.eventTimeLabel.numberOfLines = 2;
-    [eventCell.eventTimeLabel sizeToFit];
+    //eventCell.eventTimeLabel.numberOfLines = 2;
+    //[eventCell.eventTimeLabel sizeToFit];
 
     eventCell.eventNotesLabel.text = event.eventNotes;
     
@@ -836,10 +836,10 @@
     
     if ([preferences boolForKey:@"useEndTimes"]) {
         
-        eventCell.eventEndTimeLabel.text = [NSString stringWithFormat:@"\n %@",[Event formatEventTime:event.eventEndNSDate]];
+        eventCell.eventEndTimeLabel.text = [NSString stringWithFormat:@"%@",[Event formatEventTime:event.eventEndNSDate]];
         // these lines make it top left justified
-        eventCell.eventEndTimeLabel.numberOfLines = 2;
-        [eventCell.eventEndTimeLabel sizeToFit];
+        //eventCell.eventEndTimeLabel.numberOfLines = 2;
+        //[eventCell.eventEndTimeLabel sizeToFit];
 
     } else {
         
@@ -1246,7 +1246,7 @@
         
         // put the old name back and resign responder?
         scheduleField.text = self.viewSchedule.scheduleName;
-        [scheduleField resignFirstResponder];
+        //[scheduleField resignFirstResponder];
         
         return;
         

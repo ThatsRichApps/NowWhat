@@ -74,9 +74,6 @@
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventTime];
     eventCell.eventEndTimeLabel.text = [Event formatEventTime:event.eventEndTime];
     eventCell.eventNotesLabel.text = event.eventNotes;
-    eventCell.eventNotesView.text = event.eventNotes;
-    
-    //NSLog(@"text is %@", event.eventText);
     
     
 }

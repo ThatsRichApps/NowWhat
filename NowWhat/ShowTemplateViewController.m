@@ -423,14 +423,6 @@
     
     [self.view removeGestureRecognizer:tap];
     
-}
-
-
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-
-    
-    
     if ([textField.text isEqualToString:@""]) {
         
         // NSLog(@"Text field is empty");
@@ -445,8 +437,10 @@
                           otherButtonTitles:nil];
         
         [emptyTextAlert show];
-        
-        return NO;
+
+        templateNameField.text = self.templateToShow.templateName;
+
+        return;
         
     }
     
@@ -455,9 +449,9 @@
     
     // if it's just the same name that is was, don't do anything
     if ([textField.text isEqualToString:self.templateToShow.templateName]) {
- 
+        
         [templateNameField resignFirstResponder];
-        return NO;
+        return;
         
     }
     
@@ -477,10 +471,10 @@
         
         [emptyTextAlert show];
         
-        return NO;
+        return;
         
     }
-
+    
     
     self.templateToShow.templateName = templateNameField.text;
     
@@ -501,17 +495,21 @@
     // then update the table?
     self.fetchedResultsControllerTemplateEvents = nil;
     [self.tableView reloadData];
-
+    
     [textField resignFirstResponder];
     
-    return YES;
+    return;
+
 }
 
 
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    [textField resignFirstResponder];
+    return YES;
 
-
-
+}
 
 
 
@@ -561,7 +559,15 @@
     
         return;
     
+    } else if ([buttonTitle isEqualToString:@"Cancel"]) {
+        
+        NSLog(@"cancel the action and put the old name back");
+        templateNameField.text = self.templateToShow.templateName;
+        
+        return;
+        
     }
+    
 
 }
 
