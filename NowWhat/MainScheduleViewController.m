@@ -34,24 +34,8 @@
     
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    /*
-    // try a uinotification here
-    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
-    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
-    localNotification.alertBody = @"Alert from viewdidload mainschedule";
-    localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-    */
-    
     // set initial viewDate and viewNSDate here if not set, need to have them passed back from master
     // if the master changes them
-    
     
     // check to see if there were default settings persisted in the userdefaults
     NSUserDefaults *previousLoad = [NSUserDefaults standardUserDefaults];
@@ -62,8 +46,6 @@
     
     NSLog (@"view did load of main schedule view, getting defaults.  should I check time here?");
 
-    
-    
     self.viewNSDate = [previousLoad objectForKey:kViewNSDate];
     NSString *viewScheduleName = [previousLoad objectForKey:kViewSchedule];
     
@@ -92,27 +74,29 @@
     // set the view date now that we have a viewNSDate
     self.viewDate = [Event returnDateString:self.viewNSDate];
     
-    
-    self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
-    
-    self.detailViewController.viewNSDate = [NSDate date];
-    self.detailViewController.viewDate = @"00000000";
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 
+        self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
-    self.detailViewController.managedObjectContext = self.managedObjectContext;
-    
+        self.detailViewController.viewNSDate = self.viewNSDate;
+        self.detailViewController.viewDate = self.viewDate;
+        self.detailViewController.managedObjectContext = self.managedObjectContext;
+        self.detailViewController.viewSchedule = self.viewSchedule;
+        
+        [self.detailViewController updateDetailView];
+        
+    } else {
+        
+        NSLog(@"no detail view, this is an iphone jackass");
+        self.detailViewController = nil;
+        
+    }        
+        
     // show the bottom toolbar
     [self.navigationController setToolbarHidden:NO];
     
-    
-    // if the view schedule is already set, go straight to the MainView
-    
-    if (self.viewSchedule != nil) {
-        [self performSegueWithIdentifier:@"ViewPreviousSchedule" sender:self];
-    } 
-    
+    // for testing, make it first load every time
     //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasLaunchedOnce"];
-    
     
     // if this is the first time it's been loaded, pop up a window asking if you want to load the existing database
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]) {
@@ -126,9 +110,14 @@
         
         [self performSegueWithIdentifier:@"FirstLoad" sender:self];
         
-        
     }
     
+    // if the view schedule is already set, go straight to the MainView
+    
+    if (self.viewSchedule != nil) {
+        [self performSegueWithIdentifier:@"ViewPreviousSchedule" sender:self];
+    }
+
     
     
     
@@ -434,6 +423,8 @@
         controller.viewNSDate = self.viewNSDate;
         controller.viewSchedule = selectedSchedule;
         controller.detailViewController = self.detailViewController;
+        [controller.detailViewController updateDetailView];
+        
         controller.delegate = self;
         
     }
@@ -448,6 +439,8 @@
         controller.viewNSDate = self.viewNSDate;
         controller.viewSchedule = self.viewSchedule;
         controller.detailViewController = self.detailViewController;
+        [controller.detailViewController updateDetailView];
+        
         controller.delegate = self;
         
     }

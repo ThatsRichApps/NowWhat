@@ -30,7 +30,7 @@
 		8140062F181492DD00786BC3 /* TemplateListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8140062E181492DD00786BC3 /* TemplateListViewController.m */; };
 		8140063218156DEF00786BC3 /* TemplateEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8140063118156DEE00786BC3 /* TemplateEvent.m */; };
 		8140063518156E3600786BC3 /* Template.m in Sources */ = {isa = PBXBuildFile; fileRef = 8140063418156E3600786BC3 /* Template.m */; };
-		8140063B18157F7300786BC3 /* SaveTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8140063A18157F7300786BC3 /* SaveTemplateViewController.m */; };
+		81515F11184B8EBB00140990 /* SaveTemplateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81515F10184B8EBB00140990 /* SaveTemplateViewController.m */; };
 		81638A47183E6DA900EF2706 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81638A46183E6DA900EF2706 /* libsqlite3.dylib */; };
 		81638A4A183E723500EF2706 /* FirstLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81638A49183E723500EF2706 /* FirstLoadViewController.m */; };
 		818B08BA1832E383002359ED /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 818B08B91832E383002359ED /* MessageUI.framework */; };
@@ -90,8 +90,8 @@
 		8140063118156DEE00786BC3 /* TemplateEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplateEvent.m; sourceTree = "<group>"; };
 		8140063318156E3600786BC3 /* Template.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Template.h; sourceTree = "<group>"; };
 		8140063418156E3600786BC3 /* Template.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Template.m; sourceTree = "<group>"; };
-		8140063918157F7300786BC3 /* SaveTemplateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SaveTemplateViewController.h; path = ../SaveTemplateViewController.h; sourceTree = "<group>"; };
-		8140063A18157F7300786BC3 /* SaveTemplateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SaveTemplateViewController.m; path = ../SaveTemplateViewController.m; sourceTree = "<group>"; };
+		81515F0F184B8EBB00140990 /* SaveTemplateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveTemplateViewController.h; sourceTree = "<group>"; };
+		81515F10184B8EBB00140990 /* SaveTemplateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveTemplateViewController.m; sourceTree = "<group>"; };
 		81638A46183E6DA900EF2706 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		81638A48183E723500EF2706 /* FirstLoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstLoadViewController.h; sourceTree = "<group>"; };
 		81638A49183E723500EF2706 /* FirstLoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstLoadViewController.m; sourceTree = "<group>"; };
@@ -214,8 +214,8 @@
 				813CAE3F181B1B1700F61EE8 /* PasswordViewController.m */,
 				81921ED4180CEDB800ECCBEE /* EditEventViewController.h */,
 				81921ED5180CEDB800ECCBEE /* EditEventViewController.m */,
-				8140063918157F7300786BC3 /* SaveTemplateViewController.h */,
-				8140063A18157F7300786BC3 /* SaveTemplateViewController.m */,
+				81515F0F184B8EBB00140990 /* SaveTemplateViewController.h */,
+				81515F10184B8EBB00140990 /* SaveTemplateViewController.m */,
 				8140062D181492DC00786BC3 /* TemplateListViewController.h */,
 				8140062E181492DD00786BC3 /* TemplateListViewController.m */,
 				813CAE331818211200F61EE8 /* ShowTemplateViewController.h */,
@@ -337,7 +337,6 @@
 				8140062F181492DD00786BC3 /* TemplateListViewController.m in Sources */,
 				8140063218156DEF00786BC3 /* TemplateEvent.m in Sources */,
 				8140063518156E3600786BC3 /* Template.m in Sources */,
-				8140063B18157F7300786BC3 /* SaveTemplateViewController.m in Sources */,
 				813CAE321818195F00F61EE8 /* TemplateCell.m in Sources */,
 				813CAE351818211300F61EE8 /* ShowTemplateViewController.m in Sources */,
 				813CAE3B1819D40B00F61EE8 /* UnmanagedEvent.m in Sources */,
@@ -349,6 +348,7 @@
 				81F697BF18269559006A6843 /* MainInfoViewController.m in Sources */,
 				81F697C218269A9D006A6843 /* ShareAndPrintViewController.m in Sources */,
 				81638A4A183E723500EF2706 /* FirstLoadViewController.m in Sources */,
+				81515F11184B8EBB00140990 /* SaveTemplateViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

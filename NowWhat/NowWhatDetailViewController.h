@@ -12,19 +12,19 @@
 #import "EventCell.h"
 #import "Schedule.h"
 
-@interface NowWhatDetailViewController : UIViewController <UISplitViewControllerDelegate, UIWebViewDelegate, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource> {
+@interface NowWhatDetailViewController : UIViewController <UISplitViewControllerDelegate, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource> {
     
-    NSInteger webViewOffset;
+    Event *lastEvent;
+    Event *nextEvent;
+    
+    IBOutlet UILabel *nextEventLabel;
+    IBOutlet UILabel *timeToNextEventLabel;
     
 }
 
 @property (strong, nonatomic) id detailItem;
-
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
-
-@property (nonatomic, retain) IBOutlet UIWebView *eventDisplayWebView;
 @property (nonatomic, retain) IBOutlet UILabel *countdownLabel;
-
 
 @property (nonatomic, retain) NSString *viewDate;
 @property (nonatomic, retain) NSDate *viewNSDate;

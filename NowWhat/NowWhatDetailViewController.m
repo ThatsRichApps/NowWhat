@@ -9,11 +9,6 @@
 #import "NowWhatDetailViewController.h"
 
 @interface NowWhatDetailViewController () {
-    
-    Event *lastEvent;
-    Event *nextEvent;
-    IBOutlet UILabel *nextEventLabel;
-    IBOutlet UILabel *timeToNextEventLabel;
 
 }
 
@@ -63,14 +58,15 @@
     
     
     
-     // Set the web view as hidden initially so that you don't get the grey flash
-     self.eventDisplayWebView.hidden = YES;
-     
+    [self updateTime];
+
+    /*
     [NSTimer scheduledTimerWithTimeInterval: 1.0
                                      target: self
                                    selector: @selector(updateTime)
                                    userInfo: nil
                                     repeats: NO];
+    */
     
     // repeat every # seconds - low for testing, up to 30 or so for release
     [NSTimer scheduledTimerWithTimeInterval: 5.0
@@ -80,20 +76,18 @@
                                     repeats: YES];
     
     
-    // this should probably be a table tied to a fetched results controller instead of a webview tied to a timer
-    // should I send it the managed object context or just the frc?
-    
     // if it's the first load, there will be no viewSchedule, what should we show?
-    
     if (self.viewSchedule == nil) {
         
         self.viewSchedule.scheduleName = @"whatever";
         
     }
-    
-        
     // configure view is from the basic template
     //[self configureView];
+    
+    nextEventLabel.text = @"";
+    timeToNextEventLabel.text = @"";
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,6 +124,8 @@
 
 
 -(void) updateTime {
+    
+    Event *currentAlert = nextEvent;
     
     // NSLog(@"Update the time and check Now What?");
     
@@ -251,26 +247,56 @@
         nextEventLabel.text = nextEvent.eventText;
         timeToNextEventLabel.text = text;
         
+        // whenever the next event changes, add a new alert (remove the last one)
+        // at three minutes until the next event, create a notification that will go off in two minutes
+        //if ((hours == 0)&&(minutes == 3)) {
+        
+        if (currentAlert != nextEvent) {
+            
+            [[UIApplication sharedApplication] cancelAllLocalNotifications];
+            NSLog(@"cancelling previous notifications, setting notification for the next event");
+            UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+            localNotification.fireDate = [nextEvent.eventNSDate dateByAddingTimeInterval:-60];
+            localNotification.alertBody = [NSString stringWithFormat:@"One minute till event: %@", nextEvent.eventText];
+            localNotification.timeZone = [NSTimeZone defaultTimeZone];
+            [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+            
+        }
+        
+        
     }
     
     
+    if (nextEvent == nil) {
+        
+        //NSLog (@"nextEvent is nil, clear out the text");
+        
+        
+        // if it's today, clear out the label, otherwise it will say "switch to today"
+        if (isToday) {
+            
+            nextEventLabel.text = @"";
+            
+        }
+        
+        // if the frc is empty, add placeholder text
+        if ([self.fetchedResultsControllerDetail.fetchedObjects count] == 0) {
+            
+            timeToNextEventLabel.text = @"Press + to add new event";
+            
+        } else {
+            
+            timeToNextEventLabel.text = @"";
+            
+        }
+        
+        
+        
+    }
+
+    
 }
 
-
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    
-    //// NSLog(@"*** WebView Finished loading");
-    
-    [self.eventDisplayWebView stringByEvaluatingJavaScriptFromString:
-     [NSString stringWithFormat: @"document.body.scrollTop = %d", webViewOffset]];
-    
-    //// NSLog(@"%@", [NSString stringWithFormat: @"document.body.scrollTop = %d", webViewOffset]);
-    
-    self.eventDisplayWebView.hidden = NO;
-    
-}
 
 // add delegate methods for tableview and fetchedresultscontroller
 #pragma mark - Table View
@@ -475,6 +501,24 @@
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate] ;
     
     eventCell.eventNotesLabel.text = event.eventNotes;
+    
+    // thi wraps the test to multiple lines
+    eventCell.eventNotesLabel.numberOfLines = 0;
+    eventCell.eventNotesLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    // show the end time if default setting useEndTimes is true
+    // check to see if we want to use end times, if not don't show those fields
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    
+    if ([preferences boolForKey:@"useEndTimes"]) {
+        
+        eventCell.eventEndTimeLabel.text = [Event formatEventTime:event.eventEndNSDate];
+        
+    } else {
+        
+        eventCell.eventEndTimeLabel.text = @"";
+        
+    }
     
     
 }

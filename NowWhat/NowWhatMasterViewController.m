@@ -75,17 +75,23 @@
     //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     //self.navigationItem.rightBarButtonItem = addButton;
     
-    //self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+
     
-    self.detailViewController.viewNSDate = self.viewNSDate;
-    self.detailViewController.viewDate = self.viewDate;
-    self.detailViewController.viewSchedule = self.viewSchedule;
-    self.detailViewController.managedObjectContext = self.managedObjectContext;
-    self.detailViewController.fetchedResultsControllerDetail = self.fetchedResultsController;
+        //self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
-    [self.detailViewController updateDetailView];
+        self.detailViewController.viewNSDate = self.viewNSDate;
+        self.detailViewController.viewDate = self.viewDate;
+        self.detailViewController.viewSchedule = self.viewSchedule;
+        self.detailViewController.managedObjectContext = self.managedObjectContext;
+        //self.detailViewController.fetchedResultsControllerDetail = self.fetchedResultsController;
     
-    // maybe here we need to notify the detailViewController to update it's events
+        [self.detailViewController updateDetailView];
+    
+    } else {
+        
+        self.detailViewController = nil;
+    }
     
     // show the bottom toolbar
     [self.navigationController setToolbarHidden:NO];
@@ -97,16 +103,11 @@
     scheduleLabel.text = [NSString stringWithFormat:@"Schedule"];
     scheduleField.text = [NSString stringWithFormat:@"%@", self.viewSchedule.scheduleName];
     
-    
     nextEventLabel.text = @"";
     timeToNextEventLabel.text = @"";
     
     // run once now to initiallize it
-    [NSTimer scheduledTimerWithTimeInterval: 1.0
-                                     target: self
-                                   selector: @selector(updateTime)
-                                   userInfo: nil
-                                    repeats: NO];
+    [self updateTime];
     
     // repeat every # seconds - low for testing, up to 30 or so for release
     [NSTimer scheduledTimerWithTimeInterval: 5.0
@@ -127,8 +128,6 @@
         [self lockIt:nil withPassword:self.correctPassword];
         
     }
-
-    
     
 }
 
@@ -311,7 +310,7 @@
         nextEventLabel.text = [NSString stringWithFormat:@"Next Event: %@",nextEvent.eventText];
         timeToNextEventLabel.text = text;
         
-        // whenever the next event changes, add a new alert (remove the last one?)
+        // whenever the next event changes, add a new alert (remove the last one)
         // at three minutes until the next event, create a notification that will go off in two minutes
         //if ((hours == 0)&&(minutes == 3)) {
             
@@ -815,10 +814,6 @@
     
     eventCell.eventTimeLabel.text = [NSString stringWithFormat:@"%@",[Event formatEventTime:event.eventNSDate]];
     
-    // these lines make it top left justified
-    //eventCell.eventTimeLabel.numberOfLines = 2;
-    //[eventCell.eventTimeLabel sizeToFit];
-
     eventCell.eventNotesLabel.text = event.eventNotes;
     
     //eventCell.eventNotesLabel.numberOfLines = 2;
@@ -846,9 +841,6 @@
         eventCell.eventEndTimeLabel.text = @"";
         
     }
-        
-        
-        
         
     [self configureCheckmarkForCell:cell withEvent:event];
     
@@ -903,6 +895,21 @@
     
     // send the date change up the line
     [self.delegate changeDatePicker:nil didChangeDate:newDate];
+    
+    
+    // and to the detail view controller
+    if (self.detailViewController != nil) {
+        
+        self.detailViewController.viewNSDate = self.viewNSDate;
+        self.detailViewController.viewDate = self.viewDate;
+        
+        [self.detailViewController updateDetailView];
+        
+    }
+    
+    
+    
+    
     
 }
 

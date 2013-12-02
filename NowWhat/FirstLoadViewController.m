@@ -37,6 +37,9 @@
 
 - (IBAction)cancel
 {
+    
+    // may need to do something else here if it's an ipad split control 
+    
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 

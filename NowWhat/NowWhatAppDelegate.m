@@ -52,20 +52,6 @@
          
     }
     
-    // also figure out what to do with notifications here
-    /*
-    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
-    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
-    localNotification.alertBody = @"Alert message goes here";
-    localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-    */
-    
-    // handle passing of a new schedule file:
-    // Add at end of application:didFinishLaunchingWithOptions
-
-    
-    
     return YES;
 }
 							
@@ -125,10 +111,8 @@
 
     // reset the time to now
     [[NSUserDefaults standardUserDefaults] setObject:timeNow forKey:kTimeNow];
+    [[NSUserDefaults standardUserDefaults] setObject:lastUnload forKey:@"lastUnload"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
-    
-    
     
 }
 
