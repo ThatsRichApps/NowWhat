@@ -31,7 +31,6 @@
 {
     [super viewDidLoad];
     
-    
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     // set initial viewDate and viewNSDate here if not set, need to have them passed back from master
@@ -40,13 +39,8 @@
     // check to see if there were default settings persisted in the userdefaults
     NSUserDefaults *previousLoad = [NSUserDefaults standardUserDefaults];
     
-    // check last the time the app was last loaded
-    // if it's been more than 12 hours, reset to today instead of the previous viewNSDate
-    
-    
-    NSLog (@"view did load of main schedule view, getting defaults.  should I check time here?");
+    NSLog (@"view did load of main schedule view, getting defaults");
 
-    self.viewNSDate = [previousLoad objectForKey:kViewNSDate];
     NSString *viewScheduleName = [previousLoad objectForKey:kViewSchedule];
     
     if (viewScheduleName !=nil) {
@@ -55,39 +49,34 @@
         
     }
     
-    // if the current viewDate and viewNSDate are nil, set them to today
-    if (self.viewNSDate == nil) {
+    // set the current viewDate and viewNSDate to today whenever this is first loaded
+    self.viewNSDate = [NSDate date];
+    //NSLog(@" date selected is %@", self.viewDate);
         
-        self.viewNSDate = [[NSDate alloc] init];
-        
-        //NSLog(@" date selected is %@", self.viewDate);
-        
-        // now set the viewNSDate time to 8:00 am
-        self.viewNSDate = [Event resetToBaseTime:self.viewNSDate];
-        
-        //NSLog(@"base time is %@", self.viewNSDate);
-        
-        self.viewSchedule = nil;
-        
-    }
+    // now set the viewNSDate basetime to 8:00 am
+    self.viewNSDate = [Event resetToBaseTime:self.viewNSDate];
+    //NSLog(@"base time is %@", self.viewNSDate);
     
     // set the view date now that we have a viewNSDate
     self.viewDate = [Event returnDateString:self.viewNSDate];
+    
+    // check to see if we're running on an ipad, if so, start the detailViewController
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 
         self.detailViewController = (NowWhatDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
+        self.detailViewController.viewSchedule = self.viewSchedule;
         self.detailViewController.viewNSDate = self.viewNSDate;
         self.detailViewController.viewDate = self.viewDate;
         self.detailViewController.managedObjectContext = self.managedObjectContext;
-        self.detailViewController.viewSchedule = self.viewSchedule;
         
+        // why update the detail view if it's the first instantiation of it?
         [self.detailViewController updateDetailView];
         
     } else {
         
-        NSLog(@"no detail view, this is an iphone jackass");
+        //NSLog(@"no detail view, this is an iphone");
         self.detailViewController = nil;
         
     }        
@@ -95,31 +84,11 @@
     // show the bottom toolbar
     [self.navigationController setToolbarHidden:NO];
     
-    // for testing, make it first load every time
-    //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"HasLaunchedOnce"];
-    
-    // if this is the first time it's been loaded, pop up a window asking if you want to load the existing database
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]) {
-        
-        // app already launched
-        
-    } else {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        // This is the first launch ever
-        
-        [self performSegueWithIdentifier:@"FirstLoad" sender:self];
-        
-    }
-    
-    // if the view schedule is already set, go straight to the MainView
+    // if the view schedule is already set, push the MasterViewController onto the stack
     
     if (self.viewSchedule != nil) {
         [self performSegueWithIdentifier:@"ViewPreviousSchedule" sender:self];
     }
-
-    
-    
     
 }
 
@@ -141,6 +110,7 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+    // when a schedule is selected, load the MasterViewController
     [self performSegueWithIdentifier:@"ViewSchedule" sender:[tableView cellForRowAtIndexPath: indexPath]];
 }
 
@@ -149,7 +119,6 @@
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     return [sectionInfo numberOfObjects];
-    //return [dayEvents count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -167,6 +136,8 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    // allow for the deleting of a schedule here
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
@@ -198,14 +169,14 @@
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // The table view should not be re-orderable.
+    // Allow the schedule to be reorderable, this is controlled by the scheduleListOrder entity
     return YES;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    // Do nothing yet, handle it in prepare for segue
+    // Do nothing here, handle it in prepare for segue
     
 }
 
@@ -222,6 +193,10 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
+    
+    // this allows for the moving and ordering of the rows in the schedule table
+
+    // change is user driven lets the frc know not to update on every little move until we're done
     changeIsUserDriven = YES;
     
     NSMutableArray *tempList = [[self.fetchedResultsController fetchedObjects] mutableCopy];
@@ -234,6 +209,7 @@
         [(Event *)tempList[i] setValue:@(i) forKey:@"scheduleListOrder"];
     }
     
+    // once the move is done, update the database with the new list orders of all the schedules
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"Error: %@", error);
@@ -412,56 +388,55 @@
         
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         
-        Schedule *selectedSchedule = nil;
-        selectedSchedule = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        Schedule *selectedSchedule = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
         UINavigationController *navigationController = segue.destinationViewController;
-        NowWhatMasterViewController *controller = (NowWhatMasterViewController *)navigationController;
+        self.masterViewController = (NowWhatMasterViewController *)navigationController;
         
-        controller.managedObjectContext = self.managedObjectContext;
-        controller.viewDate = self.viewDate;
-        controller.viewNSDate = self.viewNSDate;
-        controller.viewSchedule = selectedSchedule;
-        controller.detailViewController = self.detailViewController;
-        [controller.detailViewController updateDetailView];
+        self.masterViewController.managedObjectContext = self.managedObjectContext;
+        self.masterViewController.viewDate = self.viewDate;
+        self.masterViewController.viewNSDate = self.viewNSDate;
+        self.masterViewController.viewSchedule = selectedSchedule;
+        self.masterViewController.detailViewController = self.detailViewController;
         
-        controller.delegate = self;
+        // update the detail view with the new selection
+        [self.masterViewController.detailViewController updateDetailView];
+        
+        self.masterViewController.delegate = self;
         
     }
     
     if ([[segue identifier] isEqualToString:@"ViewPreviousSchedule"]) {
         
         UINavigationController *navigationController = segue.destinationViewController;
-        NowWhatMasterViewController *controller = (NowWhatMasterViewController *)navigationController;
         
-        controller.managedObjectContext = self.managedObjectContext;
-        controller.viewDate = self.viewDate;
-        controller.viewNSDate = self.viewNSDate;
-        controller.viewSchedule = self.viewSchedule;
-        controller.detailViewController = self.detailViewController;
-        [controller.detailViewController updateDetailView];
+        self.masterViewController = (NowWhatMasterViewController *)navigationController;
         
-        controller.delegate = self;
+        self.masterViewController.managedObjectContext = self.managedObjectContext;
+        self.masterViewController.viewDate = self.viewDate;
+        self.masterViewController.viewNSDate = self.viewNSDate;
+        self.masterViewController.detailViewController = self.detailViewController;
+        self.masterViewController.viewSchedule = self.viewSchedule;
+        
+        // still not sure if we would need to update the detail view
+        //[self.masterViewController.detailViewController updateDetailView];
+        
+        self.masterViewController.delegate = self;
         
     }
-
-    
-    
-    
-    
 
 }
 
 #pragma mark - CategoryPickerViewControllerDelegate
 - (void)changeDatePicker:(ChangeDateViewController *)controller didChangeDate:(NSDate *)newDate {
     
-    // update the viewDate variables, reload all the new data, and update the table
+    // update the viewDate variables, this is called from the master controller as a delegate method
     
     self.viewNSDate = newDate;
     self.viewDate = [Event returnDateString:newDate];
     
     //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
-    
+        
 }
 
 // This method is for importing a schedule file via email
@@ -478,7 +453,6 @@
 }
 
 - (void)fetchedData:(NSData *)responseData {
-    
     
     // probably check here that returnedData isn't nil; attempting
     // NSJSONSerialization with nil data raises an exception, and who
@@ -533,8 +507,36 @@
 }
 
 
+- (void) resetDateTo:(NSDate *)newDate {
 
-
-
+    NSLog(@"reset the dates on all the controllers to %@", newDate);
+    // reload the master controller and the detail controller here
+    
+    //self.viewNSDate = newDate;
+    self.viewNSDate = [Event resetToBaseTime:newDate];
+    self.viewDate = [Event returnDateString:newDate];
+    
+    // if the master controller is loaded, reset it
+    if (self.masterViewController != nil) {
+        
+        self.masterViewController.viewNSDate = self.viewNSDate;
+        self.masterViewController.viewDate = self.viewDate;
+        self.masterViewController.fetchedResultsController = nil;
+        
+        [self.masterViewController.tableView reloadData];
+        
+    }
+    
+    // if the detail controller is loaded, reset it
+    if (self.detailViewController != nil) {
+        
+        self.detailViewController.viewNSDate = self.viewNSDate;
+        self.detailViewController.viewDate = self.viewDate;
+        
+        [self.detailViewController updateDetailView];
+        
+    }
+    
+}
 
 @end

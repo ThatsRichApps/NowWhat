@@ -42,11 +42,14 @@
     [super viewDidLoad];
     
     
-    // When this view is loaded, persist userDefaults for the day, date, and schedule
+    // the viewNSDate and viewDate will be passed in from MainScheduleViewController
+    // set the viewNSDate as today every this is reloaded now
+    //self.viewNSDate = [[NSDate alloc] init];
+    //self.viewNSDate = [Event resetToBaseTime:self.viewNSDate];
     
+    // When this view is loaded, persist userDefaults for the schedule
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     
-    [defaults setObject:self.viewNSDate forKey:kViewNSDate];
     [defaults setObject:self.viewSchedule.scheduleName forKey:kViewSchedule];
     [defaults synchronize];
     
@@ -57,7 +60,6 @@
         
     }
     
-    
     // set the title of the nav controller to the day and date
     // Get the Day for this Schedule
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -66,15 +68,9 @@
     [self setTitle:dateTitleString];
     
     [self performFetch];
-
-	// Do any additional setup after loading the view, typically from a nib.
     
-    // lets not have the edit button there anymore, comment this out
-    // self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
-    //UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    //self.navigationItem.rightBarButtonItem = addButton;
-    
+    // this should have been already done in the MainSchedule... ?
+    // if it's an ipad, setup the detailViewController
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 
     
@@ -84,6 +80,8 @@
         self.detailViewController.viewDate = self.viewDate;
         self.detailViewController.viewSchedule = self.viewSchedule;
         self.detailViewController.managedObjectContext = self.managedObjectContext;
+        self.detailViewController.masterViewController = self;
+        
         //self.detailViewController.fetchedResultsControllerDetail = self.fetchedResultsController;
     
         [self.detailViewController updateDetailView];
@@ -100,7 +98,7 @@
     saveButtonItems = [self.toolbarItems mutableCopy];
     saveAddButton = self.navigationItem.rightBarButtonItem;
     
-    scheduleLabel.text = [NSString stringWithFormat:@"Schedule"];
+    scheduleLabel.text = [NSString stringWithFormat:@"Schedule:"];
     scheduleField.text = [NSString stringWithFormat:@"%@", self.viewSchedule.scheduleName];
     
     nextEventLabel.text = @"";
@@ -150,18 +148,17 @@
     
     if ([self isMovingFromParentViewController]){
         //specific stuff for being popped off stack
-        //NSLog(@"back pressed, clear schedule variable");
+        NSLog(@"back pressed, clear schedule variable");
         
         NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
         
         // when you go back to schedule, set the persisted schedule to nil
         [defaults setObject:nil forKey:kViewSchedule];
         [defaults synchronize];
+    
+        // should I also reset the detail view controller?
         
-    
     }
-    
-    
     
 }
 
@@ -280,7 +277,7 @@
         
         //countdownLabel.font = [UIFont fontWithName:@"Whiteboard Modern" size:20];
         //[text appendString:[NSString stringWithFormat:@"Countdown to next event: %ld hours and %ld minutes", hours, minutes]];
-        [text appendString:[NSString stringWithFormat:@"Next event starts: "]];
+        [text appendString:[NSString stringWithFormat:@"Starts In: "]];
         
         
         //NSLog(@"Countdown to next event: %ld hours and %ld minutes", hours, minutes);
@@ -313,7 +310,6 @@
         // whenever the next event changes, add a new alert (remove the last one)
         // at three minutes until the next event, create a notification that will go off in two minutes
         //if ((hours == 0)&&(minutes == 3)) {
-            
         if (currentAlert != nextEvent) {
         
             [[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -350,12 +346,7 @@
             
         }
         
-        
-        
     }
-    
-    
-    
     
 }
 
@@ -448,87 +439,35 @@
     }
     */
     
+    // toggle the checkmark on the detail view item also here
     
     
+    
 }
-
-/*
- 
-// I never could get this to work right
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if ([self.fetchedResultsController.fetchedObjects count] == 0) {
-        UILabel *label = [[UILabel alloc] init];
-        label.text = @"press + to add an event";
-        label.textAlignment = UITextAlignmentCenter;
-        label.numberOfLines = 2;
-        //label.font = [UIFont boldSystemFontOfSize:16];
-        //label.backgroundColor = [UIColor darkTextColor];
-        //label.textColor = [UIColor whiteColor];
-        return label;
-    } else {
-        return nil;
-    }
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if ([self.fetchedResultsController.fetchedObjects count] == 0) {
-        return 68;
-    } else {
-        
-        return 0;
-    }
-}
- 
-*/ 
- 
-
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        
-        //I'm not sure if this ever gets called....
-        
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        
-        
-        NowWhatDetailViewController *controller = (NowWhatDetailViewController *)[segue destinationViewController];
-
-        // this should do the same thing
-        //[[segue destinationViewController] setDetailItem:object];
-
-        controller.detailItem = object;
-        controller.viewNSDate = self.viewNSDate;
-        controller.viewDate = self.viewDate;
-        controller.viewSchedule = self.viewSchedule;
-        
-    }
     
     if ([[segue identifier] isEqualToString:@"AddEvent"]) {
-        
+
+        // start the edit/add event controller, adding a new one for the date and schedule
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
         
-        //EditEventViewController *controller = (EditEventViewController *)[segue destinationViewController];
-        
         controller.baseTime = self.viewNSDate;
         controller.eventSchedule = self.viewSchedule;
-        //controller.managedObjectContext = self.managedObjectContext;
         controller.delegate = self;
         
     }
     if ([[segue identifier] isEqualToString:@"EditEvent"]) {
 
+        // keep track of the event that is sent to be edited and launch the edit event controller, changes are
+        // handled by delegates
         
         lastEditedEvent = sender;
 
         UINavigationController *navigationController = segue.destinationViewController;
         EditEventViewController *controller = (EditEventViewController *)navigationController.topViewController;
-        
-        //EditEventViewController *controller = (EditEventViewController *)[segue destinationViewController];
-        
         
         controller.baseTime = self.viewNSDate;
         
@@ -541,22 +480,17 @@
         
         controller.eventToEdit = unmanagedEvent;
         controller.delegate = self;
+
+        // pass in the isLocked variable, allows for viewing but not actual editing of the event
         controller.isLocked = self.isLocked;
-        
-        //controller.managedObjectContext = self.managedObjectContext;
-        //NSLog(@"the event selected is %@", event.eventText);
-        
         
     }
 
     if ([[segue identifier] isEqualToString:@"ChangeDay"]) {
         
-        
-        // use this if the view in embedded in a navigation controller
+        // use this if the view is embedded in a navigation controller
         UINavigationController *navigationController = segue.destinationViewController;
         ChangeDateViewController *controller = (ChangeDateViewController *)navigationController.topViewController;
-        
-        //ChangeDateViewController *controller = (ChangeDateViewController *)[segue destinationViewController];
         
         controller.selectedDate = self.viewNSDate;
         // the changedateviewcontroller delegate implements changedatepicker and updates the viewDate
@@ -567,7 +501,7 @@
 
     if ([[segue identifier] isEqualToString:@"ListTemplates"]) {
         
-        
+        // use this when the view is popped onto the controller
         TemplateListViewController *controller = (TemplateListViewController *)[segue destinationViewController];
         controller.managedObjectContext = self.managedObjectContext;
         controller.viewNSDate = self.viewNSDate;
@@ -594,38 +528,14 @@
         controller.delegate = self;
         
     }
-
-    if ([[segue identifier] isEqualToString:@"ShareAndPrint"]) {
-        
-        // pop up action scheet instead
-        /*
-        UIImage *anImage = [UIImage imageNamed:@"SampleImg.png"];
-        NSArray *Items   = [NSArray arrayWithObjects:
-                            @"A text line",
-                            anImage, nil];
-        
-        UIActivityViewController *ActivityView =
-        [[UIActivityViewController alloc]
-         initWithActivityItems:Items applicationActivities:nil];
-        [self presentViewController:ActivityView animated:YES completion:nil];
-        */
-        /*
-        UINavigationController *navigationController = segue.destinationViewController;
-        ShareAndPrintViewController *controller = (ShareAndPrintViewController *)navigationController.topViewController;
-        // send the data to the save template in the form of an array
-        //controller.delegate = self;
-        controller.viewSchedule = self.viewSchedule;
-        controller.viewNSDate = self.viewNSDate;
-        controller.managedObjectContext = self.managedObjectContext;
-        
-        */
-        
-    }
     
 }
 
 -(NSMutableArray*) loadEvents {
     
+    
+    // this creates an array of unmanaged events to be sent to the savetemplateviewcontroller
+    // do I need to create a whole new fetch request here?? seems like
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
@@ -907,10 +817,6 @@
         
     }
     
-    
-    
-    
-    
 }
 
 #pragma mark - EditEventViewControllerDelegate
@@ -1177,6 +1083,7 @@
     [self.view endEditing:YES];
     
 }
+
 
 // UITextField delegate methods
 // textfield delegate methods

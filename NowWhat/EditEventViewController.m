@@ -331,6 +331,7 @@
     //[self doneEndClicked:self];
     
     [self.view endEditing:YES];
+    
     //[eventField resignFirstResponder];
     //[notesView resignFirstResponder];
 

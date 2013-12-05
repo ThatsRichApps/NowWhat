@@ -30,11 +30,14 @@
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NowWhatDetailViewController *detailViewController;
+@property (strong, nonatomic) NowWhatMasterViewController *masterViewController;
+
 
 @property (nonatomic, retain) NSString *viewDate;
 @property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) Schedule *viewSchedule;
 
+- (void) resetDateTo:(NSDate *)newDate;
 
 
 @end

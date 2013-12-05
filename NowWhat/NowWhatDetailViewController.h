@@ -11,14 +11,25 @@
 #import "Event.h"
 #import "EventCell.h"
 #import "Schedule.h"
+#import "NowWhatMasterViewController.h"
 
-@interface NowWhatDetailViewController : UIViewController <UISplitViewControllerDelegate, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource> {
+@class NowWhatMasterViewController;
+
+@interface NowWhatDetailViewController : UIViewController <UISplitViewControllerDelegate, NSFetchedResultsControllerDelegate, UITableViewDelegate,
+        UITableViewDataSource, UITextFieldDelegate> {
     
     Event *lastEvent;
     Event *nextEvent;
     
     IBOutlet UILabel *nextEventLabel;
     IBOutlet UILabel *timeToNextEventLabel;
+    IBOutlet UILabel *scheduleLabel;
+    IBOutlet UITextField *scheduleField;
+            
+    UITapGestureRecognizer *tap;
+            
+            
+
     
 }
 
@@ -30,6 +41,10 @@
 @property (nonatomic, retain) NSDate *viewNSDate;
 @property (nonatomic, retain) Schedule *viewSchedule;
 @property (nonatomic, retain) IBOutlet UITableView *detailTableView;
+
+@property (strong, nonatomic) NowWhatMasterViewController *masterViewController;
+
+
 
 // core data properties:
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsControllerDetail;

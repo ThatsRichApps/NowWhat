@@ -85,6 +85,17 @@
     // configure view is from the basic template
     //[self configureView];
     
+    if (self.viewSchedule == nil) {
+        scheduleLabel.text = @"Select Schedule to View Events";
+        scheduleField.text = @"";
+        // and don't let it be editable
+        scheduleField.enabled = NO;
+    } else {
+        scheduleLabel.text = @"Schedule:";
+        scheduleField.text = [NSString stringWithFormat:@"%@", self.viewSchedule.scheduleName];
+        scheduleField.enabled = YES;
+    }
+    
     nextEventLabel.text = @"";
     timeToNextEventLabel.text = @"";
     
@@ -144,14 +155,14 @@
     
     if ([todaysDate isEqualToString:self.viewDate]) {
         
-        NSLog(@"it is set to today");
+        //NSLog(@"it is set to today");
         
         isToday = TRUE;
         
         
     } else {
         
-        NSLog(@"it is NOT set to today");
+        //NSLog(@"it is NOT set to today");
         // Only show the date
         
         isToday = FALSE;
@@ -209,14 +220,14 @@
         // round minutes up
         minutes = minutes + 1;
         
-        NSLog (@"%f - %ld -%ld - %ld", timeToNextEvent, hours, secsLeftover, minutes);
+        //NSLog (@"%f - %ld -%ld - %ld", timeToNextEvent, hours, secsLeftover, minutes);
         
         //countdownLabel.font = [UIFont fontWithName:@"Whiteboard Modern" size:20];
         //[text appendString:[NSString stringWithFormat:@"Countdown to next event: %ld hours and %ld minutes", hours, minutes]];
-        [text appendString:[NSString stringWithFormat:@"Next event starts: "]];
+        [text appendString:[NSString stringWithFormat:@"Starts In: "]];
         
         
-        NSLog(@"Countdown to next event: %ld hours and %ld minutes", hours, minutes);
+        //NSLog(@"Countdown to next event: %ld hours and %ld minutes", hours, minutes);
         
         if (hours != 0) {
             
@@ -244,7 +255,8 @@
         
         
         
-        nextEventLabel.text = nextEvent.eventText;
+        nextEventLabel.text = [NSString stringWithFormat:@"Next Event: %@",nextEvent.eventText];
+        
         timeToNextEventLabel.text = text;
         
         // whenever the next event changes, add a new alert (remove the last one)
@@ -282,7 +294,7 @@
         // if the frc is empty, add placeholder text
         if ([self.fetchedResultsControllerDetail.fetchedObjects count] == 0) {
             
-            timeToNextEventLabel.text = @"Press + to add new event";
+            timeToNextEventLabel.text = @"Press + to add";
             
         } else {
             
@@ -352,10 +364,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    // what do I do here?? nothing if the segue things works
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    Event *event = [self.fetchedResultsControllerDetail objectAtIndexPath:indexPath];
+    [event toggleChecked];
+    [self configureCheckmarkForCell:cell withEvent:event];
     
-    //I could toggle the checkmak here
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
 
@@ -520,8 +534,32 @@
         
     }
     
+    [self configureCheckmarkForCell:cell withEvent:event];
     
 }
+
+- (void)configureCheckmarkForCell:(UITableViewCell *)cell withEvent:(Event *)event
+{
+    
+    // this adds a checkmark in the label by the cell if eventChecked is true
+    
+    EventCell *eventCell = (EventCell *)cell;
+    if (event.eventChecked) {
+        
+        eventCell.eventCheckLabel.text = @"√";
+        
+    } else {
+        
+        eventCell.eventCheckLabel.text = @"";
+        
+    }
+}
+
+
+
+
+
+
 
 - (void)updateDetailView {
     
@@ -531,8 +569,162 @@
     self.fetchedResultsControllerDetail = nil;
     [self.detailTableView reloadData];
     
+    if (self.viewSchedule == nil) {
+        scheduleLabel.text = @"Select Schedule to view Events";
+        scheduleField.text = @"";
+        // and don't let it be editable
+        scheduleField.enabled = NO;
+    } else {
+        scheduleLabel.text = @"Schedule:";
+        scheduleField.text = [NSString stringWithFormat:@"%@", self.viewSchedule.scheduleName];
+        scheduleField.enabled = YES;
+    }
+    
+    [self updateTime];
+    
 }
 
+// UITextField delegate methods
+// textfield delegate methods
+
+- (void) textFieldDidBeginEditing:(UITextField *)textField {
+    
+    NSLog(@"did begin editing");
+    
+    if (!tap) {
+        tap = [[UITapGestureRecognizer alloc]
+               initWithTarget:self
+               action:@selector(dismissKeyboard)];
+    }
+    [self.view addGestureRecognizer:tap];
+    
+}
+
+- (void) textFieldDidEndEditing:(UITextField *)textField {
+    
+    NSLog(@"did end editing");
+    
+    [self.view removeGestureRecognizer:tap];
+    
+    NSLog(@"textfield should return");
+    
+    // first check to see if they even changed the name
+    if ([scheduleField.text isEqualToString:self.viewSchedule.scheduleName]) {
+        
+        // then they never actually changed the name, return
+        
+        [scheduleField resignFirstResponder];
+        return;
+        
+    }
+    
+    if ([textField.text isEqualToString:@""]) {
+        
+        // NSLog(@"Text field is empty");
+        
+        UIAlertView *emptyTextAlert;
+        
+        emptyTextAlert = [[UIAlertView alloc]
+                          initWithTitle:@"Please enter a schedule name"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+        
+        [emptyTextAlert show];
+        
+        return;
+        
+    }
+    
+    // now check to see if there is already a template with that name
+    // if so, should I let them overwrite it?
+    if ([Schedule scheduleNameExists:scheduleField.text inMOC:self.managedObjectContext]) {
+        
+        NSLog(@"this schedule exists");
+        
+        UIAlertView *emptyTextAlert;
+        
+        emptyTextAlert = [[UIAlertView alloc]
+                          initWithTitle:@"A schedule with this name already exists"
+                          message:@""
+                          delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+        
+        //cancelButtonTitle:@"Cancel"
+        //otherButtonTitles:@"Replace", @"Merge", Nil];
+        
+        [emptyTextAlert show];
+        
+        // put the old name back and resign responder?
+        scheduleField.text = self.viewSchedule.scheduleName;
+        //[scheduleField resignFirstResponder];
+        
+        return;
+        
+    }
+    
+    self.viewSchedule.scheduleName = scheduleField.text;
+    
+    // and update the master controller table too
+    self.masterViewController.viewSchedule.scheduleName = scheduleField.text;
+    
+    // do I need to update all the template events too? - yup
+    
+    for (Event *event in [self.fetchedResultsControllerDetail fetchedObjects]) {
+        
+        event.schedule = self.viewSchedule;
+        
+    }
+    
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        abort();
+    }
+    
+    // then update the table?
+    self.fetchedResultsControllerDetail = nil;
+    [self.detailTableView reloadData];
+    
+    
+}
+
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    [textField resignFirstResponder];
+    return YES;
+    
+}
+
+
+
+// respond to the alert view regarding existing schedule name
+
+- (void) alertView:(UIAlertView *) alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    NSLog(@"clicked button %@", buttonTitle);
+    
+    
+    if ([buttonTitle isEqualToString:@"Merge"]) {
+        
+        NSLog(@"merge the new data with the existing schedule");
+        
+        
+    } else if ([buttonTitle isEqualToString:@"Replace"]) {
+        
+        NSLog(@"replace the existing schedule");
+        
+        // maybe put up another alert that you will be deleting the previous template?
+        
+    }
+    
+}
 
 
 

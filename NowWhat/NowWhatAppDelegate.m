@@ -11,10 +11,15 @@
 #import "NowWhatMasterViewController.h"
 #import "MainScheduleViewController.h"
 #define kViewNSDate @"viewNSDate"
-#define kTimeNow @"timeNow"
+#define kTimeLoaded @"timeLoaded"
+#define kLastLoaded @"lastLoaded"
 
 
-@implementation NowWhatAppDelegate
+@implementation NowWhatAppDelegate {
+    
+    MainScheduleViewController *scheduleController;
+    
+}
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
@@ -35,9 +40,9 @@
         
         UINavigationController *masterNavigationController = splitViewController.viewControllers[0];
         //NowWhatMasterViewController *controller = (NowWhatMasterViewController *)masterNavigationController.topViewController;
-        MainScheduleViewController *controller = (MainScheduleViewController *)masterNavigationController.topViewController;
+        scheduleController = (MainScheduleViewController *)masterNavigationController.topViewController;
 
-        controller.managedObjectContext = self.managedObjectContext;
+        scheduleController.managedObjectContext = self.managedObjectContext;
     
     } else {
         
@@ -47,8 +52,8 @@
         //controller.managedObjectContext = self.managedObjectContext;
 
         UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-        MainScheduleViewController *controller = (MainScheduleViewController *)navigationController.topViewController;
-        controller.managedObjectContext = self.managedObjectContext;
+        scheduleController = (MainScheduleViewController *)navigationController.topViewController;
+        scheduleController.managedObjectContext = self.managedObjectContext;
          
     }
     
@@ -77,25 +82,28 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
+    
+    NSLog(@"application did become active");
+    
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     NSDate *timeNow = [NSDate date];
-    NSDate *lastUnload =  (NSDate *)[defaults objectForKey:kTimeNow];
+    NSDate *lastLoaded =  (NSDate *)[defaults objectForKey:kTimeLoaded];
     
-    if (lastUnload==nil)
+    if (lastLoaded==nil)
     {
-        NSLog (@"First launch!");
+        NSLog (@"First launch! Load up previous database in background, then delete it");
     }
     else
     {
         
         //NSTimeInterval timeSinceUnload = [timeNow timeIntervalSinceDate:lastUnload]/3600.0;
-        NSTimeInterval timeSinceUnload = [timeNow timeIntervalSinceDate:lastUnload];
+        NSTimeInterval timeSinceLastLoaded = [timeNow timeIntervalSinceDate:lastLoaded];
         
-        NSLog (@"Time since last reload was %.1f seconds", timeSinceUnload);
+        NSLog (@"Time since last reload was %.1f seconds", timeSinceLastLoaded);
         
         //do your stuff - treat NSTimeInterval as double
         
-        if (timeSinceUnload > 20.0)
+        if (timeSinceLastLoaded > 20.0)
         {
             
             NSLog(@"reset the viewNSDate");
@@ -106,12 +114,14 @@
             //NSDate *baseTime = [Event resetToBaseTime:timeNow];
             //[defaults setObject:baseTime forKey:kViewNSDate];
             
+            [scheduleController resetDateTo:timeNow];
+            
         }
     }
 
     // reset the time to now
-    [[NSUserDefaults standardUserDefaults] setObject:timeNow forKey:kTimeNow];
-    [[NSUserDefaults standardUserDefaults] setObject:lastUnload forKey:@"lastUnload"];
+    [[NSUserDefaults standardUserDefaults] setObject:timeNow forKey:kTimeLoaded];
+    [[NSUserDefaults standardUserDefaults] setObject:lastLoaded forKey:kLastLoaded];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
 }
