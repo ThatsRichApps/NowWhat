@@ -294,11 +294,18 @@
     eventCell.eventTextLabel.text = event.eventText;
     
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventTime] ;
-    eventCell.eventEndTimeLabel.text = [Event formatEventTime:event.eventEndTime] ;
     
     eventCell.eventNotesLabel.text = event.eventNotes;
     eventCell.eventNotesView.text = event.eventNotes;
     
+    // show the end time if default setting useEndTimes is true
+    // check to see if we want to use end times, if not don't show those fields
+    NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
+    if ([preferences boolForKey:@"useEndTimes"]) {
+        eventCell.eventEndTimeLabel.text = [Event formatEventTime:event.eventEndTime];
+    } else {
+        eventCell.eventEndTimeLabel.text = @"";
+    }
     
 }
 

@@ -741,7 +741,7 @@
     
     if ([preferences boolForKey:@"useEndTimes"]) {
         
-        eventCell.eventEndTimeLabel.text = [NSString stringWithFormat:@"%@",[Event formatEventTime:event.eventEndNSDate]];
+        eventCell.eventEndTimeLabel.text = [Event formatEventTime:event.eventEndNSDate];
         // these lines make it top left justified
         //eventCell.eventEndTimeLabel.numberOfLines = 2;
         //[eventCell.eventEndTimeLabel sizeToFit];

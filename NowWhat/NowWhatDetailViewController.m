@@ -689,6 +689,10 @@
     [self.detailTableView reloadData];
     
     
+    self.masterViewController.fetchedResultsController = nil;
+    [self.masterViewController.tableView reloadData];
+    
+    
 }
 
 
