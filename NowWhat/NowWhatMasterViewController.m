@@ -854,6 +854,8 @@
     //self.fetchedResultsController = nil;
     //[self.tableView reloadData];
     
+    // update the detail view with what's next
+    [self.detailViewController updateDetailView];
     
 }
 
@@ -877,6 +879,8 @@
         abort();
     }
     
+    // update the detail view with what's next
+    [self.detailViewController updateDetailView];
 }
 
 
@@ -928,6 +932,7 @@
 - (void)unlockIt:(PasswordViewController *)controller withPassword:(int)newPassword {
     
     _isLocked = NO;
+    _correctPassword = 0;
     
     self.navigationItem.hidesBackButton = NO;
     
@@ -1053,6 +1058,7 @@
         }
     };
     
+    // the print button is delayed for a time, adding a forced delay could actually speed it up
     //[NSThread sleepForTimeInterval:2.0];
     
     [pic presentAnimated:YES completionHandler:completionHandler];

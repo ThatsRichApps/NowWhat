@@ -51,23 +51,9 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     // Start the time and now what check, then set to recheck every 30 secs
-    //[self updateTime];
+    [self updateTime];
     
     // create a timer that updates the clock
-    // NSLog (@"initiating the timer");
-    
-    
-    
-    [self updateTime];
-
-    /*
-    [NSTimer scheduledTimerWithTimeInterval: 1.0
-                                     target: self
-                                   selector: @selector(updateTime)
-                                   userInfo: nil
-                                    repeats: NO];
-    */
-    
     // repeat every # seconds - low for testing, up to 30 or so for release
     [NSTimer scheduledTimerWithTimeInterval: 5.0
                                      target: self
@@ -75,18 +61,8 @@
                                    userInfo: nil
                                     repeats: YES];
     
-    
-    // if it's the first load, there will be no viewSchedule, what should we show?
     if (self.viewSchedule == nil) {
-        
-        self.viewSchedule.scheduleName = @"whatever";
-        
-    }
-    // configure view is from the basic template
-    //[self configureView];
-    
-    if (self.viewSchedule == nil) {
-        scheduleLabel.text = @"Select Schedule to View Events";
+        scheduleLabel.text = @"Select Schedule to View and Add Events";
         scheduleField.text = @"";
         // and don't let it be editable
         scheduleField.enabled = NO;
@@ -163,7 +139,8 @@
     } else {
         
         //NSLog(@"it is NOT set to today");
-        // Only show the date
+        nextEventLabel.text = @"Set date to today to see the upcoming event";
+        timeToNextEventLabel.text = @"";
         
         isToday = FALSE;
         
@@ -261,13 +238,14 @@
         
         // whenever the next event changes, add a new alert (remove the last one)
         // at three minutes until the next event, create a notification that will go off in two minutes
-        //if ((hours == 0)&&(minutes == 3)) {
-        
         if (currentAlert != nextEvent) {
             
             [[UIApplication sharedApplication] cancelAllLocalNotifications];
             NSLog(@"cancelling previous notifications, setting notification for the next event");
             UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+            
+            // set to go off one minute before the event, this could be a user setting if added here
+            
             localNotification.fireDate = [nextEvent.eventNSDate dateByAddingTimeInterval:-60];
             localNotification.alertBody = [NSString stringWithFormat:@"One minute till event: %@", nextEvent.eventText];
             localNotification.timeZone = [NSTimeZone defaultTimeZone];
@@ -283,8 +261,7 @@
         
         //NSLog (@"nextEvent is nil, clear out the text");
         
-        
-        // if it's today, clear out the label, otherwise it will say "switch to today"
+        // if it's today, clear out the label, otherwise it will still say "switch to today"
         if (isToday) {
             
             nextEventLabel.text = @"";
@@ -500,8 +477,6 @@
 {
     
     // here is where we could determine which event is going to be next and then highlight it somehow
-    // if event 
-    
     
     // this casts the cell to a EventCell
     EventCell *eventCell = (EventCell *)cell;
@@ -511,9 +486,7 @@
     
     // this sets the cell labels
     eventCell.eventTextLabel.text = event.eventText;
-    
     eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate] ;
-    
     eventCell.eventNotesLabel.text = event.eventNotes;
     
     // thi wraps the test to multiple lines
@@ -523,17 +496,13 @@
     // show the end time if default setting useEndTimes is true
     // check to see if we want to use end times, if not don't show those fields
     NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
-    
     if ([preferences boolForKey:@"useEndTimes"]) {
-        
         eventCell.eventEndTimeLabel.text = [Event formatEventTime:event.eventEndNSDate];
-        
     } else {
-        
         eventCell.eventEndTimeLabel.text = @"";
-        
     }
     
+    // set the checkmark
     [self configureCheckmarkForCell:cell withEvent:event];
     
 }
@@ -556,13 +525,7 @@
 }
 
 
-
-
-
-
-
 - (void)updateDetailView {
-    
     
     // update the viewDate variables, reload all the new data, and update the table
     
@@ -729,7 +692,6 @@
     }
     
 }
-
 
 
 @end

@@ -44,6 +44,7 @@
         
         setPasswordLabel.text = @"Type a Password to Lock";
         feedbackLabel.text = @"Application is Unlocked";
+        //_correctPassword = 0;
         
     }
     
@@ -203,43 +204,7 @@
                 
                 
                 [self.delegate lockIt:self withPassword:_correctPassword];
-                /* 2013 this should all be done in a delegate method
-                 
-                 
-                
-                //rootView.isLocked = YES;
-                //rootView.correctPassword = correctPassword;
-                
-                // clear the buttons here
-                
-                // get all the toolbar items and navbar items and set to nil ???
-                NSMutableArray *items = [rootView.toolbarItems mutableCopy];
-                [items removeAllObjects];
-                [rootView setToolbarItems:nil];
-                [items release];
-                
-                // remove the NavBar items
-                
-                [[rootView navigationItem] setLeftBarButtonItem:nil];
-                [[rootView navigationItem] setRightBarButtonItem:nil];
-                
-                // just add the unlock button
-                // Configure the Bottom ToolBar
-                UIBarButtonItem *leftSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-                
-                UIBarButtonItem *lockButton = [[UIBarButtonItem alloc]
-                                               initWithImage:[UIImage imageNamed:@"Locked.png"]
-                                               style:UIBarButtonItemStylePlain
-                                               target:rootView
-                                               action:@selector(clickedLockButton:)];
-                
-                
-                [rootView setToolbarItems:[NSArray arrayWithObjects:leftSpace, lockButton,nil]];
-                
-                //rootView.tableView.allowsSelection = NO; // Keeps cells from being selectable
-                
-                 */
-                
+    
                 [self dismissModalViewControllerAnimated:YES];
                 
             }
@@ -254,7 +219,7 @@
                 retryCounter++;
                 
                 // then do not unlock the application
-                feedbackLabel.text = @"Incorrect Password, You Have One More Try";
+                feedbackLabel.text = @"Incorrect Password, Please Try Again";
                 
                 if (retryCounter >= 2) {
                     
