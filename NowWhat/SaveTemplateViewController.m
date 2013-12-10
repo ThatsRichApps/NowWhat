@@ -34,6 +34,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationController.navigationBar.translucent = NO;
+    
     // initiallize baseTime to viewDate at 8am, right!
     // right now it's set to current time
     if (self.baseTime == nil) {
@@ -545,6 +547,12 @@
     
 }
 
+// this is deprecated in ios 6, but still needed in 5
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+	return YES;
+}
 
 
 @end

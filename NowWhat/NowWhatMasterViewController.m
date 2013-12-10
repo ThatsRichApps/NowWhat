@@ -50,6 +50,11 @@
     // When this view is loaded, persist userDefaults for the schedule
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     
+    // gte the notification time interval
+    //notificationTime =
+    
+    
+    
     [defaults setObject:self.viewSchedule.scheduleName forKey:kViewSchedule];
     [defaults synchronize];
     
@@ -93,6 +98,9 @@
     
     // show the bottom toolbar
     [self.navigationController setToolbarHidden:NO];
+    
+    // make sure the navigation bar is opaque
+    self.navigationController.navigationBar.translucent = NO;
     
     // save the buttons for later if you lock and unlock it
     saveButtonItems = [self.toolbarItems mutableCopy];
@@ -157,6 +165,9 @@
         [defaults synchronize];
     
         // should I also reset the detail view controller?
+        self.detailViewController.viewSchedule = nil;
+        [self.detailViewController updateDetailView];
+        
         
     }
     
@@ -311,6 +322,13 @@
         // at three minutes until the next event, create a notification that will go off in two minutes
         //if ((hours == 0)&&(minutes == 3)) {
         if (currentAlert != nextEvent) {
+            
+            
+            
+            
+            
+            
+            
         
             [[UIApplication sharedApplication] cancelAllLocalNotifications];
             NSLog(@"cancelling previous notifications, setting notification for the next event");
@@ -906,7 +924,7 @@
     UIBarButtonItem *leftSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     UIBarButtonItem *lockButton = [[UIBarButtonItem alloc]
-                                   initWithImage:[UIImage imageNamed:@"Locked.png"]
+                                   initWithImage:[UIImage imageNamed:@"line__0000s_0082_lock 30"]
                                    style:UIBarButtonItemStylePlain
                                    target:self
                                    action:@selector(clickedLockButton:)];

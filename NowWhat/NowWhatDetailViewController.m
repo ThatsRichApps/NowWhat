@@ -350,6 +350,26 @@
     
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    Event *event = [self.fetchedResultsControllerDetail objectAtIndexPath:indexPath];
+    
+    if ([event.eventNotes isEqualToString:@""]) {
+        
+        return 90;
+        
+    } else {
+        
+        return 119;
+        
+    }
+
+}
+
+
+
+
 #pragma mark - Fetched results controller
 
 - (NSFetchedResultsController *)fetchedResultsControllerDetail
@@ -664,6 +684,14 @@
     
     [textField resignFirstResponder];
     return YES;
+    
+}
+
+
+-(IBAction)dismissKeyboard {
+    
+    NSLog(@"dismiss keyboard");
+    [self.view endEditing:YES];
     
 }
 

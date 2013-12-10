@@ -154,7 +154,9 @@
     
     
     // setup the notesView UITextiew
-    [notesView setTextAlignment:UITextAlignmentLeft];
+    
+    // removing this due to an error in xcode 5
+    //[notesView setTextAlignment:UITextAlignmentLeft];
     
     /* people don't need the box anymore!
     
@@ -385,5 +387,11 @@
 
 }
 
+// this is deprecated in ios 6, but still needed in 5
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+	return YES;
+}
 
 @end

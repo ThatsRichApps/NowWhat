@@ -113,6 +113,12 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+// this is deprecated in ios 6, but still needed in 5
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+	return YES;
+}
 
 
 @end
