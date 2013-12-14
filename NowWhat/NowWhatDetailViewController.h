@@ -52,4 +52,7 @@
 
 - (void)updateDetailView;
 
+- (void)lockIt;
+- (void)unlockIt;
+
 @end

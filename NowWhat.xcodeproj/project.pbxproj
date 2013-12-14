@@ -447,6 +447,8 @@
 		81921ED2180C865000ECCBEE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NowWhat/NowWhat-Prefix.pch";
 				INFOPLIST_FILE = "NowWhat/NowWhat-Info.plist";
@@ -459,6 +461,8 @@
 		81921ED3180C865000ECCBEE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NowWhat/NowWhat-Prefix.pch";
 				INFOPLIST_FILE = "NowWhat/NowWhat-Info.plist";

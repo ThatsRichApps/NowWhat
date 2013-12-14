@@ -106,7 +106,7 @@
     saveButtonItems = [self.toolbarItems mutableCopy];
     saveAddButton = self.navigationItem.rightBarButtonItem;
     
-    scheduleLabel.text = [NSString stringWithFormat:@"Schedule:"];
+    scheduleLabel.text = [NSString stringWithFormat:@""];
     scheduleField.text = [NSString stringWithFormat:@"%@", self.viewSchedule.scheduleName];
     
     nextEventLabel.text = @"";
@@ -134,6 +134,7 @@
         [self lockIt:nil withPassword:self.correctPassword];
         
     }
+    
     
 }
 
@@ -398,6 +399,12 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EventCell"];
     [self configureCell:cell atIndexPath:indexPath];
+    
+    
+    
+    
+    
+    
     return cell;
 }
 
@@ -639,7 +646,6 @@
     // Clear out any previous cache
     [NSFetchedResultsController deleteCacheWithName:@"Master"];
 
-    
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
@@ -769,7 +775,13 @@
         eventCell.eventEndTimeLabel.text = @"";
         
     }
-        
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+        cell.accessoryType =  UITableViewCellAccessoryDetailButton;
+    } else {
+        cell.accessoryType =  UITableViewCellAccessoryDetailDisclosureButton;
+    }
+    
     [self configureCheckmarkForCell:cell withEvent:event];
     
 }
@@ -924,7 +936,7 @@
     UIBarButtonItem *leftSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     UIBarButtonItem *lockButton = [[UIBarButtonItem alloc]
-                                   initWithImage:[UIImage imageNamed:@"line__0000s_0082_lock 30"]
+                                   initWithImage:[UIImage imageNamed:@"line__0000s_0082_lock"]
                                    style:UIBarButtonItemStylePlain
                                    target:self
                                    action:@selector(clickedLockButton:)];
@@ -943,6 +955,10 @@
     [defaults setInteger:self.correctPassword forKey:kPassword];
     [defaults setBool:self.isLocked forKey:kIsLocked];
     [defaults synchronize];
+    
+    scheduleField.enabled = NO;
+    [self.detailViewController lockIt];
+
     
 }
 
@@ -967,6 +983,11 @@
     [defaults setBool:self.isLocked forKey:kIsLocked];
     [defaults synchronize];
 
+    scheduleField.enabled = YES;
+    
+    [self.detailViewController unlockIt];
+    
+    
 }
 
 

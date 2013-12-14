@@ -223,6 +223,9 @@
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
+    // Clear out any previous cache
+    [NSFetchedResultsController deleteCacheWithName:@"Templates"];
+    
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
     NSFetchedResultsController *afetchedResultsControllerTemplates = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Templates"];

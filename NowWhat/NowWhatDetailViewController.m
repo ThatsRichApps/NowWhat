@@ -67,7 +67,7 @@
         // and don't let it be editable
         scheduleField.enabled = NO;
     } else {
-        scheduleLabel.text = @"Schedule:";
+        scheduleLabel.text = @"";
         scheduleField.text = [NSString stringWithFormat:@"%@", self.viewSchedule.scheduleName];
         scheduleField.enabled = YES;
     }
@@ -558,7 +558,7 @@
         // and don't let it be editable
         scheduleField.enabled = NO;
     } else {
-        scheduleLabel.text = @"Schedule:";
+        scheduleLabel.text = @"";
         scheduleField.text = [NSString stringWithFormat:@"%@", self.viewSchedule.scheduleName];
         scheduleField.enabled = YES;
     }
@@ -720,6 +720,22 @@
     }
     
 }
+
+
+- (void) lockIt {
+    
+    scheduleField.enabled = NO;
+    
+}
+
+
+- (void) unlockIt {
+    
+    scheduleField.enabled = YES;
+    
+}
+
+
 
 
 @end
