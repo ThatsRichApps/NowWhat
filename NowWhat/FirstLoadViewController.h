@@ -12,7 +12,7 @@
 @interface FirstLoadViewController : UIViewController
 
 
-
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)cancel;
 - (IBAction)importOldDatabase;

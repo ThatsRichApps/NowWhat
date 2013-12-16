@@ -1031,7 +1031,7 @@
     
     NSMutableString *htmlString = [[NSMutableString alloc] init];
     
-    // Start the html code for the uiwebview
+    // Start the html code for the print output
     [htmlString appendString:@"<html><head><style>body{background-color:transparent;}</style></head><body><font size=\"5\" face=\"Chalkboard SE\">"];
     
     // Show the time of day as well as the date
@@ -1375,11 +1375,16 @@
         MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
         [picker setSubject:@"Now What Schedule"];
         
-        [picker addAttachmentData:JSONData mimeType:@"application/nowwhat" fileName:@"data.nwf"];
+        [picker addAttachmentData:JSONData mimeType:@"application/nowwhat" fileName:@"nowwhatdata.nwf"];
         
         
         [picker setToRecipients:@[]];
-        [picker setMessageBody:@"Here is my schedule for today.  You can tap the file below to open in your copy of \"Now What\".<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What Schedule</a>" isHTML:YES];
+        
+        
+        NSString *htmlEvents = [self formatToHTML];
+        
+        
+        [picker setMessageBody:[NSString stringWithFormat:@"Here is my schedule for today.  From your iOS device, you can tap the file below to open in your copy of \"Now What\".<br>%@<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What Schedule</a>", htmlEvents] isHTML:YES];
         
         //[picker setMessageBody:[[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding] isHTML:NO];
         
@@ -1426,6 +1431,63 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+-(NSString *) formatToHTML {
+    
+    NSLog(@"formatting events for html output");
+    
+    // Here is all the html data for the printout page
+    
+    NSMutableString *htmlString = [[NSMutableString alloc] init];
+    
+    // Start the html
+    [htmlString appendString:@"<html><head><style>body{background-color:transparent;}</style></head><body><font size=\"5\" face=\"Chalkboard SE\">"];
+    
+    // Show the time of day as well as the date
+    NSDateFormatter *formatter =[[NSDateFormatter alloc] init];
+    
+    [formatter setDateFormat:@"EEEE, MM/dd"];
+    [htmlString appendString:[formatter stringFromDate:self.viewNSDate]];
+    [htmlString appendString:@"<br><br>"];
+    
+    for (Event *eventItem in [self.fetchedResultsController fetchedObjects]) {
+        
+        [htmlString appendString:[Event formatEventTime:eventItem.eventNSDate]];
+        [htmlString appendString:@" - "];
+        [htmlString appendString:eventItem.eventText];
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"useEndTimes"]) {
+            
+            [htmlString appendString:@"<br>- "];
+            [htmlString appendString:[Event formatEventTime:eventItem.eventEndNSDate]];
+            
+            
+        }
+        
+        
+        if (![eventItem.eventNotes isEqualToString:@""]) {
+            
+            [htmlString appendString:@"&nbsp;"];
+            
+            
+            NSString *formattedString = eventItem.eventNotes;
+            formattedString = [formattedString stringByReplacingOccurrencesOfString:@"\n"
+                                                                         withString:@"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"];
+            [htmlString appendString:formattedString];
+            
+        }
+        
+        [htmlString appendString:@"<br>"];
+        
+        
+    }
+    
+    // Finish the html statement and print
+    
+    [htmlString appendString: @"</body></html>"];
+    
+    return htmlString;
+    
+}
 
 
             

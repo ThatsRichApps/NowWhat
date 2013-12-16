@@ -11,7 +11,7 @@
 @interface MainInfoViewController : UIViewController {
 
 
-    IBOutlet UITextView *infoTextView;
+    IBOutlet UIWebView *infoWebView;
 
 }
     

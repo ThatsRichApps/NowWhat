@@ -13,6 +13,7 @@
 #import "NowWhatMasterViewController.h"
 #import "AddScheduleViewController.h"
 #import "MainInfoViewController.h"
+#import "sqlite3.h"
 
 
 @class NowWhatDetailViewController;
