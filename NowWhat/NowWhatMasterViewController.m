@@ -12,7 +12,6 @@
 #define kIsLocked @"isLocked"
 #define kPassword @"password"
 
-
 @interface NowWhatMasterViewController () {
     
 //    NSArray *dayEvents;
@@ -97,10 +96,11 @@
     }
     
     // show the bottom toolbar
-    [self.navigationController setToolbarHidden:NO];
+    //[self.navigationController setToolbarHidden:NO];
     
     // make sure the navigation bar is opaque
     self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.toolbar.translucent = NO;
     
     // save the buttons for later if you lock and unlock it
     saveButtonItems = [self.toolbarItems mutableCopy];
@@ -131,6 +131,7 @@
     if (self.isLocked) {
     
         self.correctPassword = [defaults integerForKey:kPassword];
+        
         [self lockIt:nil withPassword:self.correctPassword];
         
     }
@@ -197,7 +198,7 @@
 
 -(void) updateTime {
     
-    // NSLog(@"Update the time and check Now What?");
+    //NSLog(@"Update the time and check Now What?");
     
     Event *currentAlert = nextEvent;
     
@@ -325,20 +326,36 @@
         if (currentAlert != nextEvent) {
             
             
+            // check the user default settings for for often to notify the user
             
             
+            NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
             
+            NSInteger notifyBeforeTime = [preferences integerForKey:@"notificationTime"];
             
+            NSLog(@"setting notification for %i minutes before the next event", notifyBeforeTime);
             
-        
-            [[UIApplication sharedApplication] cancelAllLocalNotifications];
-            NSLog(@"cancelling previous notifications, setting notification for the next event");
-            UILocalNotification* localNotification = [[UILocalNotification alloc] init];
-            localNotification.fireDate = [nextEvent.eventNSDate dateByAddingTimeInterval:-60];
-            localNotification.alertBody = [NSString stringWithFormat:@"One minute till event: %@", nextEvent.eventText];
-            localNotification.timeZone = [NSTimeZone defaultTimeZone];
-            [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+            if (notifyBeforeTime !=0) {
+            
+                [[UIApplication sharedApplication] cancelAllLocalNotifications];
+                UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+                localNotification.fireDate = [nextEvent.eventNSDate dateByAddingTimeInterval: -60 * notifyBeforeTime];
+                
+                // vary the message based upon the notifyBeforeTime
+                NSString *alertText;
+                if (notifyBeforeTime == 1) {
+                    alertText = [NSString stringWithFormat:@"1 minute till event: %@", nextEvent.eventText];
+                } else {
+                    alertText = [NSString stringWithFormat:@"%ld minutes till event: %@", (long)notifyBeforeTime, nextEvent.eventText];
+                }
+                localNotification.alertBody = alertText;
+                
+                //localNotification.alertBody = [NSString stringWithFormat:@"One minute till event: %@", nextEvent.eventText];
+                localNotification.timeZone = [NSTimeZone defaultTimeZone];
+                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
  
+            
+            }
         }
     }
 
@@ -412,13 +429,11 @@
 {
     // Return NO if you do not want the specified item to be editable.
     
-    /*
     if (_isLocked) {
         return NO;
     } else {
         return YES;
     }
-    */ 
     return YES;
     
 }
@@ -1032,7 +1047,7 @@
     NSMutableString *htmlString = [[NSMutableString alloc] init];
     
     // Start the html code for the print output
-    [htmlString appendString:@"<html><head><style>body{background-color:transparent;}</style></head><body><font size=\"5\" face=\"Chalkboard SE\">"];
+    [htmlString appendString:@"<html><head><style>body{background-color:transparent;}</style></head><body><font size=\"4\" face=\"Chalkboard SE\">"];
     
     // Show the time of day as well as the date
     NSDateFormatter *formatter =[[NSDateFormatter alloc] init];
@@ -1041,29 +1056,23 @@
     [htmlString appendString:[formatter stringFromDate:self.viewNSDate]];
     [htmlString appendString:@"<br><br>"];
     
-    // Go through event class again to print it to the display
-    
-    // ** need to work eventEndNSDate into here somehow!! **
-    
     for (Event *eventItem in [self.fetchedResultsController fetchedObjects]) {
         
         [htmlString appendString:[Event formatEventTime:eventItem.eventNSDate]];
         [htmlString appendString:@" - "];
-        [htmlString appendString:eventItem.eventText];
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"useEndTimes"]) {
             
-            [htmlString appendString:@"<br>- "];
             [htmlString appendString:[Event formatEventTime:eventItem.eventEndNSDate]];
-            
+            [htmlString appendString:@"<br>"];
             
         }
         
+        [htmlString appendString:eventItem.eventText];
         
         if (![eventItem.eventNotes isEqualToString:@""]) {
             
-            //[htmlString appendString:@"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"];
-            [htmlString appendString:@"&nbsp;"];
+            [htmlString appendString:@"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"];
             
             
             NSString *formattedString = eventItem.eventNotes;
@@ -1384,7 +1393,7 @@
         NSString *htmlEvents = [self formatToHTML];
         
         
-        [picker setMessageBody:[NSString stringWithFormat:@"Here is my schedule for today.  From your iOS device, you can tap the file below to open in your copy of \"Now What\".<br>%@<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What Schedule</a>", htmlEvents] isHTML:YES];
+        [picker setMessageBody:[NSString stringWithFormat:@"Here is my schedule.  From your iOS device, you can tap the file below to open in your copy of \"Now What\".<br>%@<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What?</a>", htmlEvents] isHTML:YES];
         
         //[picker setMessageBody:[[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding] isHTML:NO];
         
@@ -1440,7 +1449,7 @@
     NSMutableString *htmlString = [[NSMutableString alloc] init];
     
     // Start the html
-    [htmlString appendString:@"<html><head><style>body{background-color:transparent;}</style></head><body><font size=\"5\" face=\"Chalkboard SE\">"];
+    [htmlString appendString:@"<html><head><style>body{background-color:transparent;}</style></head><body><font size=\"4\" face=\"Chalkboard SE\">"];
     
     // Show the time of day as well as the date
     NSDateFormatter *formatter =[[NSDateFormatter alloc] init];
@@ -1453,21 +1462,20 @@
         
         [htmlString appendString:[Event formatEventTime:eventItem.eventNSDate]];
         [htmlString appendString:@" - "];
-        [htmlString appendString:eventItem.eventText];
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"useEndTimes"]) {
             
-            [htmlString appendString:@"<br>- "];
             [htmlString appendString:[Event formatEventTime:eventItem.eventEndNSDate]];
-            
+            [htmlString appendString:@"<br>"];
             
         }
         
+        [htmlString appendString:eventItem.eventText];
         
         if (![eventItem.eventNotes isEqualToString:@""]) {
             
-            [htmlString appendString:@"&nbsp;"];
-            
+            // indent the notes with 5 spaces to start and on every \n (carriage return)
+            [htmlString appendString:@"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"];
             
             NSString *formattedString = eventItem.eventNotes;
             formattedString = [formattedString stringByReplacingOccurrencesOfString:@"\n"

@@ -40,8 +40,6 @@
         
     UITapGestureRecognizer *tap;
 
-    
-    
 }
 
 
@@ -62,6 +60,6 @@
 - (void)printSchedule;
 - (void)mailData;
 - (IBAction)shareButtonClicked;
-
+- (void)unlockIt:(PasswordViewController *)controller withPassword:(int)newPassword;
 
 @end

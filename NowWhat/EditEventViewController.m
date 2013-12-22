@@ -71,6 +71,7 @@
         eventDuration = 3600;
         endTime = [Event formatEventTime:[self.baseTime dateByAddingTimeInterval:eventDuration]];
         baseEndTime = [self.baseTime dateByAddingTimeInterval:eventDuration];
+        [eventField becomeFirstResponder];
 
     }
     
@@ -112,90 +113,16 @@
     
     endDateField.inputView = timeEndPicker;
     
-    /*
-    // create a done view + done button, attach to it a doneStartClicked action, and place it in a toolbar as an accessory input view...
-    // Prepare done button
-    UIToolbar* keyboardDoneButtonView = [[UIToolbar alloc] init];
-    keyboardDoneButtonView.barStyle = UIBarStyleBlack;
-    keyboardDoneButtonView.translucent = YES;
-    keyboardDoneButtonView.tintColor = nil;
-    [keyboardDoneButtonView sizeToFit];
-    
-    // Create a space to put it in the middle
-    UIBarButtonItem *leftSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                    style:UIBarButtonItemStyleBordered target:self
-                                                                   action:@selector(doneStartClicked:)];
-    
-    [keyboardDoneButtonView setItems:@[leftSpace,doneButton,leftSpace]];
-    
-    // Plug the keyboardDoneButtonView into the text field...
-    dateField.inputAccessoryView = keyboardDoneButtonView;
-    
-    // now setup the done button for the end time
-    // create a done view + done button, attach to it a doneStartClicked action, and place it in a toolbar as an accessory input view...
-    // Prepare done button
-    UIToolbar* keyboardDoneEndButtonView = [[UIToolbar alloc] init];
-    keyboardDoneEndButtonView.barStyle = UIBarStyleBlack;
-    keyboardDoneEndButtonView.translucent = YES;
-    keyboardDoneEndButtonView.tintColor = nil;
-    [keyboardDoneEndButtonView sizeToFit];
-    
-     UIBarButtonItem* doneEndButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                   style:UIBarButtonItemStyleBordered target:self
-                                                                  action:@selector(doneEndClicked:)];
-    
-    [keyboardDoneEndButtonView setItems:@[leftSpace,doneEndButton,leftSpace]];
-    
-    // Plug the keyboardDoneButtonView into the text field...
-    endDateField.inputAccessoryView = keyboardDoneEndButtonView;
-    */
-    
-    
-    // setup the notesView UITextiew
-    
-    // removing this due to an error in xcode 5
-    //[notesView setTextAlignment:UITextAlignmentLeft];
-    
-    /* people don't need the box anymore!
-    
-    // For the border and rounded corners
-    // uses quartcore framework, needs to be added to .h file and to target
-    [[notesView layer] setBorderColor:[[UIColor blackColor] CGColor]];
-    [[notesView layer] setBorderWidth:0.8];
-    [[notesView layer] setCornerRadius:10];
-    
-    */
-     
-    
-    /*
-    // Add the same type of done button to the UITextView's keyboard
-    UIToolbar* notesDoneButtonView = [[UIToolbar alloc] init];
-    notesDoneButtonView.barStyle = UIBarStyleBlack;
-    notesDoneButtonView.translucent = YES;
-    notesDoneButtonView.tintColor = nil;
-    [notesDoneButtonView sizeToFit];
-    
-    UIBarButtonItem* notesDoneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                         style:UIBarButtonItemStyleBordered target:self
-                                                                        action:@selector(notesDoneClicked:)];
-    
-    [notesDoneButtonView setItems:@[leftSpace,notesDoneButton,leftSpace]];
-    
-    notesView.inputAccessoryView = notesDoneButtonView;
-    */
-     
-    // commented out - make the user click it, it works better that way
-    // maybe on add??
-    //[self.eventField becomeFirstResponder];
-
+ 
     if (_isLocked) {
+        
+        self.title = @"Event Details";
         
         // lock all the fields
         [notesView setEditable:NO];
         [eventField setEnabled:NO];
         [dateField setEnabled:NO];
+        [endDateField setEnabled:NO];
         
         // and hide the save button
         [self.navigationItem setRightBarButtonItem:nil];
@@ -256,6 +183,10 @@
 
     // update master controller with new baseTime
     self.baseTime = timePicker.date;
+    
+    // add one second to the time, this will keep it in the correct order when adding multiple events at the same time
+    self.baseTime = [self.baseTime dateByAddingTimeInterval:1];
+    
     [self.delegate editEventView:self didChangeTime:self.baseTime];
     
     

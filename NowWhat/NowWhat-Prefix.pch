@@ -13,3 +13,7 @@
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
 #endif
+
+#ifndef DEBUG
+#define NSLog(...) /* suppress NSLog when in release mode */
+#endif

@@ -39,6 +39,7 @@
 @property (nonatomic, retain) Schedule *viewSchedule;
 
 - (void) resetDateTo:(NSDate *)newDate;
+- (void) resetLock;
 
 
 @end

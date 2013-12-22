@@ -26,7 +26,7 @@
 + (NSDate *)resetToBaseTime: (NSDate *)dateTime;
 + (NSString *)JSONEventTime: (NSDate *)dateTime;
 + (NSDate *)dateFromJSONString: (NSString *)dateString;
-
++ (NSDate *)returnDateFromStrings: (NSString *)dateString timeString:(NSString *)timeString;
 
 - (void)toggleChecked;
 

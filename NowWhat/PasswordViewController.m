@@ -70,6 +70,9 @@
     // Plug the keyboardDoneButtonView into the text field...
     realPasswordField.inputAccessoryView = keyboardDoneButtonView;
     
+    // add gesture recognizer to close, probably don't need the cancel button anymore?
+    
+    
 }
 
 - (void)didReceiveMemoryWarning

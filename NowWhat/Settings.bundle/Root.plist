@@ -6,6 +6,12 @@
 	<array>
 		<dict>
 			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Now What App Preferences</string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
 			<string>Notifications</string>
@@ -21,24 +27,28 @@
 			<array>
 				<integer>0</integer>
 				<integer>1</integer>
-				<string>5</string>
+				<integer>5</integer>
 			</array>
 			<key>DefaultValue</key>
-			<string>Nil</string>
-		</dict>
-		<dict>
-			<key>Title</key>
-			<string>Now What Preferences</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
+			<string>PSMultiValueSpecifier</string>
+			<key>Titles</key>
+			<array>
+				<string>Default</string>
+				<string>Reset Lock</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<false/>
+				<true/>
+			</array>
 			<key>Title</key>
-			<string>Locked</string>
+			<string>Lock Reset</string>
 			<key>Key</key>
-			<string>isLocked</string>
+			<string>lockReset</string>
 			<key>DefaultValue</key>
 			<false/>
 		</dict>
@@ -51,16 +61,6 @@
 			<string>hour24</string>
 			<key>DefaultValue</key>
 			<false/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Use schedules</string>
-			<key>Key</key>
-			<string>useSchedules</string>
-			<key>DefaultValue</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>Type</key>

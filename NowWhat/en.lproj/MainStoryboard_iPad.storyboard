@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="5">
     <dependencies>
         <deployment defaultVersion="1280" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -10,13 +10,13 @@
             <objects>
                 <tableViewController id="dX1-fr-uwj" customClass="MainScheduleViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" id="XeP-Eb-VbO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="660"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ScheduleCell" rowHeight="50" id="zlc-AZ-GEK" customClass="ScheduleCell">
-                                <rect key="frame" x="0.0" y="86" width="320" height="50"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zlc-AZ-GEK" id="FzG-pr-S1A">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="49"/>
@@ -70,7 +70,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <connections>
                         <segue destination="19" kind="push" identifier="ViewPreviousSchedule" id="o4z-tX-96k"/>
                         <segue destination="gAi-u4-9wh" kind="push" identifier="FirstLoad" id="Zxf-AD-D72"/>
@@ -204,17 +205,17 @@
             <objects>
                 <viewController id="3WF-NY-nT5" customClass="SaveTemplateViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hL7-a6-8m4">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="660"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter template name to save" minimumFontSize="17" id="XBJ-YH-pc6">
-                                <rect key="frame" x="44" y="80" width="233" height="30"/>
+                                <rect key="frame" x="37" y="39" width="247" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="65" sectionHeaderHeight="22" sectionFooterHeight="22" id="EXF-cm-I1s">
-                                <rect key="frame" x="-1" y="118" width="320" height="648"/>
+                                <rect key="frame" x="0.0" y="77" width="320" height="583"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -269,6 +270,13 @@
                                     <outlet property="delegate" destination="3WF-NY-nT5" id="HqC-Zx-jq9"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save as Template" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iPA-BN-Gyb">
+                                <rect key="frame" x="37" y="10" width="247" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -292,7 +300,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <connections>
                         <outlet property="saveTableView" destination="EXF-cm-I1s" id="QSU-KL-mRg"/>
                         <outlet property="templateNameField" destination="XBJ-YH-pc6" id="Gfb-Qg-Szb"/>
@@ -323,13 +332,13 @@
             <objects>
                 <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="19" customClass="NowWhatMasterViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="D6g-lv-pqb">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="660"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="EventCell" rowHeight="60" id="6qQ-jg-aGZ" customClass="EventCell">
-                                <rect key="frame" x="0.0" y="86" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6qQ-jg-aGZ" id="avd-DI-PjK">
                                     <rect key="frame" x="0.0" y="0.0" width="253" height="59"/>
@@ -343,7 +352,7 @@
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Event Text" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BNZ-mr-Xsd">
-                                            <rect key="frame" x="30" y="18" width="257" height="23"/>
+                                            <rect key="frame" x="30" y="18" width="223" height="23"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -363,31 +372,31 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem image="line__0000s_0090_calendar 30" style="plain" id="N32-5n-aun">
+                        <barButtonItem image="line__0000s_0090_calendar" style="plain" id="N32-5n-aun">
                             <connections>
                                 <segue destination="Kwj-HG-2fv" kind="modal" identifier="ChangeDay" modalPresentationStyle="formSheet" id="nYq-e3-5fV"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="JHl-gd-wUO"/>
-                        <barButtonItem image="line__0000s_0103_folder 30" style="plain" id="Eze-x2-BX9">
+                        <barButtonItem image="line__0000s_0103_folder" style="plain" id="Eze-x2-BX9">
                             <connections>
                                 <segue destination="3WF-NY-nT5" kind="push" identifier="SaveTemplate" id="SwG-Jc-mr6"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="dZz-Mr-oDY"/>
-                        <barButtonItem image="line__0000s_0102_box 30" style="plain" id="OAK-kZ-Pam">
+                        <barButtonItem image="line__0000s_0102_box" style="plain" id="OAK-kZ-Pam">
                             <connections>
                                 <segue destination="B6A-hm-1nH" kind="push" identifier="ListTemplates" id="lfR-Zp-yNd"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="3jO-Gl-IgM"/>
-                        <barButtonItem style="plain" systemItem="action" id="4q1-6n-E2L">
+                        <barButtonItem image="line__0000s_0103_share" style="plain" id="4q1-6n-E2L">
                             <connections>
                                 <action selector="shareButtonClicked" destination="19" id="vsX-rP-GsC"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="0EK-Dh-uG1"/>
-                        <barButtonItem image="line__0000s_0083_unlock 30" style="plain" id="Ilw-VX-O6z">
+                        <barButtonItem image="line__0000s_0083_unlock" style="plain" id="Ilw-VX-O6z">
                             <connections>
                                 <segue destination="6Id-b8-h7g" kind="modal" identifier="PasswordLock" modalPresentationStyle="formSheet" id="NFM-3w-VqD"/>
                             </connections>
@@ -401,7 +410,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="D6g-lv-pqb" id="yCg-rc-dV6"/>
                         <segue destination="4Mc-22-pRR" kind="modal" identifier="EditEvent" modalPresentationStyle="formSheet" id="xV0-Qz-ygo"/>
@@ -545,13 +553,13 @@
             <objects>
                 <tableViewController id="B6A-hm-1nH" customClass="TemplateListViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" id="qFB-lN-c1e">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="660"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TemplateCell" rowHeight="50" id="PUc-bW-rpf" customClass="TemplateCell">
-                                <rect key="frame" x="0.0" y="86" width="320" height="50"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PUc-bW-rpf" id="dUq-2E-oGp">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="49"/>
@@ -585,8 +593,8 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Templates" id="Z4J-fe-hM2"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ndF-YM-smO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -660,12 +668,12 @@
             <objects>
                 <tableViewController id="aLc-Go-pxX" customClass="ShowTemplateViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="65" sectionHeaderHeight="22" sectionFooterHeight="22" id="BfM-cf-280">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="660"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="5W6-3G-UoR">
-                            <rect key="frame" x="0.0" y="64" width="320" height="70"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Change the name of this template" minimumFontSize="17" id="pkC-re-45O">
@@ -682,7 +690,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EventCell" rowHeight="65" id="l7W-hN-gY0" customClass="EventCell">
-                                <rect key="frame" x="0.0" y="156" width="320" height="65"/>
+                                <rect key="frame" x="0.0" y="92" width="320" height="65"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l7W-hN-gY0" id="FC1-ne-4rq">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="64"/>
@@ -746,7 +754,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="templateNameField" destination="pkC-re-45O" id="l5w-lz-Rzp"/>
                     </connections>
@@ -962,7 +969,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController id="gAi-u4-9wh" customClass="FirstLoadViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Tas-fk-XW2">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="660"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="First Time Loading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WZV-0S-X1F">
@@ -1003,23 +1010,24 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <objects>
                 <viewController modalPresentationStyle="formSheet" id="uw2-ke-CIW" customClass="MainInfoViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xWK-fN-Cnx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="660"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" text="Here you will see information about the app, differing by where this view is called from." id="rQT-B1-X0e">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                            <webView contentMode="scaleToFill" id="PcU-iQ-EST">
+                                <rect key="frame" x="0.0" y="62" width="320" height="554"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                                <connections>
+                                    <outlet property="delegate" destination="uw2-ke-CIW" id="9be-TL-Fli"/>
+                                </connections>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="fkW-Rz-JkY"/>
                     <connections>
-                        <outlet property="infoTextView" destination="rQT-B1-X0e" id="DV7-Ap-76y"/>
+                        <outlet property="infoWebView" destination="PcU-iQ-EST" id="s52-X5-To0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DLN-Wl-ZAD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1064,10 +1072,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </scene>
     </scenes>
     <resources>
-        <image name="line__0000s_0083_unlock 30" width="20" height="26"/>
-        <image name="line__0000s_0090_calendar 30" width="24" height="24"/>
-        <image name="line__0000s_0102_box 30" width="24" height="23"/>
-        <image name="line__0000s_0103_folder 30" width="24" height="21"/>
+        <image name="line__0000s_0083_unlock" width="20" height="26"/>
+        <image name="line__0000s_0090_calendar" width="24" height="24"/>
+        <image name="line__0000s_0102_box" width="24" height="23"/>
+        <image name="line__0000s_0103_folder" width="24" height="21"/>
+        <image name="line__0000s_0103_share" width="24" height="28"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -1076,7 +1085,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="o4z-tX-96k"/>
-        <segue reference="xV0-Qz-ygo"/>
         <segue reference="SwG-Jc-mr6"/>
+        <segue reference="xV0-Qz-ygo"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -13,6 +13,8 @@
 #define kViewNSDate @"viewNSDate"
 #define kTimeLoaded @"timeLoaded"
 #define kLastLoaded @"lastLoaded"
+#define kLockReset @"lockReset"
+#define kNotificationTime @"notificationTime"
 
 
 @implementation NowWhatAppDelegate {
@@ -27,6 +29,18 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    // set the user defaults to their default values
+    NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
+    
+    if (![defaults integerForKey:kNotificationTime]) {
+        
+        // if the defaults are not set, set them here
+        
+        [defaults setInteger:1 forKey:kNotificationTime];
+        [defaults synchronize];
+        
+    };
     
     NSLog (@"didFinishLaunchingWithOptions");
     
@@ -81,8 +95,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
-    
+        
     NSLog(@"application did become active");
     
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
@@ -118,11 +131,23 @@
             
         }
     }
+    
+    BOOL lockReset = [defaults boolForKey:kLockReset];
+    NSLog(@"reset value is %hhd", lockReset);
+    
+    if (lockReset) {
+        
+        [scheduleController resetLock];
+        // now reset the value to default (0)
+        [defaults setObject:0 forKey:kLockReset];
+        
+    }
+    
 
     // reset the time to now
-    [[NSUserDefaults standardUserDefaults] setObject:timeNow forKey:kTimeLoaded];
-    [[NSUserDefaults standardUserDefaults] setObject:lastLoaded forKey:kLastLoaded];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [defaults setObject:timeNow forKey:kTimeLoaded];
+    [defaults setObject:lastLoaded forKey:kLastLoaded];
+    [defaults synchronize];
     
 }
 

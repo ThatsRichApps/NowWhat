@@ -107,6 +107,61 @@
 }
 
 
++ (NSDate *)returnDateFromStrings: (NSString *)dateString timeString:(NSString *)timeString {
+    
+    // this method is specifically for taking date and time from the old database and creating an NSDate for it
+    
+    NSDate *mergedDate;
+    
+    // dateString is in the form MMddYYYY, and timeOfDay is an in kk:mm
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    
+
+    NSString *monthStr;
+    NSString *dayStr;
+    NSString *yearStr;
+
+    // if the datestring only has seven characters, then the leading zero was dropped
+    if (dateString.length == 7) {
+    
+        // get the month day and year from the dateString
+        monthStr = [dateString substringToIndex:1];
+        dayStr   = [dateString substringWithRange:NSMakeRange(1, 2)];
+        yearStr  = [dateString substringFromIndex:3];
+    
+    } else {
+        
+        // get the month day and year from the dateString
+        monthStr = [dateString substringToIndex:2];
+        dayStr   = [dateString substringWithRange:NSMakeRange(2, 2)];
+        yearStr  = [dateString substringFromIndex:4];
+    
+    }
+    
+    
+    [components setDay:[dayStr intValue]];
+    [components setMonth:[monthStr intValue]];
+    [components setYear:[yearStr intValue]];
+    
+    // get the hour and minute from the timeOfDay
+    // first format a string with time, then parse out the hour and minute
+    
+    NSArray *stringComponents = [timeString componentsSeparatedByString:@":"];
+    NSString *hour = stringComponents[0];
+    NSString *minute = [stringComponents[1] substringToIndex:2];
+    
+    [components setHour:[hour intValue]];
+    [components setMinute:[minute intValue]];
+    
+    mergedDate = [gregorian dateFromComponents:components];
+    //NSLog(@"merged dateTime is %@", mergedDate);
+    
+    return (mergedDate);
+    
+}
+
+
 + (NSDate *)normalizeDay: (NSDate *)dateTime {
     
     

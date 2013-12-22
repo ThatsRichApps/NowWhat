@@ -226,7 +226,14 @@
             
         }
         
-        [text appendString:[NSString stringWithFormat:@"%ld minutes", minutes]];
+        [text appendString:[NSString stringWithFormat:@"%ld minute", minutes]];
+        
+        // make minute plural if more than one.
+        if (minutes > 1) {
+            
+            [text appendString:@"s"];
+            
+        }
         
         // if it's only one minute, remove the 's' from the the end
         
@@ -240,16 +247,37 @@
         // at three minutes until the next event, create a notification that will go off in two minutes
         if (currentAlert != nextEvent) {
             
-            [[UIApplication sharedApplication] cancelAllLocalNotifications];
-            NSLog(@"cancelling previous notifications, setting notification for the next event");
-            UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+            NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
             
-            // set to go off one minute before the event, this could be a user setting if added here
+            NSInteger notifyBeforeTime = [preferences integerForKey:@"notificationTime"];
             
-            localNotification.fireDate = [nextEvent.eventNSDate dateByAddingTimeInterval:-60];
-            localNotification.alertBody = [NSString stringWithFormat:@"One minute till event: %@", nextEvent.eventText];
-            localNotification.timeZone = [NSTimeZone defaultTimeZone];
-            [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+            NSLog(@"setting notification for %i minutes before the next event", notifyBeforeTime);
+            
+            if (notifyBeforeTime !=0) {
+                
+                
+            
+                [[UIApplication sharedApplication] cancelAllLocalNotifications];
+                UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+            
+                // set to go off before the event, as set by user setting
+            
+                localNotification.fireDate = [nextEvent.eventNSDate dateByAddingTimeInterval:-60 * notifyBeforeTime];
+                
+                // vary the message based upon the notifyBeforeTime
+                NSString *alertText;
+                if (notifyBeforeTime == 1) {
+                    alertText = [NSString stringWithFormat:@"1 minute till event: %@", nextEvent.eventText];
+                } else {
+                    alertText = [NSString stringWithFormat:@"%ld minutes till event: %@", (long)notifyBeforeTime, nextEvent.eventText];
+                }
+                
+                localNotification.alertBody = alertText;
+                
+                localNotification.timeZone = [NSTimeZone defaultTimeZone];
+                [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+            
+            }
             
         }
         
