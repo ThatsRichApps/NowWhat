@@ -28,7 +28,6 @@
     [super viewDidLoad];
     // create unseen text field and make it first responder
     realPasswordField = [[UITextField alloc] initWithFrame:CGRectZero];
-    [realPasswordField setDelegate:self];
     realPasswordField.keyboardType = UIKeyboardTypeNumberPad;
     
     [self.view addSubview:realPasswordField];
@@ -67,10 +66,18 @@
     
     [keyboardDoneButtonView setItems:@[leftSpace,backButton,leftSpace]];
     
+    
+    
+    
     // Plug the keyboardDoneButtonView into the text field...
     realPasswordField.inputAccessoryView = keyboardDoneButtonView;
+    realPasswordField.delegate = self;
     
     // add gesture recognizer to close, probably don't need the cancel button anymore?
+    
+    
+    // need to handle case where the close keyboard button is tapped, same as a cancel
+    
     
     
 }
@@ -88,7 +95,10 @@
 - (void) backClicked:(id)sender {
     
     // NSLog(@"clicked back button");
-    [self dismissModalViewControllerAnimated:YES];
+    //[self dismissModalViewControllerAnimated:YES];
+    
+    [realPasswordField resignFirstResponder];
+    
     
 }
 
@@ -99,11 +109,22 @@
     
     //	[textField resignFirstResponder];
     
-    // NSLog(@"in text field should return");
-	
+    NSLog(@"in text field should return");
+    
     return YES;
     
 }
+
+
+- (void) textFieldDidEndEditing:(UITextField *)textField {
+    
+    NSLog(@"did end editing");
+    [self dismissModalViewControllerAnimated:YES];
+
+    
+}
+
+
 
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -175,8 +196,7 @@
             
             
             
-        } else if ((_correctPassword == [typedString intValue]) || ([typedString intValue] == 9432)) {
-            // 9432 is the master password in case we forget the main password
+        } else if (_correctPassword == [typedString intValue]) {
             
             // you got it right!
             // NSLog(@"Correct Password!!");

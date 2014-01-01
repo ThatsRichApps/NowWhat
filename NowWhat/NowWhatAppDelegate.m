@@ -100,11 +100,17 @@
     
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     NSDate *timeNow = [NSDate date];
+    
+    //[defaults setObject:nil forKey:kTimeLoaded];
+    
     NSDate *lastLoaded =  (NSDate *)[defaults objectForKey:kTimeLoaded];
     
     if (lastLoaded==nil)
     {
         NSLog (@"First launch! Load up previous database in background, then delete it");
+        
+        [scheduleController importOldDatabase];
+        
     }
     else
     {
@@ -115,8 +121,9 @@
         NSLog (@"Time since last reload was %.1f seconds", timeSinceLastLoaded);
         
         //do your stuff - treat NSTimeInterval as double
+        // this sets the time interval (in seconds) where we should reset to the current day
         
-        if (timeSinceLastLoaded > 20.0)
+        if (timeSinceLastLoaded > 3600.0)
         {
             
             NSLog(@"reset the viewNSDate");
@@ -133,7 +140,7 @@
     }
     
     BOOL lockReset = [defaults boolForKey:kLockReset];
-    NSLog(@"reset value is %hhd", lockReset);
+    //NSLog(@"reset value is %hhd", lockReset);
     
     if (lockReset) {
         

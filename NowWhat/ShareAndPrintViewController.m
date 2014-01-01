@@ -105,7 +105,7 @@
 
         
         [picker setToRecipients:@[]];
-        [picker setMessageBody:@"Here is my schedule for today.  You can tap the file below to open in your copy of \"Now What\".<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What Schedule</a>" isHTML:YES];
+        [picker setMessageBody:@"Here is my schedule.  You can tap the file below to open in your copy of \"Now What\".<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What Schedule</a>" isHTML:YES];
         
         //[picker setMessageBody:[[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding] isHTML:NO];
         

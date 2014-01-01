@@ -25,7 +25,7 @@
     IBOutlet UILabel *timeToNextEventLabel;
     IBOutlet UILabel *scheduleLabel;
     IBOutlet UITextField *scheduleField;
-            
+    IBOutlet UILabel *pressPlusLabel;
     UITapGestureRecognizer *tap;
             
             

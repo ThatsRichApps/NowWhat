@@ -33,7 +33,12 @@
     NSString *path = [[NSBundle mainBundle] bundlePath];
     NSURL *baseURL = [NSURL fileURLWithPath:path];
     
-    
+    [htmlString appendString:@"<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n"
+            "<style>p{font-family:Arial,Helvetica,sans-serif; font-size:75%;}</style>"
+            "</head>"];
+     
+    [htmlString appendString:@"<body align = 'justify'>"];
+
     
     if ([self.callingView isEqualToString:@"InfoSchedules"]) {
         
@@ -49,12 +54,12 @@
         [htmlString appendString:@"<p><img src=\"line__0000s_0103_share.png\" width=\"24\" height=\"28\" /> - Share (Mail or Print) the currently loaded events.  Events can be mailed to other Now What users and their schedules will be updated.</p>"];
         [htmlString appendString:@"<p><img src=\"line__0000s_0082_lock.png\" width=\"20\" height=\"26\" /> - Lock the app so that none of the settings can be changed.  This disables all the buttons.</p>"];
         
-        [htmlString appendString:@"<p>Settings Additions:  In the Settings app for your device, listed under \"NowWhat\", you can change the default app settings.  These include:<br>"];
+        [htmlString appendString:@"<p>Settings Additions:  In the Settings app for your device, listed under \"NowWhat\", you can change the default app settings.  These include:<br><br>"];
         
-        [htmlString appendString:@"Notifications:  The app will notify you of coming events, you can set it to none, 1 minute before, or 5 minutes before the event.<br>"];
-        [htmlString appendString:@"Lock Reset:  If you lock your app and forget the password, this setting will open it up again.<br>"];
-        [htmlString appendString:@"24 Hour Time:  This setting switches all times to be in 24 hour time rather than AM/PM.<br>"];
-        [htmlString appendString:@"Use End Times:  Adds the use of end times for all your events everywhere within the app<br></p>"];
+        [htmlString appendString:@"<strong>Notifications:</strong>  The app will notify you of coming events, you can set it to none, 1 minute before, or 5 minutes before the event.<br>"];
+        [htmlString appendString:@"<strong>Lock Reset:</strong>  If you lock your app and forget the password, this setting will open it up again.<br>"];
+        [htmlString appendString:@"<strong>24 Hour Time:</strong>  This setting switches all times to be in 24 hour time rather than AM/PM.<br>"];
+        [htmlString appendString:@"<strong>Use End Times:</strong>  Adds the use of end times for all your events everywhere within the app<br></p>"];
 
     }
     
@@ -75,7 +80,8 @@
     
     }
 
-    
+    [htmlString appendString:@"</body></html>"];
+
     
     [infoWebView loadHTMLString:htmlString baseURL:baseURL];
     

@@ -69,7 +69,7 @@
         
         //[self performSegueWithIdentifier:@"FirstLoad" sender:self];
         
-        [self importOldDatabase];
+        //[self importOldDatabase];
         
         // then load the main information page
         [self performSegueWithIdentifier:@"InfoSchedules" sender:self];
@@ -128,6 +128,10 @@
     // if it finds an old database file from my earlier now what version, it reads all the data in
     // and inserts it into the new core data context
     
+    
+    // create a new schedule with the name "My Schedule"
+    Schedule *thisSchedule = [Schedule returnScheduleForName:@"My Schedule" inContext:self.managedObjectContext];
+    
     sqlite3 *db;
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -153,35 +157,20 @@
         return;
 	}
     
-    // create a new schedule with the name "My Schedule"
-    Schedule *thisSchedule = [Schedule returnScheduleForName:@"My Schedule" inContext:self.managedObjectContext];
-     
-    
     // get all events from today and future (don't load old dates)
     
     NSDate *todaysDate = [NSDate date];
     
-    
-    // newEventDate is a String, send from the caller, need to parse out all
-    //NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-
-    //[dateFormat setDateFormat:@"MMddYYYY"];
-    
-    //NSString *todayString = [dateFormat stringFromDate:todaysDate];
-    
-    // slight issue to be fixed... the date in the old database is in MMddYYYY format, and it truncates the leading zero
+    // slight issue to be fixed... the date in the old database is in MMddyyyy format, and it truncates the leading zero
     // so a > comparison of dates will not bring up future dates correctly
     
-    // I think I'll need to bring in every entry and compare them myself
-    
-    
-    
+    // I'll need to bring in every entry and compare them myself
     
     //—-retrieve rows—-
     //NSString *qsql = [NSString stringWithFormat:@"SELECT eventDate, eventTime, eventText, eventNotes FROM EventList WHERE eventDate >= %@", todayString];
     NSString *qsql = [NSString stringWithFormat:@"SELECT eventDate, eventTime, eventText, eventNotes FROM EventList"];
     
-    NSLog(@"executing SQL: %@", qsql);
+    //NSLog(@"executing SQL: %@", qsql);
     
     sqlite3_stmt *statement;
     
@@ -206,13 +195,13 @@
 			char *field4 = (char *) sqlite3_column_text(statement, 3);
             field4Str = [[NSString alloc] initWithUTF8String: field4];
             
-            NSString *str = [NSString stringWithFormat:@"%@ - %@ - %@ - '%@'", field1Str, field2Str, field3Str, field4Str];
-            NSLog(@"%@", str);
+            //NSString *str = [NSString stringWithFormat:@"%@ - %@ - %@ - '%@'", field1Str, field2Str, field3Str, field4Str];
+            //NSLog(@"%@", str);
 			
             
             NSDate *eventNSDate = [Event returnDateFromStrings:field1Str timeString:field2Str];
             
-            NSLog(@"merged date is %@", eventNSDate);
+            //NSLog(@"merged date is %@", eventNSDate);
             
             if([eventNSDate compare: todaysDate] == NSOrderedAscending) {
                 // if start is earlier in time than end, then skip it!
@@ -236,14 +225,14 @@
             event.eventEndNSDate = [event.eventNSDate dateByAddingTimeInterval:3600];
             event.schedule = thisSchedule;
             
-            NSLog(@"adding event %@", event);
+            //NSLog(@"adding event %@", event);
             
-            NSLog(@"event text = %@", field3Str);
-            NSLog(@"event notes = %@", field4Str);
-            NSLog(@"event time = %@", field2Str);
-            NSLog(@"event date = %@", field1Str);
+            //NSLog(@"event text = %@", field3Str);
+            //NSLog(@"event notes = %@", field4Str);
+            //NSLog(@"event time = %@", field2Str);
+            //NSLog(@"event date = %@", field1Str);
             
-            NSLog(@"merged date is %@", event.eventNSDate);
+            //NSLog(@"merged date is %@", event.eventNSDate);
             
         }
         
@@ -260,8 +249,11 @@
     }
 
     // now get all the templates
-    NSString *sqlTemplates = [NSString stringWithFormat:@"SELECT templateID,templateName,templateListOrder FROM TemplateList"];
+    NSString *sqlTemplates = [NSString stringWithFormat:@"SELECT templateID,templateName FROM TemplateList ORDER BY templateListOrder"];
     sqlite3_stmt *statementTemplates;
+    
+    
+    NSMutableDictionary *templateMap = [[NSMutableDictionary alloc] init];
     
     if (sqlite3_prepare_v2( db, [sqlTemplates UTF8String], -1, &statementTemplates, nil) == SQLITE_OK) {
         while (sqlite3_step(statementTemplates) == SQLITE_ROW) {
@@ -271,20 +263,28 @@
             char *field2 = (char *) sqlite3_column_text(statementTemplates, 1);
             NSString *field2Str = [[NSString alloc] initWithUTF8String: field2];
 			
-            char *field3 = (char *) sqlite3_column_text(statementTemplates, 2);
-            NSString *field3Str = [[NSString alloc] initWithUTF8String: field3];
+            //char *field3 = (char *) sqlite3_column_text(statementTemplates, 2);
+            //NSString *field3Str = [[NSString alloc] initWithUTF8String: field3];
 			
+            //NSString *str = [[NSString alloc] initWithFormat:@"got template from DB: %@ - %@ - %@",
+			//				 field1Str, field2Str, field3Str];
             
-            NSString *str = [[NSString alloc] initWithFormat:@"got template from DB: %@ - %@ - %@",
-							 field1Str, field2Str, field3Str];
+            //NSLog(@"%@", str);
             
-            NSLog(@"%@", str);
             
-			/*
-             thisTemplate = [templateClass templateWithID:field1Str
-             name:field2Str
-             order:[field3Str intValue]];
-             */
+            
+            // Add these events to the template database
+            // do error checking and save to managedObjectContext
+            Template *template = nil;
+            
+            template = [NSEntityDescription insertNewObjectForEntityForName:@"Template" inManagedObjectContext:self.managedObjectContext];
+            
+            template.templateName = field2Str;
+            template.templateListOrder = [Template getNextTemplateOrderInMOC:self.managedObjectContext];
+            
+            // need to save a mapping of templateID to template for setting on each event below
+            
+            [templateMap setObject:template forKey:field1Str];
             
         }
         
@@ -294,9 +294,15 @@
         sqlite3_finalize(statementTemplates);
     }
     
-    
+    // now save the context
+    error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        return;
+    }
+
     // get the events for each template...
-    NSString *sqlTemplateEvents = [NSString stringWithFormat:@"SELECT eventTime, eventText, eventNotes FROM TemplateEvents"];
+    NSString *sqlTemplateEvents = [NSString stringWithFormat:@"SELECT eventTime, eventText, eventNotes, templateID FROM TemplateEvents"];
     
     sqlite3_stmt *statementTemplateEvents;
     //templateEvents =[[NSMutableArray alloc] init];
@@ -307,9 +313,12 @@
             NSString *field1Str;
             NSString *field2Str;
             NSString *field3Str;
+            NSString *field4Str;
+            
             char *field1;
             char *field2;
             char *field3;
+            char *field4;
             
             field1 = (char *) sqlite3_column_text(statementTemplateEvents, 0);
             field1Str = [[NSString alloc] initWithUTF8String: field1];
@@ -320,26 +329,44 @@
             field3 = (char *) sqlite3_column_text(statementTemplateEvents, 2);
             field3Str = [[NSString alloc] initWithUTF8String: field3];
 			
+            field4 = (char *) sqlite3_column_text(statementTemplateEvents, 3);
+            field4Str = [[NSString alloc] initWithUTF8String: field4];
+			
+            //NSString *str = [[NSString alloc] initWithFormat:@"got template from DB: %@ - %@ - %@ - %@",
+			//				 field1Str, field2Str, field3Str, field4Str];
             
-            NSString *str = [[NSString alloc] initWithFormat:@"got template from DB: %@ - %@ - %@",
-							 field1Str, field2Str, field3Str];
+            //NSLog(@"%@", str);
             
-            NSLog(@"%@", str);
-            /*
-             [templateEvents addObject:[eventClass eventWithID:nil
-             date:nil
-             dateNSFormat:nil
-             text:field2Str
-             time:field1Str
-             notes:field3Str]];
-             */
             
+            TemplateEvent *templateEvent;
+            templateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"TemplateEvent" inManagedObjectContext:self.managedObjectContext];
+            
+            templateEvent.eventText = field2Str;
+            templateEvent.eventNotes = field3Str;
+            templateEvent.template = [templateMap objectForKey:field4Str];
+            
+            // format the event time as a null base date
+            // field1Str is in the format HH:mm
+            templateEvent.eventTime = [Event timeFromOldDatabase:field1Str];
+            templateEvent.eventEndTime = [templateEvent.eventTime dateByAddingTimeInterval:3600];
+            
+
         }
         
         sqlite3_finalize(statementTemplateEvents);
     }
     
     sqlite3_close(db);
+    
+    // now save the context again
+    error = nil;
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error: %@", error);
+        return;
+    }
+    
+    
+    
     
 }
 

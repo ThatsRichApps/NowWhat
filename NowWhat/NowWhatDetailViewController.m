@@ -74,6 +74,7 @@
     
     nextEventLabel.text = @"";
     timeToNextEventLabel.text = @"";
+    pressPlusLabel.text = @"";
     
 }
 
@@ -89,7 +90,7 @@
 {
     
     
-    barButtonItem.title = NSLocalizedString(@"Events", @"Events");
+    barButtonItem.title = NSLocalizedString(@"Menu", @"Menu");
     [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
     self.masterPopoverController = popoverController;
     
@@ -121,7 +122,7 @@
     NSDate *dateNow = [NSDate date];
     
     // get todays day with day formatter and compare to eventDate
-    [dayFormatter setDateFormat:@"MMddYYYY"];
+    [dayFormatter setDateFormat:@"yyyyMMdd"];
     
     NSString *todaysDate = [dayFormatter stringFromDate:[NSDate date]];
     
@@ -141,6 +142,7 @@
         //NSLog(@"it is NOT set to today");
         nextEventLabel.text = @"Set date to today to see the upcoming event";
         timeToNextEventLabel.text = @"";
+        pressPlusLabel.text = @"";
         
         isToday = FALSE;
         
@@ -299,11 +301,14 @@
         // if the frc is empty, add placeholder text
         if ([self.fetchedResultsControllerDetail.fetchedObjects count] == 0) {
             
-            timeToNextEventLabel.text = @"Press + to add";
+            timeToNextEventLabel.text = @"";
+            pressPlusLabel.text = @"Press + to add";
             
         } else {
             
             timeToNextEventLabel.text = @"";
+            pressPlusLabel.text = @"";
+            
             
         }
         

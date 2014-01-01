@@ -40,6 +40,7 @@
 
 - (void) resetDateTo:(NSDate *)newDate;
 - (void) resetLock;
+- (void) importOldDatabase;
 
 
 @end

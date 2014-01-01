@@ -52,8 +52,6 @@
     // gte the notification time interval
     //notificationTime =
     
-    
-    
     [defaults setObject:self.viewSchedule.scheduleName forKey:kViewSchedule];
     [defaults synchronize];
     
@@ -207,7 +205,7 @@
     NSDate *dateNow = [NSDate date];
     
     // get todays day with day formatter and compare to eventDate
-    [dayFormatter setDateFormat:@"MMddYYYY"];
+    [dayFormatter setDateFormat:@"yyyyMMdd"];
     
     NSString *todaysDate = [dayFormatter stringFromDate:[NSDate date]];
     
@@ -831,7 +829,7 @@
     self.viewNSDate = [Event resetToBaseTime:newDate];
     self.viewDate = [Event returnDateString:newDate];
     
-    //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
+    NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
     // update the user defaults for next time the app is loaded
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     

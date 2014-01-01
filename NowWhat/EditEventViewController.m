@@ -180,12 +180,33 @@
         return;
         
     }
-
+    
+    NSDate *previousTime = self.baseTime;
+    
     // update master controller with new baseTime
     self.baseTime = timePicker.date;
     
-    // add one second to the time, this will keep it in the correct order when adding multiple events at the same time
-    self.baseTime = [self.baseTime dateByAddingTimeInterval:1];
+    NSLog (@"prev = %@ and timepicker = %@", previousTime, timePicker.date);
+    
+    // if the time didn't change, then update the seconds attribute.  If it did change, zero it out.
+    if ([previousTime isEqualToDate:timePicker.date]) {
+        
+        // add one second to the time, this will keep it in the correct order when adding multiple events at the same time
+        self.baseTime = [self.baseTime dateByAddingTimeInterval:1];
+        
+    } else {
+        
+        NSLog(@"basetime is %@", self.baseTime);
+        
+        self.baseTime = [Event zeroSeconds:self.baseTime];
+        
+        NSLog(@"basetime with zeroed seconds is %@", self.baseTime);
+        
+    }
+    
+    // reset the timepicker to relect and seconds changes in baseTime
+    timePicker.date = self.baseTime;
+    
     
     [self.delegate editEventView:self didChangeTime:self.baseTime];
     

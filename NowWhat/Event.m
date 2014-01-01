@@ -55,7 +55,7 @@
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     //[formatter setDateFormat:@"yyyy"];
-    [formatter setDateFormat:@"MMddYYYY"];
+    [formatter setDateFormat:@"yyyyMMdd"];
     
     //Optionally for time zone converstions
     //[formatter setTimeZone:[NSTimeZone timeZoneWithName:@"..."]];
@@ -71,15 +71,15 @@
     
     NSDate *mergedDate;
     
-    // dateString is in the form MMddYYYY, and timeOfDay is an NSDate
+    // dateString is in the form yyyyMMdd, and timeOfDay is an NSDate
     // we want to populate merged date with the dateString date at the timeOfDay time
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
     
     // get the month day and year from the dateString
-    NSString *monthStr = [dateString substringToIndex:2];
-    NSString *dayStr   = [dateString substringWithRange:NSMakeRange(2, 2)];
-    NSString *yearStr  = [dateString substringFromIndex:4];
+    NSString *yearStr = [dateString substringToIndex:4];
+    NSString *monthStr   = [dateString substringWithRange:NSMakeRange(4, 2)];
+    NSString *dayStr  = [dateString substringFromIndex:6];
     
     [components setDay:[dayStr intValue]];
     [components setMonth:[monthStr intValue]];
@@ -113,7 +113,7 @@
     
     NSDate *mergedDate;
     
-    // dateString is in the form MMddYYYY, and timeOfDay is an in kk:mm
+    // dateString is in the form yyyyMMdd, and timeOfDay is an in kk:mm
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
     
@@ -175,7 +175,7 @@
     
     NSString *timeString = [formatter stringFromDate:dateTime];
     
-    NSLog(@"The time to normallize is %@", timeString);
+    //NSLog(@"The time to normallize is %@", timeString);
     
     // now set the viewNSDate time to 8:00 am
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -208,15 +208,21 @@
     
     NSString *dayDate = [Event returnDateString:dateTime];
     
-    NSLog(@"the day to set to basetime is %@", dayDate);
+    //NSLog(@"the day to set to basetime is %@", dayDate);
     
     // now set the viewNSDate time to 8:00 am
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
     
-    NSString *monthStr = [dayDate substringToIndex:2];
-    NSString *dayStr   = [dayDate substringWithRange:NSMakeRange(2, 2)];
-    NSString *yearStr  = [dayDate substringFromIndex:4];
+    // get the month day and year from the dateString
+    NSString *yearStr = [dayDate substringToIndex:4];
+    NSString *monthStr   = [dayDate substringWithRange:NSMakeRange(4, 2)];
+    NSString *dayStr  = [dayDate substringFromIndex:6];
+    
+    // changed from MMddyyyy to yyyyMMdd
+    //NSString *monthStr = [dayDate substringToIndex:2];
+    //NSString *dayStr   = [dayDate substringWithRange:NSMakeRange(2, 2)];
+    //NSString *yearStr  = [dayDate substringFromIndex:4];
     
     [components setDay:[dayStr intValue]];
     [components setMonth:[monthStr intValue]];
@@ -226,7 +232,7 @@
     
     NSDate *timeFormatted = [gregorian dateFromComponents:components];
     
-    NSLog(@"base time is %@", timeFormatted);
+    //NSLog(@"base time is %@", timeFormatted);
     
     return (timeFormatted);
     
@@ -266,6 +272,47 @@
     
     
 }
+
++ (NSDate *)timeFromOldDatabase: (NSString *)timeString {
+    
+    // input string is in kk:mm format
+    
+    //NSLog(@"the converting database string: %@ to NSDate", timeString);
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    
+    NSString *hourStr = [timeString substringToIndex:2];
+    NSString *minStr = [timeString substringFromIndex:3];
+    
+    
+    [components setDay:0];
+    [components setMonth:0];
+    [components setYear:0];
+    [components setHour:[hourStr intValue]];
+    [components setMinute:[minStr intValue]];
+    
+    NSDate *timeFormatted = [gregorian dateFromComponents:components];
+    //NSLog(@"returning nsdate: %@", timeFormatted);
+    
+    return (timeFormatted);
+    
+}
+
+
++ (NSDate *)zeroSeconds: (NSDate *)dateTime {
+    
+    // take the given dateTime and reset the seconds to zero
+
+    NSTimeInterval time = floor([dateTime timeIntervalSinceReferenceDate] / 60.0) * 60.0;
+    
+    return  [NSDate dateWithTimeIntervalSinceReferenceDate:time];
+    
+    
+}
+
+
+
 
 
 
