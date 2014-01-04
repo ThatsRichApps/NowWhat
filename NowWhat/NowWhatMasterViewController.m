@@ -1464,7 +1464,7 @@
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"useEndTimes"]) {
             
             [htmlString appendString:[Event formatEventTime:eventItem.eventEndNSDate]];
-            [htmlString appendString:@"<br>"];
+            [htmlString appendString:@" - "];
             
         }
         

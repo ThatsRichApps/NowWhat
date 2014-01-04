@@ -140,7 +140,7 @@
     } else {
         
         //NSLog(@"it is NOT set to today");
-        nextEventLabel.text = @"Set date to today to see the upcoming event";
+        nextEventLabel.text = @"Set date to today to see the upcoming events.";
         timeToNextEventLabel.text = @"";
         pressPlusLabel.text = @"";
         
@@ -243,6 +243,7 @@
         
         nextEventLabel.text = [NSString stringWithFormat:@"Next Event: %@",nextEvent.eventText];
         
+        pressPlusLabel.text = @"";
         timeToNextEventLabel.text = text;
         
         // whenever the next event changes, add a new alert (remove the last one)

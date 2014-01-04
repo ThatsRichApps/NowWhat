@@ -58,6 +58,10 @@
 
         scheduleController.managedObjectContext = self.managedObjectContext;
     
+        [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
+        
+        
+        
     } else {
         
         // changed this when we added schedules
@@ -287,11 +291,16 @@
 
     NSLog(@"sending message from app delegate to open url");
     
-    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    // we need to get to the schedule controller
     
-    MainScheduleViewController *controller = (MainScheduleViewController *)[navigationController.viewControllers objectAtIndex:0];;
+    
+    //UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    
+    //MainScheduleViewController *controller = (MainScheduleViewController *)[navigationController.viewControllers objectAtIndex:0];;
+    
+    
     if (url != nil && [url isFileURL]) {
-        [controller handleOpenURL:url];
+        [scheduleController handleOpenURL:url];
     }
     
     return YES;

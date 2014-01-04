@@ -44,7 +44,7 @@
         
         [htmlString appendString:@"<h2 align=\"center\">Now What?</h2>"];
         
-        [htmlString appendString:@"<p>Welcome to the newest version of the \"Now What\" application!  This version contains several new features:  Multiple schedules can now be viewed on the same device.  Create a new schedule by clicking the + button at the top right.  Events created in each schedule are unique to the schedule.  Templates are shared between all schedules.</p>"];
+        [htmlString appendString:@"<p>Welcome to the newest version of the \"Now What\" application!  This version contains several new features:  Multiple schedules can now be viewed on the same device.  Create a new schedule by clicking the + button at the top right.  Events created in each schedule are unique to the schedule.  Templates are shared between all schedules.  Events can now be checked off as they are finished.  Click on an event to toggle it's checkmark.</p>"];
         
         [htmlString appendString:@"<p>After creating and selecting a schedule, use the following icons to manage your events:</p>"];
         
@@ -60,7 +60,15 @@
         [htmlString appendString:@"<strong>Lock Reset:</strong>  If you lock your app and forget the password, this setting will open it up again.<br>"];
         [htmlString appendString:@"<strong>24 Hour Time:</strong>  This setting switches all times to be in 24 hour time rather than AM/PM.<br>"];
         [htmlString appendString:@"<strong>Use End Times:</strong>  Adds the use of end times for all your events everywhere within the app<br></p>"];
-
+        
+        [htmlString appendString:@"<p>Thanks again for downloading Now What.<br>"];
+        
+        [htmlString appendString:@"If you like this app, please <a href=\"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=434244026\" >click here to review</a> in the app store.<br>"];
+        
+        [htmlString appendString:@"<a href=\"mailto:rich@thatsrichapps.com\">Click here to email</a> the developer if you have questions, comments, or suggestions for app improvement. </p>"];
+        
+        
+        
     }
     
     if ([self.callingView isEqualToString:@"InfoSaveTemplates"]) {

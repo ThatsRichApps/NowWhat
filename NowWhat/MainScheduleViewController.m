@@ -51,7 +51,9 @@
     }
     
     // if this is the first time it's been loaded, pop up a window asking if you want to load the existing database
-    [previousLoad setBool:NO forKey:@"HasLaunchedOnce"];
+    
+    // comment out the line below to force it to look like a new load every time
+    //[previousLoad setBool:NO forKey:@"HasLaunchedOnce"];
     
     
     if ([previousLoad boolForKey:@"HasLaunchedOnce"]) {
