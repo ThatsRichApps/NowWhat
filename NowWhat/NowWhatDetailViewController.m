@@ -232,7 +232,7 @@
             
             NSInteger notifyBeforeTime = [preferences integerForKey:@"notificationTime"];
             
-            NSLog(@"setting notification for %i minutes before the next event", notifyBeforeTime);
+            //NSLog(@"setting notification for %i minutes before the next event", notifyBeforeTime);
             
             if (notifyBeforeTime !=0) {
                 
@@ -338,7 +338,7 @@
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
     }
@@ -405,7 +405,7 @@
     }
         
     
-    NSLog(@"the detail fetched results controller is getting the events for %@", self.viewNSDate);
+    //NSLog(@"the detail fetched results controller is getting the events for %@", self.viewNSDate);
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
@@ -439,7 +439,7 @@
 	if (![self.fetchedResultsControllerDetail performFetch:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	    abort();
 	}
     
@@ -584,7 +584,7 @@
 
 - (void) textFieldDidBeginEditing:(UITextField *)textField {
     
-    NSLog(@"did begin editing");
+    //NSLog(@"did begin editing");
     
     if (!tap) {
         tap = [[UITapGestureRecognizer alloc]
@@ -597,11 +597,11 @@
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
     
-    NSLog(@"did end editing");
+    //NSLog(@"did end editing");
     
     [self.view removeGestureRecognizer:tap];
     
-    NSLog(@"textfield should return");
+    //NSLog(@"textfield should return");
     
     // first check to see if they even changed the name
     if ([scheduleField.text isEqualToString:self.viewSchedule.scheduleName]) {
@@ -636,7 +636,7 @@
     // if so, should I let them overwrite it?
     if ([Schedule scheduleNameExists:scheduleField.text inMOC:self.managedObjectContext]) {
         
-        NSLog(@"this schedule exists");
+        //NSLog(@"this schedule exists");
         
         UIAlertView *emptyTextAlert;
         
@@ -675,7 +675,7 @@
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -702,7 +702,7 @@
 
 -(IBAction)dismissKeyboard {
     
-    NSLog(@"dismiss keyboard");
+    //NSLog(@"dismiss keyboard");
     [self.view endEditing:YES];
     
 }
@@ -715,17 +715,17 @@
     
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     
-    NSLog(@"clicked button %@", buttonTitle);
+    //NSLog(@"clicked button %@", buttonTitle);
     
     
     if ([buttonTitle isEqualToString:@"Merge"]) {
         
-        NSLog(@"merge the new data with the existing schedule");
+        //NSLog(@"merge the new data with the existing schedule");
         
         
     } else if ([buttonTitle isEqualToString:@"Replace"]) {
         
-        NSLog(@"replace the existing schedule");
+        //NSLog(@"replace the existing schedule");
         
         // maybe put up another alert that you will be deleting the previous template?
         

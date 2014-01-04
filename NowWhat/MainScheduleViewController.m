@@ -39,7 +39,7 @@
     // check to see if there were default settings persisted in the userdefaults
     NSUserDefaults *previousLoad = [NSUserDefaults standardUserDefaults];
     
-    NSLog (@"view did load of main schedule view, getting defaults");
+    //NSLog (@"view did load of main schedule view, getting defaults");
 
     NSString *viewScheduleName = [previousLoad objectForKey:kViewSchedule];
     
@@ -146,7 +146,7 @@
     
     if ([filemgr fileExistsAtPath: filePath ] == NO) {
         
-        NSLog(@"No database file exists, yay");
+        //NSLog(@"No database file exists, yay");
         return;
         
     }
@@ -246,7 +246,7 @@
     // now save the context
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         return;
     }
 
@@ -299,7 +299,7 @@
     // now save the context
     error = nil;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         return;
     }
 
@@ -363,7 +363,7 @@
     // now save the context again
     error = nil;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         return;
     }
     
@@ -431,8 +431,9 @@
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            //abort();
+            return;
         }
         
         NSMutableArray *tempList = [[self.fetchedResultsController fetchedObjects] mutableCopy];
@@ -444,8 +445,9 @@
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            //abort();
+            return;
         }
     
     }
@@ -496,8 +498,10 @@
     // once the move is done, update the database with the new list orders of all the schedules
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
-        abort();
+        //NSLog(@"Error: %@", error);
+        //abort();
+        changeIsUserDriven = NO;
+        return;
     }
  
     changeIsUserDriven = NO;
@@ -539,9 +543,9 @@
 	if (![self.fetchedResultsController performFetch:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	    abort();
-	}
+    }
     
     return _fetchedResultsController;
 }
@@ -551,7 +555,7 @@
     NSError *error;
     if (![self.fetchedResultsController performFetch:&error]) {
         //FATAL_CORE_DATA_ERROR(error);
-        NSLog(@"database error");
+       //NSLog(@"database error");
         return;
     }
 }
@@ -638,7 +642,7 @@
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -729,10 +733,10 @@
     // this should get me to the mainScheduleViewController if I'm not there
     [self.navigationController popToRootViewControllerAnimated:YES];
     
-    NSLog(@"importing user data");
+    //NSLog(@"importing user data");
     NSData* data = [NSData dataWithContentsOfURL:url];
     [self fetchedData:data];
-    NSLog(@"done importing user data");
+    //NSLog(@"done importing user data");
 
 }
 
@@ -751,7 +755,7 @@
                           error:&error];
     
     //NSArray *events = [json objectForKey:@"eventText"];
-    NSLog(@"events: %@", eventsArray);
+    //NSLog(@"events: %@", eventsArray);
     
     // I need to do error checking every step of the way!
     
@@ -778,13 +782,13 @@
         event.eventEndNSDate = [Event dateFromJSONString:[importedEvent objectForKey:@"eventEndNSDate"]];
         event.schedule = thisSchedule;
         
-        NSLog(@"adding event %@", event);
+        //NSLog(@"adding event %@", event);
         
         
     }
     
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -793,7 +797,7 @@
 
 - (void) resetDateTo:(NSDate *)newDate {
 
-    NSLog(@"reset the dates on all the controllers to %@", newDate);
+    //NSLog(@"reset the dates on all the controllers to %@", newDate);
     // reload the master controller and the detail controller here
     
     //self.viewNSDate = newDate;
@@ -826,7 +830,7 @@
 
 - (void) resetLock {
     
-    NSLog(@"reset the lock");
+    //NSLog(@"reset the lock");
     
     // if the master controller is loaded, reset it
     if (self.masterViewController != nil) {

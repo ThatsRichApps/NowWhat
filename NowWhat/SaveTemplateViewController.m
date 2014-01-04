@@ -43,7 +43,7 @@
         self.baseTime = [NSDate date];
         self.baseTime = [Event normalizeDay:self.baseTime];
         self.baseTime = [Event resetToBaseTime:self.baseTime];
-        NSLog(@"save template base time is %@", self.baseTime);
+        //NSLog(@"save template base time is %@", self.baseTime);
 
     }
     
@@ -247,7 +247,7 @@
         
     if ([Template templateNameExists:templateNameField.text inMOC:self.managedObjectContext]) {
             
-        NSLog(@"this template exists");
+        //NSLog(@"this template exists");
             
         UIAlertView *emptyTextAlert;
             
@@ -295,7 +295,7 @@
         
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
         
@@ -314,7 +314,7 @@
     
     if ([buttonTitle isEqualToString:@"Merge"]) {
         
-        NSLog(@"merge the new data with the existing template");
+        //NSLog(@"merge the new data with the existing template");
         
         [self mergeTemplate];
         
@@ -322,7 +322,7 @@
         
     } else if ([buttonTitle isEqualToString:@"Replace"]) {
         
-        NSLog(@"replace the existing template");
+        //NSLog(@"replace the existing template");
         
         // maybe put up another alert that you will be deleting the previous template?
         
@@ -342,7 +342,7 @@
         
     } else if ([buttonTitle isEqualToString:@"Delete"]) {
         
-        NSLog(@"go ahead and delete the existing template");
+        //NSLog(@"go ahead and delete the existing template");
         
         [self replaceTemplate];
         
@@ -397,7 +397,7 @@
     
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
 
@@ -437,7 +437,7 @@
     
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -469,8 +469,8 @@
     newEvent.eventTime = unmanagedEvent.eventTime;
     newEvent.eventEndTime = unmanagedEvent.eventEndTime;
     
-    NSLog (@"adding templateEvent at %@", newEvent.eventTime);
-    NSLog (@"Text is: %@", newEvent.eventText);
+    //NSLog (@"adding templateEvent at %@", newEvent.eventTime);
+    //NSLog (@"Text is: %@", newEvent.eventText);
     
     // add a new object to the templateEvents NSMutableArray and update the table
     // I'm also going to have to re-Sort the events based upon the time
@@ -542,7 +542,7 @@
 
 -(IBAction)dismissKeyboard {
     
-    NSLog(@"dismiss keyboard");
+    //NSLog(@"dismiss keyboard");
     [self.view endEditing:YES];
     
 }

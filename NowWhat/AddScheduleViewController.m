@@ -86,7 +86,7 @@
     
     if ([Schedule scheduleNameExists:scheduleField.text inMOC:self.managedObjectContext]) {
         
-        NSLog(@"this schedule exists");
+        //NSLog(@"this schedule exists");
         
         
         UIAlertView *emptyTextAlert;

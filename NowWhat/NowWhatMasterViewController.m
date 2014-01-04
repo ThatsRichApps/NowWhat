@@ -156,7 +156,7 @@
     
     if ([self isMovingFromParentViewController]){
         //specific stuff for being popped off stack
-        NSLog(@"back pressed, clear schedule variable");
+        //NSLog(@"back pressed, clear schedule variable");
         
         NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
         
@@ -189,7 +189,7 @@
 }
 
 - (void)viewDidUnload {
-    NSLog(@"view did unload");
+    //NSLog(@"view did unload");
     self.fetchedResultsController = nil;
 }
 
@@ -331,7 +331,7 @@
             
             NSInteger notifyBeforeTime = [preferences integerForKey:@"notificationTime"];
             
-            NSLog(@"setting notification for %i minutes before the next event", notifyBeforeTime);
+            //NSLog(@"setting notification for %i minutes before the next event", notifyBeforeTime);
             
             if (notifyBeforeTime !=0) {
             
@@ -446,7 +446,7 @@
         if (![context save:&error]) {
              // Replace this implementation with code to handle the error appropriately.
              // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
 
@@ -598,7 +598,7 @@
     if (fetchedObjects == nil) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     
@@ -636,7 +636,7 @@
     }
     
     
-    NSLog(@"the fetched results controller is getting the events for %@", self.viewNSDate);
+    //NSLog(@"the fetched results controller is getting the events for %@", self.viewNSDate);
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
@@ -653,7 +653,7 @@
     
     // setup the predicate to return just the wanted date and schedule
     NSPredicate *requestPredicate = [NSPredicate predicateWithFormat:@"(eventDate like %@) AND (schedule.scheduleName like %@)", [Event returnDateString:self.viewNSDate], self.viewSchedule.scheduleName];
-    NSLog(@"predicate:%@", requestPredicate);
+    //NSLog(@"predicate:%@", requestPredicate);
     [fetchRequest setPredicate:requestPredicate];
     
     // Clear out any previous cache
@@ -669,7 +669,7 @@
 	if (![self.fetchedResultsController performFetch:&error]) {
 	     // Replace this implementation with code to handle the error appropriately.
 	     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	    abort();
 	}
     
@@ -683,7 +683,7 @@
     NSError *error;
     if (![self.fetchedResultsController performFetch:&error]) {
         //FATAL_CORE_DATA_ERROR(error);
-        NSLog(@"database error");
+        //NSLog(@"database error");
         return;
     }
 }
@@ -829,7 +829,7 @@
     self.viewNSDate = [Event resetToBaseTime:newDate];
     self.viewDate = [Event returnDateString:newDate];
     
-    NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
+    //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
     // update the user defaults for next time the app is loaded
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     
@@ -889,7 +889,7 @@
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -918,7 +918,7 @@
     // then update the context so that it gets saved
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -1025,7 +1025,7 @@
 
 -(void) printSchedule {
     
-    NSLog(@"clicked print button");
+    //NSLog(@"clicked print button");
     
     UIPrintInteractionController *pic = [UIPrintInteractionController sharedPrintController];
     
@@ -1100,7 +1100,7 @@
     void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
     ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
         if (!completed && error) {
-            NSLog(@"Printing could not complete because of error: %@", error);
+            //NSLog(@"Printing could not complete because of error: %@", error);
         }
     };
     
@@ -1131,7 +1131,7 @@
 
 -(IBAction)dismissKeyboard {
     
-    NSLog(@"dismiss keyboard");
+    //NSLog(@"dismiss keyboard");
     [self.view endEditing:YES];
     
 }
@@ -1142,7 +1142,7 @@
 
 - (void) textFieldDidBeginEditing:(UITextField *)textField {
     
-    NSLog(@"did begin editing");
+    //NSLog(@"did begin editing");
     
     if (!tap) {
         tap = [[UITapGestureRecognizer alloc]
@@ -1155,11 +1155,11 @@
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
     
-    NSLog(@"did end editing");
+    //NSLog(@"did end editing");
     
     [self.view removeGestureRecognizer:tap];
     
-    NSLog(@"textfield should return");
+    //NSLog(@"textfield should return");
     
     // first check to see if they even changed the name
     if ([scheduleField.text isEqualToString:self.viewSchedule.scheduleName]) {
@@ -1194,7 +1194,7 @@
     // if so, should I let them overwrite it?
     if ([Schedule scheduleNameExists:scheduleField.text inMOC:self.managedObjectContext]) {
         
-        NSLog(@"this schedule exists");
+        //NSLog(@"this schedule exists");
         
         UIAlertView *emptyTextAlert;
         
@@ -1231,7 +1231,7 @@
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -1258,17 +1258,17 @@
     
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     
-    NSLog(@"clicked button %@", buttonTitle);
+    //NSLog(@"clicked button %@", buttonTitle);
     
     
     if ([buttonTitle isEqualToString:@"Merge"]) {
         
-        NSLog(@"merge the new data with the existing schedule");
+        //NSLog(@"merge the new data with the existing schedule");
         
         
     } else if ([buttonTitle isEqualToString:@"Replace"]) {
         
-        NSLog(@"replace the existing schedule");
+        //NSLog(@"replace the existing schedule");
         
         // maybe put up another alert that you will be deleting the previous template?
         
@@ -1356,7 +1356,7 @@
         if (fetchedObjects == nil) {
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
         
@@ -1419,19 +1419,19 @@
     switch (result)
     {
         case MFMailComposeResultCancelled:
-            NSLog(@"Mail cancelled: you cancelled the operation and no email message was queued.");
+            //NSLog(@"Mail cancelled: you cancelled the operation and no email message was queued.");
             break;
         case MFMailComposeResultSaved:
-            NSLog(@"Mail saved: you saved the email message in the drafts folder.");
+            //NSLog(@"Mail saved: you saved the email message in the drafts folder.");
             break;
         case MFMailComposeResultSent:
-            NSLog(@"Mail send: the email message is queued in the outbox. It is ready to send.");
+            //NSLog(@"Mail send: the email message is queued in the outbox. It is ready to send.");
             break;
         case MFMailComposeResultFailed:
-            NSLog(@"Mail failed: the email message was not saved or queued, possibly due to an error.");
+            //NSLog(@"Mail failed: the email message was not saved or queued, possibly due to an error.");
             break;
         default:
-            NSLog(@"Mail not sent.");
+            //NSLog(@"Mail not sent.");
             break;
     }
     // Remove the mail view

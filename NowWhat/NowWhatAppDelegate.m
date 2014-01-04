@@ -42,7 +42,7 @@
         
     };
     
-    NSLog (@"didFinishLaunchingWithOptions");
+    //NSLog (@"didFinishLaunchingWithOptions");
     
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -99,7 +99,7 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
-    NSLog(@"application did become active");
+    //NSLog(@"application did become active");
     
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     NSDate *timeNow = [NSDate date];
@@ -110,7 +110,7 @@
     
     if (lastLoaded==nil)
     {
-        NSLog (@"First launch! Load up previous database in background, then delete it");
+        //NSLog (@"First launch! Load up previous database in background, then delete it");
         
         [scheduleController importOldDatabase];
         
@@ -121,7 +121,7 @@
         //NSTimeInterval timeSinceUnload = [timeNow timeIntervalSinceDate:lastUnload]/3600.0;
         NSTimeInterval timeSinceLastLoaded = [timeNow timeIntervalSinceDate:lastLoaded];
         
-        NSLog (@"Time since last reload was %.1f seconds", timeSinceLastLoaded);
+        //NSLog (@"Time since last reload was %.1f seconds", timeSinceLastLoaded);
         
         //do your stuff - treat NSTimeInterval as double
         // this sets the time interval (in seconds) where we should reset to the current day
@@ -129,7 +129,7 @@
         if (timeSinceLastLoaded > 3600.0)
         {
             
-            NSLog(@"reset the viewNSDate");
+           //NSLog(@"reset the viewNSDate");
             // if it's been a while, reset viewNSDate to now
             
             // this doesn't work because the view is still loaded, changing the basetime won't reload it
@@ -175,7 +175,7 @@
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
              // Replace this implementation with code to handle the error appropriately.
              // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+           //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         } 
     }
@@ -247,7 +247,7 @@
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }    
     
@@ -265,7 +265,7 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     
-    NSLog (@"The didReceiveLocalNotification method in the app delegate was called, hooray.");
+    //NSLog (@"The didReceiveLocalNotification method in the app delegate was called, hooray.");
     
     // pop up an alert view
     UIAlertView *emptyTextAlert;
@@ -288,7 +288,7 @@
 -(BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
 
-    NSLog(@"sending message from app delegate to open url");
+    //NSLog(@"sending message from app delegate to open url");
     
     // we need to get to the schedule controller
     

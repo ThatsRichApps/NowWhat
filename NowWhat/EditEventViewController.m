@@ -186,7 +186,7 @@
     // update master controller with new baseTime
     self.baseTime = timePicker.date;
     
-    NSLog (@"prev = %@ and timepicker = %@", previousTime, timePicker.date);
+    //NSLog (@"prev = %@ and timepicker = %@", previousTime, timePicker.date);
     
     // if the time didn't change, then update the seconds attribute.  If it did change, zero it out.
     if ([previousTime isEqualToDate:timePicker.date]) {
@@ -196,11 +196,11 @@
         
     } else {
         
-        NSLog(@"basetime is %@", self.baseTime);
+        //NSLog(@"basetime is %@", self.baseTime);
         
         self.baseTime = [Event zeroSeconds:self.baseTime];
         
-        NSLog(@"basetime with zeroed seconds is %@", self.baseTime);
+        //NSLog(@"basetime with zeroed seconds is %@", self.baseTime);
         
     }
     
@@ -234,7 +234,7 @@
 
 - (void)doneStartClicked:(id)sender {
     
-    NSLog(@"done start clicked");
+    //NSLog(@"done start clicked");
 
     
     // write out the date in whatever format is specified in the Event formatEventTime method!
@@ -253,7 +253,7 @@
 
 - (void)doneEndClicked:(id)sender {
     
-    NSLog(@"done end clicked");
+    //NSLog(@"done end clicked");
 
     // write out the date in whatever format is specified in the Event formatEventTime method!
     endDateField.text = [Event formatEventTime:timeEndPicker.date];
@@ -277,7 +277,7 @@
 
 -(IBAction)dismissKeyboard {
     
-    NSLog(@"dismiss keyboard");
+    //NSLog(@"dismiss keyboard");
 
     // if this is called from the datepickers, I need to update their text fields
     // or just do it
@@ -318,7 +318,7 @@
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
     
-    NSLog(@"did end editing");
+    //NSLog(@"did end editing");
 
     if ([textField isEqual:dateField]) {
     

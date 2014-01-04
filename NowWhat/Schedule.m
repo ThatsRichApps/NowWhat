@@ -55,7 +55,7 @@
         
         NSError *error;
         if (![moc save:&error]) {
-            NSLog(@"Error: %@", error);
+            //NSLog(@"Error: %@", error);
             abort();
         }
 
@@ -114,7 +114,7 @@
     
     
     
-    NSLog(@"next schedule order is %@", count);
+    //NSLog(@"next schedule order is %@", count);
     
     return count;
     

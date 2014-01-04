@@ -37,7 +37,7 @@
         self.baseTime = [Event normalizeDay:self.baseTime];
         self.baseTime = [Event resetToBaseTime:self.baseTime];
         
-        NSLog(@"show template base time is %@", self.baseTime);
+        //NSLog(@"show template base time is %@", self.baseTime);
     }
 
 
@@ -71,7 +71,7 @@
     if (![context save:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
 }
@@ -113,7 +113,7 @@
         if (![context save:&error]) {
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
     }
@@ -216,7 +216,7 @@
 	if (![self.fetchedResultsControllerTemplateEvents performFetch:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 	    abort();
 	}
     
@@ -341,7 +341,7 @@
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -374,13 +374,13 @@
     templateEvent.eventTime = unmanagedEvent.eventTime;
     templateEvent.eventEndTime = unmanagedEvent.eventEndTime;
     
-    NSLog (@"adding templateEvent at %@", templateEvent.eventTime);
-    NSLog (@"Text is: %@", templateEvent.eventText);
+    //NSLog (@"adding templateEvent at %@", templateEvent.eventTime);
+    //NSLog (@"Text is: %@", templateEvent.eventText);
 
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -405,7 +405,7 @@
 
 -(IBAction)dismissKeyboard {
     
-    NSLog(@"dismiss keyboard");
+    //NSLog(@"dismiss keyboard");
     [self.view endEditing:YES];
     
 }
@@ -495,7 +495,7 @@
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -532,7 +532,7 @@
     
     if ([buttonTitle isEqualToString:@"Merge"]) {
         
-        NSLog(@"merge the new data with the existing template");
+        //NSLog(@"merge the new data with the existing template");
         
         [self mergeTemplate];
         
@@ -540,7 +540,7 @@
         
     } else if ([buttonTitle isEqualToString:@"Replace"]) {
         
-        NSLog(@"replace the existing template");
+        //NSLog(@"replace the existing template");
         
         // maybe put up another alert that you will be deleting the previous template?
         
@@ -560,7 +560,7 @@
         
     } else if ([buttonTitle isEqualToString:@"Delete"]) {
     
-        NSLog(@"go ahead and delete the existing template");
+        //NSLog(@"go ahead and delete the existing template");
         
         [self replaceTemplate];
     
@@ -568,7 +568,7 @@
     
     } else if ([buttonTitle isEqualToString:@"Cancel"]) {
         
-        NSLog(@"cancel the action and put the old name back");
+        //NSLog(@"cancel the action and put the old name back");
         templateNameField.text = self.templateToShow.templateName;
         
         return;
@@ -608,7 +608,7 @@
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -653,7 +653,7 @@
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     
@@ -661,7 +661,7 @@
     [self.managedObjectContext deleteObject:templateToDelete];
     
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        //NSLog(@"Error: %@", error);
         abort();
     }
     

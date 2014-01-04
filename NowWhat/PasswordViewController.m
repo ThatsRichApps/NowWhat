@@ -109,7 +109,7 @@
     
     //	[textField resignFirstResponder];
     
-    NSLog(@"in text field should return");
+    //NSLog(@"in text field should return");
     
     return YES;
     
@@ -118,7 +118,7 @@
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
     
-    NSLog(@"did end editing");
+    //NSLog(@"did end editing");
     [self dismissModalViewControllerAnimated:YES];
 
     
