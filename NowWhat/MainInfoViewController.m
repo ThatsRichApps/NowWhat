@@ -73,16 +73,18 @@
     
     if ([self.callingView isEqualToString:@"InfoSaveTemplates"]) {
         
-        [htmlString appendString:@"From this view, you can save a list of events as a template.  To add new events to this template, click the add button (+).  New events will show up in the template, but not be changed in your daily event list.  Events can be edited by clicking on them."];
+        [htmlString appendString:@"<h3 align=\"center\">Save Templates</h3>"];
+        
+        [htmlString appendString:@"From this view, you can save a list of events as a template.  If you accessed this screen from the daily list, it will be prepopulated with the events from that day.  To add new events to this template, click the add button (+).  New events will show up in the template, but not be changed in your daily event list.  Events can be edited by clicking on them.  After you click Save, the Template will show up in your Template List (via the file box icon) and can be edited further."];
     
-        
-        
         
     }
 
     if ([self.callingView isEqualToString:@"InfoListTemplates"]) {
         
-        [htmlString appendString:@"On this screen, you can see a list of templates.  If none are setup, you can create one by clicking on the add buttons (+), or by clicking the \"Save\" button on the daily events page.  Templates can now be edited or modified by clicking on the template and editing it.  To load a template into the currently active day, click on the template in the list, then click the \"Load\" button on the next page."];
+        [htmlString appendString:@"<h3 align=\"center\">Templates</h3>"];
+        
+        [htmlString appendString:@"On this screen, you can see a list of templates.  If none are setup, you can create one by clicking on the add button (+), or by clicking the Save (folder) icon on the daily events page.  Templates can now be edited or modified by clicking on the template and editing it on the Load Template view.  Templates can be reorderd by clicking the Edit button at the top and dragging the Template entry.  To load a template into the currently active day, click on the template in the list, then click the \"Load\" button on the next page."];
         
         
     

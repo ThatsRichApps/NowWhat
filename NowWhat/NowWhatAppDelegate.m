@@ -61,7 +61,6 @@
         [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
         
         
-        
     } else {
         
         // changed this when we added schedules

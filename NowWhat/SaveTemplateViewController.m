@@ -149,7 +149,7 @@
     // Send the EditTemplateEventViewController the appropriate event that needs editing
     //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     //NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    UnmanagedEvent *event = (self.templateEvents)[indexPath.row];
+    //UnmanagedEvent *event = (self.templateEvents)[indexPath.row];
     //TemplateEvent *templateEvent;
     
 //    UINavigationController *navigationController = segue.destinationViewController;
@@ -157,7 +157,7 @@
 //    controller.managedObjectContext = self.managedObjectContext;
 //    controller.templateEventToEdit = templateEvent;
     //controller.delegate = self;
-    NSLog(@"the event selected is %@", event.eventText);
+    //NSLog(@"the event selected is %@", event.eventText);
             
             
 }
