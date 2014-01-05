@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Rich Humphrey. All rights reserved.
 //
 
+
 #import "PasswordViewController.h"
 
 @interface PasswordViewController ()
@@ -77,7 +78,13 @@
     
     
     // need to handle case where the close keyboard button is tapped, same as a cancel
+    // dismiss keyboard on tap outside of field
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(backClicked:)];
     
+    [self.view addGestureRecognizer:tap];
+
     
     
 }
@@ -95,9 +102,9 @@
 - (void) backClicked:(id)sender {
     
     // NSLog(@"clicked back button");
-    //[self dismissModalViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
     
-    [realPasswordField resignFirstResponder];
+    //[realPasswordField resignFirstResponder];
     
     
 }
@@ -108,7 +115,6 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     
     //	[textField resignFirstResponder];
-    
     //NSLog(@"in text field should return");
     
     return YES;
@@ -118,8 +124,11 @@
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
     
+    // if dismiss modal is here, we get a warning that we're trying to dismiss something already dismissed.
+    // I'm not sure why I changed it in the first place
+
     //NSLog(@"did end editing");
-    [self dismissModalViewControllerAnimated:YES];
+    //[self dismissModalViewControllerAnimated:YES];
 
     
 }
@@ -134,11 +143,19 @@
     
     NSString *typedString = [textField text];
     
+    //NSLog(@"You typed in: %@",string);
+    
+    if ([string rangeOfCharacterFromSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]].location != NSNotFound)
+    {
+        //NSLog(@"not a number");
+        return NO;
+    }
+    
     typedString = [typedString stringByReplacingCharactersInRange:range withString:string];
     
-    // NSLog(@"You typed in: %@",typedString);
     // NSLog(@"Correct password is: %i",correctPassword);
     
+    // check to make sure the typed character is a number, otherwise do nothing...
     
     NSInteger index = [typedString length];
     

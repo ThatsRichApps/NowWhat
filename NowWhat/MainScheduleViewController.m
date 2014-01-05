@@ -105,6 +105,8 @@
         // why update the detail view if it's the first instantiation of it?
         [self.detailViewController updateDetailView];
         
+        self.splitViewController.delegate = self.detailViewController;
+        
     } else {
         
         //NSLog(@"no detail view, this is an iphone");
@@ -764,6 +766,8 @@
     
     Schedule *thisSchedule = [Schedule returnScheduleForName:scheduleName inContext:self.managedObjectContext];
     
+    NSDate *uploadDate;
+    
     // now go the events and add them to core data
     for (id importedEvent in eventsArray) {
         
@@ -783,9 +787,24 @@
         event.schedule = thisSchedule;
         
         //NSLog(@"adding event %@", event);
-        
+        uploadDate = event.eventNSDate;
         
     }
+    
+    // if everything worked correctly, then let the user know where the data is - via a popup
+    
+    NSString *alertText = [NSString stringWithFormat:@"schedule: \"%@\" for date: %@",scheduleName, [Event returnDateString:uploadDate]];
+    
+    UIAlertView *dataUploadedAlert;
+    
+    dataUploadedAlert = [[UIAlertView alloc]
+                      initWithTitle:@"Uploaded data from file, added to:"
+                      message:alertText
+                      delegate:self
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil];
+    
+    [dataUploadedAlert show];
     
     if (![self.managedObjectContext save:&error]) {
         //NSLog(@"Error: %@", error);

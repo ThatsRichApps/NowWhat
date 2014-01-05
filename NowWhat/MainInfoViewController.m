@@ -75,7 +75,7 @@
         
         [htmlString appendString:@"<h3 align=\"center\">Save Templates</h3>"];
         
-        [htmlString appendString:@"From this view, you can save a list of events as a template.  If you accessed this screen from the daily list, it will be prepopulated with the events from that day.  To add new events to this template, click the add button (+).  New events will show up in the template, but not be changed in your daily event list.  Events can be edited by clicking on them.  After you click Save, the Template will show up in your Template List (via the file box icon) and can be edited further."];
+        [htmlString appendString:@"From this view, you can save a list of events as a template.  If you accessed this screen from the daily list, it will be prepopulated with the events from that day.  To add new events to this template, click the add button (+).  New events will show up in the template, but not be changed in your daily event list.  Events can be edited by clicking on them.  After you click Save, the Template will show up in your Template List (via the file box icon) and can be edited further.  If a Template with the same name exists, you will get the option to Merge events with the existing Template (may create duplicate event entries) or Replace the existing Template."];
     
         
     }

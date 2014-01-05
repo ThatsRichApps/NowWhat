@@ -345,7 +345,10 @@
         abort();
     }
     
-    [[self navigationController] popViewControllerAnimated:YES];
+    //[self.navigationController popToRootViewControllerAnimated:YES];
+    // pop back two instead of one...
+    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3] animated:YES];
+    
     
 }
 

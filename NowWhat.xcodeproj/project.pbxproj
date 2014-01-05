@@ -29,8 +29,6 @@
 		81921EA9180C865000ECCBEE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81921EA8180C865000ECCBEE /* Foundation.framework */; };
 		81921EAB180C865000ECCBEE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81921EAA180C865000ECCBEE /* CoreGraphics.framework */; };
 		81921EAD180C865000ECCBEE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81921EAC180C865000ECCBEE /* CoreData.framework */; };
-		81921EB3180C865000ECCBEE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 81921EB1180C865000ECCBEE /* InfoPlist.strings */; };
-		81921EB5180C865000ECCBEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81921EB4180C865000ECCBEE /* main.m */; };
 		81921EB9180C865000ECCBEE /* NowWhatAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81921EB8180C865000ECCBEE /* NowWhatAppDelegate.m */; };
 		81921EC2180C865000ECCBEE /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81921EC0180C865000ECCBEE /* MainStoryboard_iPhone.storyboard */; };
 		81921EC5180C865000ECCBEE /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81921EC3180C865000ECCBEE /* MainStoryboard_iPad.storyboard */; };
@@ -52,9 +50,10 @@
 		81B0DBC81878B3CC004ED5BD /* ios7 Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 81B0DBBB1878B3CC004ED5BD /* ios7 Default-Portrait.png */; };
 		81B0DBC91878B3CC004ED5BD /* ios7 Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 81B0DBBC1878B3CC004ED5BD /* ios7 Default-Portrait@2x.png */; };
 		81B0DBCA1878B3CC004ED5BD /* ios7 Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 81B0DBBD1878B3CC004ED5BD /* ios7 Default@2x.png */; };
+		81B97ECE1879F03C00F0BA5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 81B97ECD1879F03C00F0BA5B /* InfoPlist.strings */; };
+		81B97ED31879F0AC00F0BA5B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81B97ED21879F0AC00F0BA5B /* main.m */; };
 		81F697BC182451C1006A6843 /* AddScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F697BB182451C1006A6843 /* AddScheduleViewController.m */; };
 		81F697BF18269559006A6843 /* MainInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F697BE18269559006A6843 /* MainInfoViewController.m */; };
-		81F697C218269A9D006A6843 /* ShareAndPrintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81F697C118269A9C006A6843 /* ShareAndPrintViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,10 +94,6 @@
 		81921EA8180C865000ECCBEE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		81921EAA180C865000ECCBEE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		81921EAC180C865000ECCBEE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		81921EB0180C865000ECCBEE /* NowWhat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NowWhat-Info.plist"; sourceTree = "<group>"; };
-		81921EB2180C865000ECCBEE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		81921EB4180C865000ECCBEE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		81921EB6180C865000ECCBEE /* NowWhat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NowWhat-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		81921EB7180C865000ECCBEE /* NowWhatAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NowWhatAppDelegate.h; sourceTree = "<group>"; };
 		81921EB8180C865000ECCBEE /* NowWhatAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NowWhatAppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		81921EC1180C865000ECCBEE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
@@ -124,12 +119,14 @@
 		81B0DBBB1878B3CC004ED5BD /* ios7 Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios7 Default-Portrait.png"; sourceTree = "<group>"; };
 		81B0DBBC1878B3CC004ED5BD /* ios7 Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios7 Default-Portrait@2x.png"; sourceTree = "<group>"; };
 		81B0DBBD1878B3CC004ED5BD /* ios7 Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios7 Default@2x.png"; sourceTree = "<group>"; };
+		81B97ECD1879F03C00F0BA5B /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
+		81B97ED11879F06700F0BA5B /* NowWhat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NowWhat-Prefix.pch"; sourceTree = "<group>"; };
+		81B97ED21879F0AC00F0BA5B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		81B97ED41879F2E800F0BA5B /* NowWhat-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NowWhat-Info.plist"; sourceTree = "<group>"; };
 		81F697BA182451C1006A6843 /* AddScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddScheduleViewController.h; sourceTree = "<group>"; };
 		81F697BB182451C1006A6843 /* AddScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AddScheduleViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		81F697BD18269559006A6843 /* MainInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainInfoViewController.h; sourceTree = "<group>"; };
 		81F697BE18269559006A6843 /* MainInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainInfoViewController.m; sourceTree = "<group>"; };
-		81F697C018269A9C006A6843 /* ShareAndPrintViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareAndPrintViewController.h; sourceTree = "<group>"; };
-		81F697C118269A9C006A6843 /* ShareAndPrintViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareAndPrintViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +181,7 @@
 		81921EAE180C865000ECCBEE /* NowWhat */ = {
 			isa = PBXGroup;
 			children = (
+				81B97ECC1879EFFD00F0BA5B /* Supporting Files */,
 				81B0DBB01878B3CC004ED5BD /* 2013 Launch Images Final */,
 				819D4A8118561DC1003F4531 /* Media.xcassets */,
 				813A92A61824237700C265FD /* Schedule.h */,
@@ -205,8 +203,6 @@
 				81921EB7180C865000ECCBEE /* NowWhatAppDelegate.h */,
 				81921EB8180C865000ECCBEE /* NowWhatAppDelegate.m */,
 				81921EC0180C865000ECCBEE /* MainStoryboard_iPhone.storyboard */,
-				81F697C018269A9C006A6843 /* ShareAndPrintViewController.h */,
-				81F697C118269A9C006A6843 /* ShareAndPrintViewController.m */,
 				81F697BD18269559006A6843 /* MainInfoViewController.h */,
 				81F697BE18269559006A6843 /* MainInfoViewController.m */,
 				813A92A91824263200C265FD /* MainScheduleViewController.h */,
@@ -231,21 +227,9 @@
 				81921ECC180C865000ECCBEE /* NowWhatDetailViewController.h */,
 				81921ECD180C865000ECCBEE /* NowWhatDetailViewController.m */,
 				81921EC6180C865000ECCBEE /* NowWhat.xcdatamodeld */,
-				81921EAF180C865000ECCBEE /* Supporting Files */,
 				81001388181EE93F003AAEE5 /* Settings.bundle */,
 			);
 			path = NowWhat;
-			sourceTree = "<group>";
-		};
-		81921EAF180C865000ECCBEE /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				81921EB1180C865000ECCBEE /* InfoPlist.strings */,
-				81921EB0180C865000ECCBEE /* NowWhat-Info.plist */,
-				81921EB4180C865000ECCBEE /* main.m */,
-				81921EB6180C865000ECCBEE /* NowWhat-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		81B0DBB01878B3CC004ED5BD /* 2013 Launch Images Final */ = {
@@ -266,6 +250,17 @@
 				81B0DBBD1878B3CC004ED5BD /* ios7 Default@2x.png */,
 			);
 			path = "2013 Launch Images Final";
+			sourceTree = "<group>";
+		};
+		81B97ECC1879EFFD00F0BA5B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				81B97ED41879F2E800F0BA5B /* NowWhat-Info.plist */,
+				81B97ED21879F0AC00F0BA5B /* main.m */,
+				81B97ED11879F06700F0BA5B /* NowWhat-Prefix.pch */,
+				81B97ECD1879F03C00F0BA5B /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -326,13 +321,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				81B0DBC41878B3CC004ED5BD /* Default@2x.png in Resources */,
-				81921EB3180C865000ECCBEE /* InfoPlist.strings in Resources */,
 				81B0DBC91878B3CC004ED5BD /* ios7 Default-Portrait@2x.png in Resources */,
 				81B0DBC71878B3CC004ED5BD /* ios7 Default-Landscape@2x.png in Resources */,
 				819D4A8218561DC1003F4531 /* Media.xcassets in Resources */,
 				81B0DBC01878B3CC004ED5BD /* Default-Landscape@2x.png in Resources */,
 				81B0DBC81878B3CC004ED5BD /* ios7 Default-Portrait.png in Resources */,
 				81B0DBC11878B3CC004ED5BD /* Default-Portrait.png in Resources */,
+				81B97ECE1879F03C00F0BA5B /* InfoPlist.strings in Resources */,
 				81921EC2180C865000ECCBEE /* MainStoryboard_iPhone.storyboard in Resources */,
 				81921EC5180C865000ECCBEE /* MainStoryboard_iPad.storyboard in Resources */,
 				81001389181EE93F003AAEE5 /* Settings.bundle in Resources */,
@@ -353,7 +348,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81921EB5180C865000ECCBEE /* main.m in Sources */,
 				81921EB9180C865000ECCBEE /* NowWhatAppDelegate.m in Sources */,
 				81921EC8180C865000ECCBEE /* NowWhat.xcdatamodeld in Sources */,
 				81921ECB180C865000ECCBEE /* NowWhatMasterViewController.m in Sources */,
@@ -374,7 +368,7 @@
 				813A92AE1824269A00C265FD /* ScheduleCell.m in Sources */,
 				81F697BC182451C1006A6843 /* AddScheduleViewController.m in Sources */,
 				81F697BF18269559006A6843 /* MainInfoViewController.m in Sources */,
-				81F697C218269A9D006A6843 /* ShareAndPrintViewController.m in Sources */,
+				81B97ED31879F0AC00F0BA5B /* main.m in Sources */,
 				81515F11184B8EBB00140990 /* SaveTemplateViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,14 +376,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		81921EB1180C865000ECCBEE /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				81921EB2180C865000ECCBEE /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		81921EC0180C865000ECCBEE /* MainStoryboard_iPhone.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

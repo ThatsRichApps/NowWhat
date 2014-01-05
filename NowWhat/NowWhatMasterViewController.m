@@ -1440,7 +1440,7 @@
 
 -(NSString *) formatToHTML {
     
-    NSLog(@"formatting events for html output");
+    //NSLog(@"formatting events for html output");
     
     // Here is all the html data for the printout page
     

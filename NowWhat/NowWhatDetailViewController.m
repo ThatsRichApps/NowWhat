@@ -25,7 +25,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    // Do any additional setup after loading the view, typically from a nib.
     
     // Start the time and now what check, then set to recheck every 30 secs
     [self updateTime];
@@ -131,7 +132,7 @@
     nextEvent = nil;
     
     //float timeFromLastEvent;
-    float timeToNextEvent;
+    float timeToNextEvent = 0;
     
     // Go through the dayData events one at a time to see which one was last and next
     for (Event *thisEvent in [self.fetchedResultsControllerDetail fetchedObjects]) {

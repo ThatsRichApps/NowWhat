@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import <CoreData/CoreData.h>
 #import "EditEventViewController.h"
 #import "ChangeDateViewController.h"
 #import "TemplateListViewController.h"
 #import "SaveTemplateViewController.h"
 #import "PasswordViewController.h"
-#import "ShareAndPrintViewController.h"
+
 
 #import "UnmanagedEvent.h"
 #import "NowWhatDetailViewController.h"
