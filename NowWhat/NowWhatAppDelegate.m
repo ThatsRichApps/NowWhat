@@ -126,7 +126,9 @@
         //do your stuff - treat NSTimeInterval as double
         // this sets the time interval (in seconds) where we should reset to the current day
         
-        if (timeSinceLastLoaded > 3600.0)
+        // set this to 15 minutes for initial release
+        
+        if (timeSinceLastLoaded > 900.0)
         {
             
            //NSLog(@"reset the viewNSDate");

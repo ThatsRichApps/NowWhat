@@ -33,7 +33,7 @@
     
     // create a timer that updates the clock
     // repeat every # seconds - low for testing, up to 30 or so for release
-    [NSTimer scheduledTimerWithTimeInterval: 55.0
+    [NSTimer scheduledTimerWithTimeInterval: 10.0
                                      target: self
                                    selector: @selector(updateTime)
                                    userInfo: nil

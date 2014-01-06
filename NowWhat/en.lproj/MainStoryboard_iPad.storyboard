@@ -873,7 +873,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <action selector="cancel" destination="TCP-uH-Gsp" id="GgD-Ll-UtE"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="sCc-Ji-DHT">
+                        <barButtonItem key="rightBarButtonItem" title="Set Date" id="sCc-Ji-DHT">
                             <connections>
                                 <action selector="save" destination="TCP-uH-Gsp" id="xal-T8-eLQ"/>
                             </connections>

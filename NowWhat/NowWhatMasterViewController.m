@@ -114,7 +114,7 @@
     [self updateTime];
     
     // repeat every # seconds - low for testing, up to 30 or so for release
-    [NSTimer scheduledTimerWithTimeInterval: 5.0
+    [NSTimer scheduledTimerWithTimeInterval: 10.0
                                      target: self
                                    selector: @selector(updateTime)
                                    userInfo: nil
@@ -238,7 +238,7 @@
     nextEvent = nil;
     
     //float timeFromLastEvent;
-    float timeToNextEvent;
+    float timeToNextEvent = 0;
     
     // Go through the dayData events one at a time to see which one was last and next
     for (Event *thisEvent in [self.fetchedResultsController fetchedObjects]) {
@@ -1391,7 +1391,7 @@
         NSString *htmlEvents = [self formatToHTML];
         
         
-        [picker setMessageBody:[NSString stringWithFormat:@"Here is my schedule.  From your iOS device, you can tap the file below to open in your copy of \"Now What\".<br>%@<br>Don't have Now What? - get it in the app store! <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What?</a>", htmlEvents] isHTML:YES];
+        [picker setMessageBody:[NSString stringWithFormat:@"Here is my schedule.  From your iOS device, you can tap the file below to open in your copy of \"Now What\".<br>%@<br>Don't have <a href=\"https://itunes.apple.com/us/app/now-what/id434244026?mt=8&uo=4\" target=\"itunes_store\">Now What?</a> - get it in the app store!", htmlEvents] isHTML:YES];
         
         //[picker setMessageBody:[[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding] isHTML:NO];
         
