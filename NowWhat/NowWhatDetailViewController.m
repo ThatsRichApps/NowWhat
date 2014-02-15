@@ -222,8 +222,13 @@
         
         nextEventLabel.text = [NSString stringWithFormat:@"Next Event: %@",nextEvent.eventText];
         
+        //nextEventLabel.textColor = [UIColor redColor];
+        
         pressPlusLabel.text = @"";
+        
         timeToNextEventLabel.text = text;
+        timeToNextEventLabel.textColor = [UIColor redColor];
+        
         
         // whenever the next event changes, add a new alert (remove the last one)
         // at three minutes until the next event, create a notification that will go off in two minutes
@@ -292,10 +297,12 @@
             
         }
         
-        
-        
     }
-
+    
+    
+    // update the displayed color events
+    nextEventDisplay = nextEvent;
+    lastEventDisplay = lastEvent;
     
 }
 
@@ -353,14 +360,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // toggling on and off the checks here doesn't seem to work well
     
+    /*
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     Event *event = [self.fetchedResultsControllerDetail objectAtIndexPath:indexPath];
     [event toggleChecked];
     [self configureCheckmarkForCell:cell withEvent:event];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    */
 }
 
 
@@ -519,10 +528,27 @@
     
     // this sets the cell labels
     eventCell.eventTextLabel.text = event.eventText;
-    eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate] ;
+    eventCell.eventTimeLabel.text = [Event formatEventTime:event.eventNSDate];
     eventCell.eventNotesLabel.text = event.eventNotes;
     
-    // thi wraps the test to multiple lines
+    
+    // change the color if it's the next or last event
+    
+    if (event == lastEventDisplay) {
+
+        eventCell.eventTextLabel.textColor = [UIColor colorWithRed:(0/255.f) green:(128/255.f) blue:(0/255.f) alpha:1.0f];
+        
+    } else if (event == nextEventDisplay) {
+        
+        eventCell.eventTextLabel.textColor = [UIColor redColor];
+        
+    } else {
+        
+        eventCell.eventTextLabel.textColor = [UIColor blackColor];
+        
+    }
+    
+    // this wraps the text to multiple lines
     eventCell.eventNotesLabel.numberOfLines = 0;
     eventCell.eventNotesLabel.lineBreakMode = NSLineBreakByWordWrapping;
     

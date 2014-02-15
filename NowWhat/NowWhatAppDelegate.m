@@ -121,7 +121,7 @@
         //NSTimeInterval timeSinceUnload = [timeNow timeIntervalSinceDate:lastUnload]/3600.0;
         NSTimeInterval timeSinceLastLoaded = [timeNow timeIntervalSinceDate:lastLoaded];
         
-        //NSLog (@"Time since last reload was %.1f seconds", timeSinceLastLoaded);
+        NSLog (@"Time since last reload was %.1f seconds", timeSinceLastLoaded);
         
         //do your stuff - treat NSTimeInterval as double
         // this sets the time interval (in seconds) where we should reset to the current day

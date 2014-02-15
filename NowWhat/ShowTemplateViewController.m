@@ -37,7 +37,7 @@
         self.baseTime = [Event normalizeDay:self.baseTime];
         self.baseTime = [Event resetToBaseTime:self.baseTime];
         
-        //NSLog(@"show template base time is %@", self.baseTime);
+        NSLog(@"show template base time is %@", self.baseTime);
     }
 
 
@@ -374,10 +374,10 @@
     templateEvent.template = self.templateToShow;
     
     // strip the date off of unmanagedEvent.eventTime
-    templateEvent.eventTime = unmanagedEvent.eventTime;
-    templateEvent.eventEndTime = unmanagedEvent.eventEndTime;
+    templateEvent.eventTime = [Event normalizeDay:unmanagedEvent.eventTime];
+    templateEvent.eventEndTime = [Event normalizeDay:unmanagedEvent.eventEndTime];
     
-    //NSLog (@"adding templateEvent at %@", templateEvent.eventTime);
+    NSLog (@"adding templateEvent at %@", templateEvent.eventTime);
     //NSLog (@"Text is: %@", templateEvent.eventText);
 
     

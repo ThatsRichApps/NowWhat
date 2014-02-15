@@ -21,6 +21,9 @@
     Event *lastEvent;
     Event *nextEvent;
     
+    Event *lastEventDisplay;
+    Event *nextEventDisplay;
+
     IBOutlet UILabel *nextEventLabel;
     IBOutlet UILabel *timeToNextEventLabel;
     IBOutlet UILabel *scheduleLabel;

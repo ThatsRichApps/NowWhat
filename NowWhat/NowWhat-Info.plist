@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>nowwhat</string>
+	<string>Now What</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
