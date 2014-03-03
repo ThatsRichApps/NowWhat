@@ -19,12 +19,14 @@
 			<string>notificationTime</string>
 			<key>Titles</key>
 			<array>
-				<string>None</string>
-				<string>1 Minute</string>
-				<string>5 Minutes</string>
+				<string>Off</string>
+				<string>At Event Time</string>
+				<string>1 Minute Before</string>
+				<string>5 Minutes Before</string>
 			</array>
 			<key>Values</key>
 			<array>
+				<string>-1</string>
 				<integer>0</integer>
 				<integer>1</integer>
 				<integer>5</integer>

@@ -23,9 +23,15 @@
     
     Event *lastEventDisplay;
     Event *nextEventDisplay;
-
+            
+            
+    // The labels are the actual event and time till, the tags are the "Next Event:" tag
+    // this was added to make the label red, but keep the tag black
     IBOutlet UILabel *nextEventLabel;
     IBOutlet UILabel *timeToNextEventLabel;
+    IBOutlet UILabel *nextEventTag;
+    IBOutlet UILabel *timeToNextEventTag;
+            
     IBOutlet UILabel *scheduleLabel;
     IBOutlet UITextField *scheduleField;
     IBOutlet UILabel *pressPlusLabel;

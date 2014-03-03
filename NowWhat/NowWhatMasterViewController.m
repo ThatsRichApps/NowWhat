@@ -49,9 +49,6 @@
     // When this view is loaded, persist userDefaults for the schedule
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     
-    // gte the notification time interval
-    //notificationTime =
-    
     [defaults setObject:self.viewSchedule.scheduleName forKey:kViewSchedule];
     [defaults synchronize];
     
@@ -469,6 +466,13 @@
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+    // then update the context so that it gets saved
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        //NSLog(@"Error: %@", error);
+        abort();
+    }
+    
     /*
     // this updates the detail controller when a row is selected.  Not sure we want to do that
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {

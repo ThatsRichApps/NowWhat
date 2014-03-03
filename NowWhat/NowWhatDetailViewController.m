@@ -52,6 +52,8 @@
     
     nextEventLabel.text = @"";
     timeToNextEventLabel.text = @"";
+    nextEventTag.text = @"";
+    timeToNextEventTag.text = @"";
     pressPlusLabel.text = @"";
     
     
@@ -119,8 +121,10 @@
     } else {
         
         //NSLog(@"it is NOT set to today");
-        nextEventLabel.text = @"Set date to today to see the upcoming events.";
+        nextEventTag.text = @"Set date to today to see the upcoming events.";
+        nextEventLabel.text = @"";
         timeToNextEventLabel.text = @"";
+        timeToNextEventTag.text = @"";
         pressPlusLabel.text = @"";
         
         isToday = FALSE;
@@ -182,7 +186,9 @@
         
         //countdownLabel.font = [UIFont fontWithName:@"Whiteboard Modern" size:20];
         //[text appendString:[NSString stringWithFormat:@"Countdown to next event: %ld hours and %ld minutes", hours, minutes]];
-        [text appendString:[NSString stringWithFormat:@"Starts In: "]];
+        
+        
+        //[text appendString:[NSString stringWithFormat:@"Starts In: "]];
         
         
         //NSLog(@"Countdown to next event: %ld hours and %ld minutes", hours, minutes);
@@ -220,15 +226,15 @@
         
         
         
-        nextEventLabel.text = [NSString stringWithFormat:@"Next Event: %@",nextEvent.eventText];
-        
-        //nextEventLabel.textColor = [UIColor redColor];
+        nextEventTag.text = @"Next Event: ";
+        nextEventLabel.text = [NSString stringWithFormat:@"%@",nextEvent.eventText];
+        nextEventLabel.textColor = [UIColor redColor];
         
         pressPlusLabel.text = @"";
         
+        timeToNextEventTag.text = @"Starts In:";
         timeToNextEventLabel.text = text;
         timeToNextEventLabel.textColor = [UIColor redColor];
-        
         
         // whenever the next event changes, add a new alert (remove the last one)
         // at three minutes until the next event, create a notification that will go off in two minutes
@@ -240,10 +246,9 @@
             
             //NSLog(@"setting notification for %i minutes before the next event", notifyBeforeTime);
             
-            if (notifyBeforeTime !=0) {
+            if (notifyBeforeTime !=-1) {
                 
                 
-            
                 [[UIApplication sharedApplication] cancelAllLocalNotifications];
                 UILocalNotification* localNotification = [[UILocalNotification alloc] init];
             
@@ -280,17 +285,20 @@
         if (isToday) {
             
             nextEventLabel.text = @"";
+            nextEventTag.text = @"";
             
         }
         
         // if the frc is empty, add placeholder text
         if ([self.fetchedResultsControllerDetail.fetchedObjects count] == 0) {
-            
+
+            timeToNextEventTag.text = @"";
             timeToNextEventLabel.text = @"";
             pressPlusLabel.text = @"Press + to add";
             
         } else {
             
+            timeToNextEventTag.text = @"";
             timeToNextEventLabel.text = @"";
             pressPlusLabel.text = @"";
             
@@ -360,16 +368,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // toggling on and off the checks here doesn't seem to work well
     
-    /*
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     Event *event = [self.fetchedResultsControllerDetail objectAtIndexPath:indexPath];
     [event toggleChecked];
     [self configureCheckmarkForCell:cell withEvent:event];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    */
+
+    // then update the context so that it gets saved
+    NSError *error;
+    if (![self.managedObjectContext save:&error]) {
+        //NSLog(@"Error: %@", error);
+        abort();
+    }
+
 }
 
 
