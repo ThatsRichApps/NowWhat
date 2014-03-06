@@ -222,10 +222,6 @@
             
         }
         
-        // if it's only one minute, remove the 's' from the the end
-        
-        
-        
         nextEventTag.text = @"Next Event: ";
         nextEventLabel.text = [NSString stringWithFormat:@"%@",nextEvent.eventText];
         nextEventLabel.textColor = [UIColor redColor];
@@ -237,7 +233,7 @@
         timeToNextEventLabel.textColor = [UIColor redColor];
         
         // whenever the next event changes, add a new alert (remove the last one)
-        // at three minutes until the next event, create a notification that will go off in two minutes
+        // at notifybeforetime minutes until the next event, create a notification
         if (currentAlert != nextEvent) {
             
             NSUserDefaults *preferences = [NSUserDefaults standardUserDefaults];
@@ -258,7 +254,9 @@
                 
                 // vary the message based upon the notifyBeforeTime
                 NSString *alertText;
-                if (notifyBeforeTime == 1) {
+                if (notifyBeforeTime == 0) {
+                    alertText = [NSString stringWithFormat:@"It is time for event: %@", nextEvent.eventText];
+                } else if (notifyBeforeTime == 1) {
                     alertText = [NSString stringWithFormat:@"1 minute till event: %@", nextEvent.eventText];
                 } else {
                     alertText = [NSString stringWithFormat:@"%ld minutes till event: %@", (long)notifyBeforeTime, nextEvent.eventText];
@@ -270,6 +268,9 @@
                 [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
             
             }
+            
+            // reload the table to refresh the event colors
+            [self.detailTableView reloadData];
             
         }
         
@@ -422,7 +423,7 @@
     
     } else {
         
-        scheduleNameToLoad = @"dummy";
+        scheduleNameToLoad = @"Nada";
         
         
     }

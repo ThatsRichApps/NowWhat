@@ -721,11 +721,11 @@
 - (void)changeDatePicker:(ChangeDateViewController *)controller didChangeDate:(NSDate *)newDate {
     
     // update the viewDate variables, this is called from the master controller as a delegate method
-    
-    self.viewNSDate = newDate;
+    self.viewNSDate = [Event resetToBaseTime:newDate];
+    //self.viewNSDate = newDate;
     self.viewDate = [Event returnDateString:newDate];
     
-    //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
+    //NSLog(@"didChangDate (main) - the new date is %@", self.viewNSDate);
         
 }
 

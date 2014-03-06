@@ -108,7 +108,7 @@
     timeToNextEventLabel.text = @"";
     
     // run once now to initiallize it
-    [self updateTime];
+    //[self updateTime];
     
     // repeat every # seconds - low for testing, up to 30 or so for release
     [NSTimer scheduledTimerWithTimeInterval: 10.0
@@ -140,7 +140,8 @@
 {
     //NSLog(@"view did appear");
     [super viewDidAppear:animated];
-
+    // run once now to initiallize it
+    [self updateTime];
 }
 
 
@@ -833,7 +834,7 @@
     self.viewNSDate = [Event resetToBaseTime:newDate];
     self.viewDate = [Event returnDateString:newDate];
     
-    //NSLog(@"didChangDate - the new date is %@", self.viewNSDate);
+    //NSLog(@"didChangDate (master) - the new date is %@", self.viewNSDate);
     // update the user defaults for next time the app is loaded
     NSUserDefaults *defaults =  [NSUserDefaults standardUserDefaults];
     
